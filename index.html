@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TobyBots — Agentes de IA que extienden lo que hacés bien. Local, cloud o a medida.">
+  <title>TobyBots — Agentes que trabajan mientras vos vivís</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0B;
+      --surface: #131316;
+      --surface-hover: #1A1A1E;
+      --border: #2A2A2E;
+      --accent: #6366F1;
+      --accent-glow: rgba(99,102,241,0.15);
+      --secondary: #3B82F6;
+      --text: #EDEEF0;
+      --text-secondary: #8B8D98;
+      --text-disabled: #4A4B52;
+      --success: #22C55E;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --font-heading: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- TYPOGRAPHY ---------- */
+    h1, h2, h3, h4 { font-family: var(--font-heading); letter-spacing: -0.02em; }
+    h1 { font-size: clamp(2rem, 5vw, 2.5rem); line-height: 1.15; font-weight: 700; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; font-weight: 700; }
+    h3 { font-size: 1.5rem; line-height: 1.25; font-weight: 600; }
+    h4 { font-size: 1.25rem; line-height: 1.3; font-weight: 500; }
+    .text-sm { font-size: 0.875rem; line-height: 1.5; }
+    .text-xs { font-size: 0.75rem; line-height: 1.5; }
+
+    /* ---------- LAYOUT ---------- */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+
+    /* ---------- NAV ---------- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,11,0.85); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-brand { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--text); text-decoration: none; letter-spacing: -0.03em; }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; list-style: none; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ---------- BUTTONS ---------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.625rem 1.25rem; border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; cursor: pointer; transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #5558e6; box-shadow: 0 0 24px var(--accent-glow); }
+    .btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface-hover); border-color: var(--accent); }
+    .btn-lg { padding: 0.875rem 2rem; font-size: 1rem; border-radius: var(--radius); }
+
+    /* ---------- HERO ---------- */
+    .hero { padding: 7rem 0 5rem; text-align: center; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.25; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+    .hero .container { position: relative; z-index: 1; }
+    .hero h1 { max-width: 800px; margin: 0 auto 1.5rem; }
+    .hero .subtitle {
+      max-width: 600px; margin: 0 auto 2.5rem;
+      color: var(--text-secondary); font-size: 1.125rem; line-height: 1.6;
+    }
+    .hero .actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ---------- SECTION HEADERS ---------- */
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header h2 { margin-bottom: 0.75rem; }
+    .section-header p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+    /* ---------- CARDS GRID ---------- */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .card:hover { border-color: var(--accent); background: var(--surface-hover); }
+    .card .icon { font-size: 2rem; margin-bottom: 1rem; }
+    .card h4 { margin-bottom: 0.5rem; }
+    .card p { color: var(--text-secondary); font-size: 0.9375rem; }
+
+    /* ---------- PRICING ---------- */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .price-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 2.5rem 2rem; text-align: center;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .price-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .price-card.featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface) 0%, rgba(99,102,241,0.06) 100%); }
+    .price-card .plan { font-family: var(--font-heading); font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.75rem; }
+    .price-card .price { font-family: var(--font-heading); font-size: 3rem; font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .price-card .price span { font-size: 0.875rem; font-weight: 400; color: var(--text-secondary); }
+    .price-card .features { list-style: none; margin: 1.5rem 0; text-align: left; }
+    .price-card .features li { padding: 0.375rem 0; color: var(--text-secondary); font-size: 0.9375rem; }
+    .price-card .features li::before { content: "→ "; color: var(--accent); }
+
+    /* ---------- PHILOSOPHY ---------- */
+    .philosophy { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 3rem 2.5rem; text-align: center; }
+    .philosophy blockquote { font-family: var(--font-heading); font-size: clamp(1.125rem, 3vw, 1.5rem); font-weight: 500; line-height: 1.5; color: var(--text); font-style: normal; max-width: 700px; margin: 0 auto; }
+
+    /* ---------- CONTACT ---------- */
+    .contact { text-align: center; }
+    .contact-email { display: inline-block; margin-top: 1.5rem; color: var(--accent); font-size: 1.25rem; text-decoration: none; font-weight: 500; }
+    .contact-email:hover { text-decoration: underline; }
+
+    /* ---------- FOOTER ---------- */
+    footer { border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; color: var(--text-disabled); font-size: 0.8125rem; }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 640px) {
+      section { padding: 3.5rem 0; }
+      .hero { padding: 5rem 0 3rem; }
+      .nav-links { display: none; }
+      .philosophy { padding: 2rem 1.5rem; }
+      .price-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="nav-brand">Toby<span>Bots</span></a>
+    <ul class="nav-links">
+      <li><a href="#que">Qué hacemos</a></li>
+      <li><a href="#precios">Precios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"><img src="img/grisglass.png" alt=""></div>
+  <div class="container">
+    <h1>Tus tareas, resueltas.</h1>
+    <p class="subtitle">No vendemos bots que fingen ser humanos. Construimos agentes que trabajan mientras vos vivís.</p>
+    <div class="actions">
+      <a href="#contacto" class="btn btn-primary btn-lg">Empezar</a>
+      <a href="#que" class="btn btn-ghost btn-lg">Cómo funciona</a>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ HACEMOS -->
+<section id="que">
+  <div class="container">
+    <div class="section-header">
+      <h2>¿Qué hacemos?</h2>
+      <p>Agentes de IA que se integran a tu empresa, tu equipo o tu vida. No reemplazan a nadie: <strong>extienden lo que ya hacés bien.</strong></p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🏠</div>
+        <h4>Local & tuyo</h4>
+        <p>El agente corre en tu máquina. Tus datos nunca salen de casa. Ideal para quienes valoran la privacidad sobre todo.</p>
+      </div>
+      <div class="card">
+        <div class="icon">☁️</div>
+        <h4>Cloud sin estrés</h4>
+        <p>Nosotros lo hosteamos, lo mantenemos, lo escalamos. Vos solo pedí y recibí.</p>
+      </div>
+      <div class="card">
+        <div class="icon">⚙️</div>
+        <h4>A medida</h4>
+        <p>Integraciones con tus sistemas actuales, procesos únicos, necesidades que no caben en un molde.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS REALES -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <h2>Casos reales</h2>
+      <p>Nada de ciencia ficción. Resultados concretos.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">📋</div>
+        <h4>Gestionar proyectos</h4>
+        <p>Sin perseguir a nadie. El agente sigue hilos, fechas y recordatorios por vos.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💬</div>
+        <h4>Responder clientes</h4>
+        <p>Con memoria real, no con scripts. Cada conversación construye contexto.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h4>Reportes automáticos</h4>
+        <p>De datos a documento sin tocar Excel. Vos definís qué importa, el agente lo arma.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔄</div>
+        <h4>Automatizar lo repetitivo</h4>
+        <p>Para enfocarte en lo que nadie más que vos puede hacer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILOSOFÍA -->
+<section>
+  <div class="container">
+    <div class="philosophy">
+      <blockquote>"Ser humano es un verbo, no un sustantivo. Nuestros agentes no te reemplazan: te recuerdan lo que podés hacer cuando soltás lo que te sobra."</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIOS -->
+<section id="precios">
+  <div class="container">
+    <div class="section-header">
+      <h2>Simple, sin letra chica</h2>
+      <p>Elegí cómo empezar. Escalá cuando quieras.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan">🌱 Semilla</div>
+        <div class="price">$0 <span>/mes</span></div>
+        <ul class="features">
+          <li>Agente local, open source</li>
+          <li>Datos 100% privados</li>
+          <li>Documentación completa</li>
+          <li>Comunidad activa</li>
+        </ul>
+        <a href="#contacto" class="btn btn-ghost">Empezar gratis</a>
+      </div>
+      <div class="price-card featured">
+        <div class="plan">⚡ Equipo</div>
+        <div class="price">$29 <span>/mes</span></div>
+        <ul class="features">
+          <li>Agente en la nube</li>
+          <li>Hosting y mantenimiento</li>
+          <li>Escalado automático</li>
+          <li>Soporte prioritario</li>
+        </ul>
+        <a href="#contacto" class="btn btn-primary">Comenzar</a>
+      </div>
+      <div class="price-card">
+        <div class="plan">🏢 Empresa</div>
+        <div class="price">—</div>
+        <ul class="features">
+          <li>Integraciones a medida</li>
+          <li>Procesos personalizados</li>
+          <li>Soporte dedicado</li>
+          <li>SLA garantizado</li>
+        </ul>
+        <a href="#contacto" class="btn btn-ghost">Conversemos</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="contact">
+  <div class="container">
+    <h2>Sin formularios de 20 campos.</h2>
+    <p style="color:var(--text-secondary);margin-top:0.75rem;">Un mensaje y empezamos.</p>
+    <a href="mailto:toniom75@gmail.com" class="contact-email">toniom75@gmail.com</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>TobyBots © 2026 &nbsp;·&nbsp; Hecho en Ecuador</p>
+  </div>
+</footer>
+
+</body>
+</html>
