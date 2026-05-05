@@ -3,304 +3,890 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TobyBots — Agentes de IA que extienden lo que hacés bien. Local, cloud o a medida.">
-  <title>TobyBots — Agentes que trabajan mientras vos vivís</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="TobyBots diseña agentes de IA locales, cloud y a medida para quitarte trabajo repetitivo sin sacrificar criterio, privacidad ni estilo.">
+  <meta name="theme-color" content="#0c0f0e">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:title" content="TobyBots — Agentes de IA sin teatro">
+  <meta property="og:description" content="Automatización útil, humana y bien pensada. Agentes locales, cloud y a medida para equipos, negocios y vida real.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tobybots.com/">
+  <meta property="og:image" content="https://tobybots.com/img/grisglass.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TobyBots — Agentes de IA sin teatro">
+  <meta name="twitter:description" content="Automatización útil, humana y bien pensada. Agentes locales, cloud y a medida para equipos, negocios y vida real.">
+  <meta name="twitter:image" content="https://tobybots.com/img/grisglass.png">
+  <link rel="canonical" href="https://tobybots.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>TobyBots — Agentes de IA sin teatro</title>
   <style>
     :root {
-      --bg: #0A0A0B;
-      --surface: #131316;
-      --surface-hover: #1A1A1E;
-      --border: #2A2A2E;
-      --accent: #6366F1;
-      --accent-glow: rgba(99,102,241,0.15);
-      --secondary: #3B82F6;
-      --text: #EDEEF0;
-      --text-secondary: #8B8D98;
-      --text-disabled: #4A4B52;
-      --success: #22C55E;
-      --radius-sm: 6px;
-      --radius: 10px;
-      --radius-lg: 16px;
-      --font-heading: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-      --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --bg: #0c0f0e;
+      --bg-soft: #111715;
+      --surface: rgba(20, 28, 25, 0.82);
+      --surface-strong: rgba(28, 39, 35, 0.95);
+      --surface-line: rgba(255, 255, 255, 0.08);
+      --text: #edf1eb;
+      --muted: #9cab9c;
+      --accent: #ff8d4d;
+      --accent-deep: #d96525;
+      --accent-soft: rgba(255, 141, 77, 0.16);
+      --mint: #84f1cf;
+      --mint-soft: rgba(132, 241, 207, 0.12);
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --container: 1120px;
+      --font-heading: "Space Grotesk", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255, 141, 77, 0.14), transparent 26rem),
+        radial-gradient(circle at 82% 18%, rgba(132, 241, 207, 0.12), transparent 22rem),
+        linear-gradient(180deg, #0b0d0d 0%, #0c1110 50%, #0b0d0d 100%);
       color: var(--text);
       font-family: var(--font-body);
-      font-size: 1rem;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ---------- TYPOGRAPHY ---------- */
-    h1, h2, h3, h4 { font-family: var(--font-heading); letter-spacing: -0.02em; }
-    h1 { font-size: clamp(2rem, 5vw, 2.5rem); line-height: 1.15; font-weight: 700; }
-    h2 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; font-weight: 700; }
-    h3 { font-size: 1.5rem; line-height: 1.25; font-weight: 600; }
-    h4 { font-size: 1.25rem; line-height: 1.3; font-weight: 500; }
-    .text-sm { font-size: 0.875rem; line-height: 1.5; }
-    .text-xs { font-size: 0.75rem; line-height: 1.5; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
 
-    /* ---------- LAYOUT ---------- */
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
-    section { padding: 5rem 0; }
-
-    /* ---------- NAV ---------- */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,11,0.85); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+    .skip-link {
+      position: absolute;
+      top: -3rem;
+      left: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface-strong);
+      border: 1px solid var(--surface-line);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      z-index: 1000;
     }
-    nav .container { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .nav-brand { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--text); text-decoration: none; letter-spacing: -0.03em; }
-    .nav-brand span { color: var(--accent); }
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; list-style: none; }
-    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .skip-link:focus { top: 1rem; }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--mint);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(var(--container), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 5rem 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--mint));
+      box-shadow: 0 0 16px rgba(255, 141, 77, 0.6);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    h1 { font-size: clamp(3rem, 8vw, 6.6rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3.4rem); }
+    h3 { font-size: 1.5rem; }
+
+    p.lead {
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      color: var(--muted);
+      max-width: 45rem;
+    }
+
+    .muted { color: var(--muted); }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(12, 15, 14, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-inner {
+      min-height: 4.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 0.9rem;
+      height: 0.9rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--mint));
+      box-shadow: 0 0 18px rgba(255, 141, 77, 0.4);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
     .nav-links a:hover { color: var(--text); }
 
-    /* ---------- BUTTONS ---------- */
     .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.625rem 1.25rem; border-radius: var(--radius-sm);
-      font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
-      text-decoration: none; cursor: pointer; transition: all 0.2s;
-      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 3.25rem;
+      padding: 0.9rem 1.35rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #5558e6; box-shadow: 0 0 24px var(--accent-glow); }
-    .btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--border); }
-    .btn-ghost:hover { background: var(--surface-hover); border-color: var(--accent); }
-    .btn-lg { padding: 0.875rem 2rem; font-size: 1rem; border-radius: var(--radius); }
 
-    /* ---------- HERO ---------- */
-    .hero { padding: 7rem 0 5rem; text-align: center; position: relative; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.25; }
-    .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
-    .hero .container { position: relative; z-index: 1; }
-    .hero h1 { max-width: 800px; margin: 0 auto 1.5rem; }
-    .hero .subtitle {
-      max-width: 600px; margin: 0 auto 2.5rem;
-      color: var(--text-secondary); font-size: 1.125rem; line-height: 1.6;
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ffb067);
+      color: #1f140d;
+      box-shadow: 0 18px 30px rgba(217, 101, 37, 0.24);
     }
-    .hero .actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-secondary {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--text);
+    }
 
-    /* ---------- SECTION HEADERS ---------- */
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-header h2 { margin-bottom: 0.75rem; }
-    .section-header p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 0 5rem;
+    }
 
-    /* ---------- CARDS GRID ---------- */
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 2rem;
+      align-items: end;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .hero-copy h1 span {
+      display: inline-block;
+      color: var(--mint);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+
+    .hero-notes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .note {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+    }
+
+    .hero-panel {
+      position: relative;
+      padding: 1.2rem;
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+        rgba(18, 24, 22, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto 1.5rem -1rem 1.5rem;
+      height: 2rem;
+      background: radial-gradient(circle, rgba(255, 141, 77, 0.18), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+
+    .panel-visual {
+      position: relative;
+      min-height: 18rem;
+      border-radius: calc(var(--radius-lg) - 0.5rem);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background:
+        linear-gradient(140deg, rgba(255, 141, 77, 0.16), transparent 30%),
+        linear-gradient(320deg, rgba(132, 241, 207, 0.12), transparent 36%),
+        #0e1312;
+    }
+
+    .panel-visual img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: screen;
+      opacity: 0.58;
+    }
+
+    .signal {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(11, 16, 15, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .signal b { color: var(--text); }
+    .signal.top { top: 1rem; left: 1rem; }
+    .signal.mid { right: 1rem; top: 7rem; }
+    .signal.low { left: 1.4rem; bottom: 1rem; }
+
+    .signal::before {
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 12px rgba(132, 241, 207, 0.55);
+    }
+
+    .panel-copy {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1rem 0.2rem 0.1rem;
+    }
+
+    .stat-grid,
+    .capability-grid,
+    .modes-grid,
+    .steps-grid,
+    .faq-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .stat-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 2rem;
+    }
+
+    .stat,
+    .card,
+    .step,
+    .faq,
+    .mode,
+    .cta-panel {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+    }
+
+    .stat {
+      padding: 1.15rem;
+      min-height: 8.5rem;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      font-family: var(--font-heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      max-width: 46rem;
+    }
+
+    .capability-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 
     .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 2rem;
-      transition: border-color 0.3s, background 0.3s;
+      padding: 1.4rem;
     }
-    .card:hover { border-color: var(--accent); background: var(--surface-hover); }
-    .card .icon { font-size: 2rem; margin-bottom: 1rem; }
-    .card h4 { margin-bottom: 0.5rem; }
-    .card p { color: var(--text-secondary); font-size: 0.9375rem; }
 
-    /* ---------- PRICING ---------- */
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .price-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 2.5rem 2rem; text-align: center;
-      transition: border-color 0.3s, transform 0.2s;
+    .card .label,
+    .mode .label,
+    .step .label {
+      display: inline-flex;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-    .price-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .price-card.featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface) 0%, rgba(99,102,241,0.06) 100%); }
-    .price-card .plan { font-family: var(--font-heading); font-weight: 600; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.75rem; }
-    .price-card .price { font-family: var(--font-heading); font-size: 3rem; font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .price-card .price span { font-size: 0.875rem; font-weight: 400; color: var(--text-secondary); }
-    .price-card .features { list-style: none; margin: 1.5rem 0; text-align: left; }
-    .price-card .features li { padding: 0.375rem 0; color: var(--text-secondary); font-size: 0.9375rem; }
-    .price-card .features li::before { content: "→ "; color: var(--accent); }
 
-    /* ---------- PHILOSOPHY ---------- */
-    .philosophy { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 3rem 2.5rem; text-align: center; }
-    .philosophy blockquote { font-family: var(--font-heading); font-size: clamp(1.125rem, 3vw, 1.5rem); font-weight: 500; line-height: 1.5; color: var(--text); font-style: normal; max-width: 700px; margin: 0 auto; }
+    .card p,
+    .mode p,
+    .faq p,
+    .step p { color: var(--muted); }
 
-    /* ---------- CONTACT ---------- */
-    .contact { text-align: center; }
-    .contact-email { display: inline-block; margin-top: 1.5rem; color: var(--accent); font-size: 1.25rem; text-decoration: none; font-weight: 500; }
-    .contact-email:hover { text-decoration: underline; }
+    .card ul,
+    .mode ul {
+      list-style: none;
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      color: var(--muted);
+    }
 
-    /* ---------- FOOTER ---------- */
-    footer { border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; color: var(--text-disabled); font-size: 0.8125rem; }
+    .card li::before,
+    .mode li::before {
+      content: "→ ";
+      color: var(--mint);
+    }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 640px) {
-      section { padding: 3.5rem 0; }
-      .hero { padding: 5rem 0 3rem; }
+    .band {
+      margin: 1rem 0 0;
+      padding: 1rem 1.15rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(90deg, rgba(255, 141, 77, 0.1), rgba(132, 241, 207, 0.08));
+      color: var(--muted);
+      font-size: 0.95rem;
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .modes-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .mode {
+      padding: 1.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode.featured {
+      background:
+        linear-gradient(180deg, rgba(255, 141, 77, 0.12), transparent 45%),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .mode strong.price {
+      display: block;
+      margin: 0.8rem 0 0.2rem;
+      font-size: 2.5rem;
+      font-family: var(--font-heading);
+    }
+
+    .steps-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .step {
+      padding: 1.3rem;
+      min-height: 14rem;
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 2.4rem;
+      height: 2.4rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
+
+    .manifesto {
+      position: relative;
+      overflow: hidden;
+      padding: 2.4rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        radial-gradient(circle at top left, rgba(255, 141, 77, 0.18), transparent 18rem),
+        radial-gradient(circle at bottom right, rgba(132, 241, 207, 0.12), transparent 20rem),
+        rgba(255, 255, 255, 0.04);
+      box-shadow: var(--shadow);
+    }
+
+    .manifesto blockquote {
+      max-width: 50rem;
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3.4vw, 2.7rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .faq {
+      padding: 1.4rem;
+    }
+
+    .faq h3 {
+      margin-bottom: 0.6rem;
+      font-size: 1.2rem;
+    }
+
+    .cta-panel {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .cta-panel p {
+      color: var(--muted);
+      max-width: 40rem;
+      margin-top: 0.6rem;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      justify-content: flex-end;
+    }
+
+    .footer {
+      padding: 2.5rem 0 4rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1.5rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .cta-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-grid,
+      .capability-grid,
+      .steps-grid,
+      .faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .modes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-notes {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 720px) {
       .nav-links { display: none; }
-      .philosophy { padding: 2rem 1.5rem; }
-      .price-card { padding: 2rem 1.5rem; }
+      .hero { padding-top: 2.2rem; }
+      .section { padding: 4rem 0; }
+      .container { width: min(var(--container), calc(100% - 1.4rem)); }
+      .panel-visual { min-height: 16rem; }
+      .manifesto { padding: 1.6rem; }
+      h1 { font-size: clamp(2.6rem, 14vw, 4.2rem); }
+      .hero-actions,
+      .contact-actions {
+        flex-direction: column;
+      }
+      .hero-actions .btn,
+      .contact-actions .btn {
+        width: 100%;
+      }
+      .stat-grid,
+      .capability-grid,
+      .steps-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding-bottom: 4rem;
+      }
+      .eyebrow {
+        width: 100%;
+        justify-content: center;
+      }
+      .hero-panel,
+      .card,
+      .mode,
+      .faq,
+      .step,
+      .cta-panel,
+      .stat {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<nav>
-  <div class="container">
-    <a href="#" class="nav-brand">Toby<span>Bots</span></a>
-    <ul class="nav-links">
-      <li><a href="#que">Qué hacemos</a></li>
-      <li><a href="#precios">Precios</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"><img src="img/grisglass.png" alt=""></div>
-  <div class="container">
-    <h1>Tus tareas, resueltas.</h1>
-    <p class="subtitle">No vendemos bots que fingen ser humanos. Construimos agentes que trabajan mientras vos vivís.</p>
-    <div class="actions">
-      <a href="#contacto" class="btn btn-primary btn-lg">Empezar</a>
-      <a href="#que" class="btn btn-ghost btn-lg">Cómo funciona</a>
+  <nav class="nav" aria-label="Principal">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>TobyBots</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#capacidades">Capacidades</a></li>
+        <li><a href="#modelos">Modelos</a></li>
+        <li><a href="#metodo">Método</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!-- QUÉ HACEMOS -->
-<section id="que">
-  <div class="container">
-    <div class="section-header">
-      <h2>¿Qué hacemos?</h2>
-      <p>Agentes de IA que se integran a tu empresa, tu equipo o tu vida. No reemplazan a nadie: <strong>extienden lo que ya hacés bien.</strong></p>
+  <main id="contenido">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Agentes de IA sin teatro</span>
+          <h1>Tu próximo equipo no siempre <span>contrata.</span> A veces se construye.</h1>
+          <p class="lead">TobyBots diseña agentes que hacen trabajo real: organizan, responden, investigan, documentan, siguen procesos y se integran a tu mundo sin volverlo más pesado.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contacto">Quiero ver uno en acción</a>
+            <a class="btn btn-secondary" href="#modelos">Ver cómo empezar</a>
+          </div>
+          <div class="hero-notes">
+            <div class="note">
+              <strong>Local</strong>
+              <span class="muted">Corre en tu máquina cuando la privacidad no se negocia.</span>
+            </div>
+            <div class="note">
+              <strong>Cloud</strong>
+              <span class="muted">Se hospeda, se mantiene y escala sin drama.</span>
+            </div>
+            <div class="note">
+              <strong>A medida</strong>
+              <span class="muted">Se adapta a tus herramientas, a tu tono y a tu forma de trabajar.</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Resumen visual de TobyBots">
+          <div class="panel-visual">
+            <img src="img/grisglass.png" alt="">
+            <div class="signal top"><b>Inbox</b> triage + respuesta</div>
+            <div class="signal mid"><b>Proyecto</b> seguimiento automático</div>
+            <div class="signal low"><b>Reporte</b> armado sin perseguir datos</div>
+          </div>
+          <div class="panel-copy">
+            <span class="label muted">Lo que ya podrías delegar</span>
+            <h3>Menos clicks, menos persecución, menos trabajo zombie.</h3>
+            <p class="muted">No hacemos bots para impresionar demos. Hacemos sistemas que sostienen tareas aburridas con criterio, memoria y continuidad.</p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="container">
+        <div class="stat-grid" aria-label="Principios de TobyBots">
+          <div class="stat">
+            <strong>01</strong>
+            <span class="muted">Privacidad primero cuando el problema lo pide.</span>
+          </div>
+          <div class="stat">
+            <strong>02</strong>
+            <span class="muted">Automatización útil antes que IA decorativa.</span>
+          </div>
+          <div class="stat">
+            <strong>03</strong>
+            <span class="muted">Integración con herramientas reales, no universos paralelos.</span>
+          </div>
+          <div class="stat">
+            <strong>04</strong>
+            <span class="muted">Diseño humano: el agente acompaña, no reemplaza criterio.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="capacidades">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Capacidades</span>
+          <h2>Donde más rinden no es en la fantasía. Es en la fricción diaria.</h2>
+          <p class="lead">Cada agente se construye alrededor de una carga concreta que hoy te consume tiempo o foco. Estas son algunas de las cargas que mejor resolvemos.</p>
+        </div>
+
+        <div class="capability-grid">
+          <article class="card">
+            <span class="label">Operaciones</span>
+            <h3>Seguimiento que no se olvida</h3>
+            <p>El agente persigue tareas, levanta bloqueos, recuerda plazos y deja rastro claro de lo que pasó.</p>
+            <ul>
+              <li>Actualizaciones de estado</li>
+              <li>Recordatorios inteligentes</li>
+              <li>Checklists vivas</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Comunicación</span>
+            <h3>Respuestas que no suenan enlatadas</h3>
+            <p>Memoria, tono, contexto y reglas claras para responder clientes o equipos sin convertir la conversación en script.</p>
+            <ul>
+              <li>Correo e inbox triage</li>
+              <li>Respuestas con contexto</li>
+              <li>Escalado cuando importa</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <span class="label">Conocimiento</span>
+            <h3>Documentación que se escribe sola</h3>
+            <p>Convierte caos en manuales, reportes, resúmenes y decisiones trazables sin tocar diez pestañas.</p>
+            <ul>
+              <li>Resúmenes ejecutivos</li>
+              <li>Reportes recurrentes</li>
+              <li>Memoria operativa</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="band">Local • Cloud • Integrado con tus procesos • Diseñado con tu lenguaje • Operado con criterio • Hecho para durar</div>
+      </div>
+    </section>
+
+    <section class="section" id="modelos">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Modelos de trabajo</span>
+          <h2>Tres formas de empezar, sin obligarte a comprar una nave espacial.</h2>
+          <p class="lead">Podemos instalar algo tuyo, operar algo por vos o construir una pieza más profunda dentro de tu sistema.</p>
+        </div>
+
+        <div class="modes-grid">
+          <article class="mode">
+            <span class="label">Semilla local</span>
+            <h3>Privado, simple y tuyo</h3>
+            <strong class="price">$0</strong>
+            <p>Ideal para explorar automatización personal o doméstica con herramientas abiertas y datos que no salen de tu equipo.</p>
+            <ul>
+              <li>Base open source</li>
+              <li>Guía de instalación</li>
+              <li>Ruta para iterar después</li>
+            </ul>
+          </article>
+
+          <article class="mode featured">
+            <span class="label">Operado</span>
+            <h3>Un agente listo para producir</h3>
+            <strong class="price">$29<span style="font-size:1rem;color:var(--muted);font-family:var(--font-body);">/mes</span></strong>
+            <p>Hosting, mantenimiento y evolución liviana para que lo uses sin convertirte en administrador de infraestructura.</p>
+            <ul>
+              <li>Agente en la nube</li>
+              <li>Mantenimiento incluido</li>
+              <li>Soporte prioritario</li>
+            </ul>
+          </article>
+
+          <article class="mode">
+            <span class="label">A medida</span>
+            <h3>Cuando hay sistema, proceso y ambición</h3>
+            <strong class="price">Custom</strong>
+            <p>Integraciones, automatizaciones y flujos diseñados alrededor de tu operación real, no de una demo genérica.</p>
+            <ul>
+              <li>Integraciones específicas</li>
+              <li>Flujos multi-paso</li>
+              <li>Soporte y evolución dedicados</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="metodo">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Método</span>
+          <h2>No empieza con prompts. Empieza entendiendo qué trabajo te sobra.</h2>
+          <p class="lead">La diferencia entre un juguete y una herramienta está en cómo se define el problema. Por eso el proceso importa.</p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step">
+            <span class="step-number">1</span>
+            <h3>Miramos fricción real</h3>
+            <p>Identificamos dónde se pierde tiempo, atención o consistencia. No buscamos “usar IA”; buscamos quitar peso.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">2</span>
+            <h3>Diseñamos comportamiento</h3>
+            <p>Definimos memoria, tono, permisos, escalado y límites. El agente necesita criterio, no solo capacidad.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">3</span>
+            <h3>Lo conectamos a tu mundo</h3>
+            <p>Correo, docs, procesos internos o flujos propios. El valor aparece cuando el agente entra en contexto.</p>
+          </article>
+
+          <article class="step">
+            <span class="step-number">4</span>
+            <h3>Medimos y afinamos</h3>
+            <p>Vemos qué resolvió, qué molestó y qué falta. Los buenos agentes mejoran con uso, no con humo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="manifesto">
+          <span class="eyebrow">Manifiesto</span>
+          <blockquote>“No queremos bots que imiten gente. Queremos herramientas que te devuelvan tiempo, enfoque y ganas de hacer la parte verdaderamente humana del trabajo.”</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Preguntas normales</span>
+          <h2>Las dudas razonables también forman parte del producto.</h2>
+        </div>
+
+        <div class="faq-grid">
+          <article class="faq">
+            <h3>¿Esto reemplaza a una persona?</h3>
+            <p>No. TobyBots está pensado para cargar con lo repetitivo, lo administrativo o lo disperso, para que la persona haga el trabajo que requiere juicio.</p>
+          </article>
+          <article class="faq">
+            <h3>¿Tiene que estar todo en la nube?</h3>
+            <p>No. Si tu caso pide privacidad fuerte, podemos trabajar con agentes locales y flujos cerrados.</p>
+          </article>
+          <article class="faq">
+            <h3>¿Sirve para una casa o solo para empresa?</h3>
+            <p>Las dos. Hay automatizaciones de vida cotidiana, y hay agentes más estructurados para negocio, equipo u operación.</p>
+          </article>
+          <article class="faq">
+            <h3>¿Qué pasa si no sé por dónde empezar?</h3>
+            <p>Perfecto. Ese suele ser el mejor punto de partida: mirar juntos dos o tres tareas que hoy te drenan energía y elegir la primera.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="cta-panel">
+          <div>
+            <span class="eyebrow">Contacto</span>
+            <h2>Si ya tenés una tarea en mente, ya tenemos una conversación.</h2>
+            <p>Mandame un mail con una sola cosa: qué tarea te gustaría dejar de hacer tan seguido. Desde ahí vemos si conviene local, cloud o algo a medida.</p>
+          </div>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="mailto:toniom75@gmail.com">toniom75@gmail.com</a>
+            <a class="btn btn-secondary" href="#contenido">Volver arriba</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>TobyBots © 2026</p>
+      <p>Hecho en Ecuador para trabajo real, no para humo.</p>
     </div>
-
-    <div class="cards">
-      <div class="card">
-        <div class="icon">🏠</div>
-        <h4>Local & tuyo</h4>
-        <p>El agente corre en tu máquina. Tus datos nunca salen de casa. Ideal para quienes valoran la privacidad sobre todo.</p>
-      </div>
-      <div class="card">
-        <div class="icon">☁️</div>
-        <h4>Cloud sin estrés</h4>
-        <p>Nosotros lo hosteamos, lo mantenemos, lo escalamos. Vos solo pedí y recibí.</p>
-      </div>
-      <div class="card">
-        <div class="icon">⚙️</div>
-        <h4>A medida</h4>
-        <p>Integraciones con tus sistemas actuales, procesos únicos, necesidades que no caben en un molde.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CASOS REALES -->
-<section>
-  <div class="container">
-    <div class="section-header">
-      <h2>Casos reales</h2>
-      <p>Nada de ciencia ficción. Resultados concretos.</p>
-    </div>
-    <div class="cards">
-      <div class="card">
-        <div class="icon">📋</div>
-        <h4>Gestionar proyectos</h4>
-        <p>Sin perseguir a nadie. El agente sigue hilos, fechas y recordatorios por vos.</p>
-      </div>
-      <div class="card">
-        <div class="icon">💬</div>
-        <h4>Responder clientes</h4>
-        <p>Con memoria real, no con scripts. Cada conversación construye contexto.</p>
-      </div>
-      <div class="card">
-        <div class="icon">📊</div>
-        <h4>Reportes automáticos</h4>
-        <p>De datos a documento sin tocar Excel. Vos definís qué importa, el agente lo arma.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🔄</div>
-        <h4>Automatizar lo repetitivo</h4>
-        <p>Para enfocarte en lo que nadie más que vos puede hacer.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FILOSOFÍA -->
-<section>
-  <div class="container">
-    <div class="philosophy">
-      <blockquote>"Ser humano es un verbo, no un sustantivo. Nuestros agentes no te reemplazan: te recuerdan lo que podés hacer cuando soltás lo que te sobra."</blockquote>
-    </div>
-  </div>
-</section>
-
-<!-- PRECIOS -->
-<section id="precios">
-  <div class="container">
-    <div class="section-header">
-      <h2>Simple, sin letra chica</h2>
-      <p>Elegí cómo empezar. Escalá cuando quieras.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="plan">🌱 Semilla</div>
-        <div class="price">$0 <span>/mes</span></div>
-        <ul class="features">
-          <li>Agente local, open source</li>
-          <li>Datos 100% privados</li>
-          <li>Documentación completa</li>
-          <li>Comunidad activa</li>
-        </ul>
-        <a href="#contacto" class="btn btn-ghost">Empezar gratis</a>
-      </div>
-      <div class="price-card featured">
-        <div class="plan">⚡ Equipo</div>
-        <div class="price">$29 <span>/mes</span></div>
-        <ul class="features">
-          <li>Agente en la nube</li>
-          <li>Hosting y mantenimiento</li>
-          <li>Escalado automático</li>
-          <li>Soporte prioritario</li>
-        </ul>
-        <a href="#contacto" class="btn btn-primary">Comenzar</a>
-      </div>
-      <div class="price-card">
-        <div class="plan">🏢 Empresa</div>
-        <div class="price">—</div>
-        <ul class="features">
-          <li>Integraciones a medida</li>
-          <li>Procesos personalizados</li>
-          <li>Soporte dedicado</li>
-          <li>SLA garantizado</li>
-        </ul>
-        <a href="#contacto" class="btn btn-ghost">Conversemos</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACTO -->
-<section id="contacto" class="contact">
-  <div class="container">
-    <h2>Sin formularios de 20 campos.</h2>
-    <p style="color:var(--text-secondary);margin-top:0.75rem;">Un mensaje y empezamos.</p>
-    <a href="mailto:toniom75@gmail.com" class="contact-email">toniom75@gmail.com</a>
-  </div>
-</section>
-
-<footer>
-  <div class="container">
-    <p>TobyBots © 2026 &nbsp;·&nbsp; Hecho en Ecuador</p>
-  </div>
-</footer>
-
+  </footer>
 </body>
 </html>
