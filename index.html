@@ -3,37 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TobyBots diseña agentes de IA locales, cloud y a medida para quitarte trabajo repetitivo sin sacrificar criterio, privacidad ni estilo.">
+  <meta name="description" content="TobyBots diseña agentes de IA locales, cloud y a medida para ayudarte con trabajo repetitivo sin sacrificar criterio, privacidad ni estilo.">
   <meta name="theme-color" content="#0c0f0e">
   <meta name="color-scheme" content="dark">
-  <meta property="og:title" content="TobyBots — Agentes de IA sin teatro">
+  <meta property="og:title" content="TobyBots — Agentes de IA útiles y bien pensados">
   <meta property="og:description" content="Automatización útil, humana y bien pensada. Agentes locales, cloud y a medida para equipos, negocios y vida real.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tobybots.com/">
   <meta property="og:image" content="https://tobybots.com/img/grisglass.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TobyBots — Agentes de IA sin teatro">
+  <meta name="twitter:title" content="TobyBots — Agentes de IA útiles y bien pensados">
   <meta name="twitter:description" content="Automatización útil, humana y bien pensada. Agentes locales, cloud y a medida para equipos, negocios y vida real.">
   <meta name="twitter:image" content="https://tobybots.com/img/grisglass.png">
   <link rel="canonical" href="https://tobybots.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>TobyBots — Agentes de IA sin teatro</title>
+  <title>TobyBots — Agentes de IA útiles y bien pensados</title>
   <style>
     :root {
-      --bg: #0c0f0e;
-      --bg-soft: #111715;
-      --surface: rgba(20, 28, 25, 0.82);
-      --surface-strong: rgba(28, 39, 35, 0.95);
-      --surface-line: rgba(255, 255, 255, 0.08);
-      --text: #edf1eb;
-      --muted: #9cab9c;
-      --accent: #ff8d4d;
-      --accent-deep: #d96525;
-      --accent-soft: rgba(255, 141, 77, 0.16);
-      --mint: #84f1cf;
-      --mint-soft: rgba(132, 241, 207, 0.12);
+      --bg: #111214;
+      --bg-soft: #181b1e;
+      --surface: rgba(27, 28, 30, 0.82);
+      --surface-strong: rgba(34, 36, 39, 0.95);
+      --surface-line: rgba(242, 239, 230, 0.1);
+      --text: #f2efe6;
+      --muted: #a7b3af;
+      --accent: #ff6a1a;
+      --accent-deep: #cf5412;
+      --accent-soft: rgba(255, 106, 26, 0.16);
+      --mint: #a7d9c5;
+      --mint-soft: rgba(167, 217, 197, 0.13);
+      --bone: #f2efe6;
+      --slate: #34383c;
       --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
       --radius-sm: 10px;
       --radius-md: 18px;
@@ -48,9 +50,9 @@
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(255, 141, 77, 0.14), transparent 26rem),
-        radial-gradient(circle at 82% 18%, rgba(132, 241, 207, 0.12), transparent 22rem),
-        linear-gradient(180deg, #0b0d0d 0%, #0c1110 50%, #0b0d0d 100%);
+        radial-gradient(circle at top left, rgba(255, 106, 26, 0.14), transparent 26rem),
+        radial-gradient(circle at 82% 18%, rgba(167, 217, 197, 0.12), transparent 22rem),
+        linear-gradient(180deg, #101112 0%, #131518 50%, #0f1011 100%);
       color: var(--text);
       font-family: var(--font-body);
       line-height: 1.6;
@@ -108,7 +110,7 @@
       height: 0.55rem;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--mint));
-      box-shadow: 0 0 16px rgba(255, 141, 77, 0.6);
+      box-shadow: 0 0 16px rgba(255, 106, 26, 0.52);
     }
 
     h1, h2, h3, h4 {
@@ -117,7 +119,7 @@
       line-height: 1.05;
     }
 
-    h1 { font-size: clamp(3rem, 8vw, 6.6rem); }
+    h1 { font-size: clamp(2.6rem, 7vw, 5.8rem); }
     h2 { font-size: clamp(2rem, 4vw, 3.4rem); }
     h3 { font-size: 1.5rem; }
 
@@ -149,7 +151,7 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.7rem;
       font-family: var(--font-heading);
       font-size: 1.3rem;
       font-weight: 700;
@@ -157,11 +159,15 @@
     }
 
     .brand-mark {
-      width: 0.9rem;
-      height: 0.9rem;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--mint));
-      box-shadow: 0 0 18px rgba(255, 141, 77, 0.4);
+      width: 1.4rem;
+      height: 1.4rem;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 0 12px rgba(255, 106, 26, 0.26));
+    }
+
+    .brand-wordmark {
+      letter-spacing: -0.05em;
+      line-height: 1;
     }
 
     .nav-links {
@@ -173,12 +179,36 @@
       font-size: 0.95rem;
     }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+    }
+
     .nav-links a {
       text-decoration: none;
       transition: color 0.2s ease;
     }
 
     .nav-links a:hover { color: var(--text); }
+
+    .lang-toggle {
+      min-height: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: auto;
+      transition: color 0.2s ease;
+    }
+
+    .lang-toggle:hover {
+      color: var(--text);
+    }
 
     .btn {
       display: inline-flex;
@@ -195,14 +225,15 @@
 
     .btn:hover { transform: translateY(-1px); }
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #ffb067);
-      color: #1f140d;
-      box-shadow: 0 18px 30px rgba(217, 101, 37, 0.24);
+      background: linear-gradient(135deg, var(--accent), #ff8e4d);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 18px 30px rgba(255, 106, 26, 0.24);
     }
     .btn-secondary {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.025);
-      color: var(--text);
+      border: 1px solid rgba(242, 239, 230, 0.14);
+      background: rgba(242, 239, 230, 0.03);
+      color: var(--bone);
     }
 
     .hero {
@@ -211,16 +242,63 @@
       padding: 4rem 0 5rem;
     }
 
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(17, 18, 20, 0.08), rgba(17, 18, 20, 0.52));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-ambient {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-ambient img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      max-width: none;
+      opacity: 0.26;
+      filter: saturate(1.05) blur(0.2px);
+    }
+
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
       gap: 2rem;
-      align-items: end;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-copy {
       display: grid;
       gap: 1.5rem;
+      max-width: none;
+      min-width: 0;
+    }
+
+    .hero-copy h1 {
+      max-width: none;
+    }
+
+    html[lang="es"] .hero-copy h1 {
+      max-width: 15ch;
+      font-size: clamp(2.35rem, 5.15vw, 4.75rem);
+    }
+
+    html[lang="en"] .hero-copy h1 {
+      max-width: 13ch;
     }
 
     .hero-copy h1 span {
@@ -244,8 +322,8 @@
     .note {
       padding: 1rem;
       border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(242, 239, 230, 0.025);
+      border: 1px solid rgba(242, 239, 230, 0.08);
     }
 
     .note strong {
@@ -257,13 +335,21 @@
 
     .hero-panel {
       position: relative;
+      width: 100%;
+      max-width: 30rem;
+      justify-self: end;
       padding: 1.2rem;
       border-radius: var(--radius-lg);
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
-        rgba(18, 24, 22, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+        linear-gradient(180deg, rgba(242, 239, 230, 0.055), rgba(242, 239, 230, 0.025)),
+        rgba(24, 27, 30, 0.9);
+      border: 1px solid rgba(242, 239, 230, 0.08);
       box-shadow: var(--shadow);
+    }
+
+    .hero-panel.compact {
+      background: rgba(24, 27, 30, 0.72);
+      backdrop-filter: blur(14px);
     }
 
     .hero-panel::after {
@@ -271,21 +357,21 @@
       position: absolute;
       inset: auto 1.5rem -1rem 1.5rem;
       height: 2rem;
-      background: radial-gradient(circle, rgba(255, 141, 77, 0.18), transparent 70%);
+      background: radial-gradient(circle, rgba(255, 106, 26, 0.2), transparent 70%);
       filter: blur(20px);
       pointer-events: none;
     }
 
     .panel-visual {
       position: relative;
-      min-height: 18rem;
+      min-height: 15rem;
       border-radius: calc(var(--radius-lg) - 0.5rem);
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.06);
       background:
-        linear-gradient(140deg, rgba(255, 141, 77, 0.16), transparent 30%),
-        linear-gradient(320deg, rgba(132, 241, 207, 0.12), transparent 36%),
-        #0e1312;
+        linear-gradient(140deg, rgba(255, 106, 26, 0.18), transparent 30%),
+        linear-gradient(320deg, rgba(167, 217, 197, 0.14), transparent 36%),
+        #141618;
     }
 
     .panel-visual img {
@@ -294,8 +380,17 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      mix-blend-mode: screen;
-      opacity: 0.58;
+      opacity: 0.78;
+    }
+
+    .panel-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(17, 18, 20, 0.1), rgba(17, 18, 20, 0.5)),
+        linear-gradient(90deg, rgba(17, 18, 20, 0.16), rgba(17, 18, 20, 0.04));
+      pointer-events: none;
     }
 
     .signal {
@@ -305,8 +400,8 @@
       gap: 0.5rem;
       padding: 0.6rem 0.8rem;
       border-radius: 999px;
-      background: rgba(11, 16, 15, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(17, 18, 20, 0.88);
+      border: 1px solid rgba(242, 239, 230, 0.08);
       backdrop-filter: blur(10px);
       font-size: 0.82rem;
       color: var(--muted);
@@ -323,7 +418,7 @@
       height: 0.45rem;
       border-radius: 50%;
       background: var(--mint);
-      box-shadow: 0 0 12px rgba(132, 241, 207, 0.55);
+      box-shadow: 0 0 12px rgba(167, 217, 197, 0.48);
     }
 
     .panel-copy {
@@ -344,6 +439,8 @@
     .stat-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       margin-top: 2rem;
+      position: relative;
+      z-index: 1;
     }
 
     .stat,
@@ -352,8 +449,8 @@
     .faq,
     .mode,
     .cta-panel {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(242, 239, 230, 0.08);
+      background: rgba(242, 239, 230, 0.03);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow);
     }
@@ -420,8 +517,8 @@
       margin: 1rem 0 0;
       padding: 1rem 1.15rem;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(90deg, rgba(255, 141, 77, 0.1), rgba(132, 241, 207, 0.08));
+      border: 1px solid rgba(242, 239, 230, 0.08);
+      background: linear-gradient(90deg, rgba(255, 106, 26, 0.12), rgba(167, 217, 197, 0.1));
       color: var(--muted);
       font-size: 0.95rem;
       overflow: auto;
@@ -440,8 +537,8 @@
 
     .mode.featured {
       background:
-        linear-gradient(180deg, rgba(255, 141, 77, 0.12), transparent 45%),
-        rgba(255, 255, 255, 0.04);
+        linear-gradient(180deg, rgba(255, 106, 26, 0.12), transparent 45%),
+        rgba(242, 239, 230, 0.04);
     }
 
     .mode strong.price {
@@ -479,13 +576,14 @@
       overflow: hidden;
       padding: 2.4rem;
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(242, 239, 230, 0.08);
       background:
-        radial-gradient(circle at top left, rgba(255, 141, 77, 0.18), transparent 18rem),
-        radial-gradient(circle at bottom right, rgba(132, 241, 207, 0.12), transparent 20rem),
-        rgba(255, 255, 255, 0.04);
+        radial-gradient(circle at top left, rgba(255, 106, 26, 0.18), transparent 18rem),
+        radial-gradient(circle at bottom right, rgba(167, 217, 197, 0.14), transparent 20rem),
+        rgba(242, 239, 230, 0.04);
       box-shadow: var(--shadow);
     }
+
 
     .manifesto blockquote {
       max-width: 50rem;
@@ -540,14 +638,45 @@
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid rgba(242, 239, 230, 0.08);
       padding-top: 1.5rem;
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    .footer-brand .brand {
+      font-size: 1rem;
+      align-items: center;
+    }
+
+    .footer-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
     }
 
     @media (max-width: 980px) {
       .hero-grid,
       .cta-panel {
         grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        max-width: none;
+        justify-self: stretch;
+      }
+
+      .hero-ambient img {
+        width: 100%;
+        height: 100%;
+        object-position: 64% center;
+        opacity: 0.22;
       }
 
       .stat-grid,
@@ -565,6 +694,12 @@
         grid-template-columns: 1fr;
       }
 
+      .hero-copy h1,
+      html[lang="es"] .hero-copy h1,
+      html[lang="en"] .hero-copy h1 {
+        max-width: none;
+      }
+
       .contact-actions {
         justify-content: flex-start;
       }
@@ -577,7 +712,16 @@
       .container { width: min(var(--container), calc(100% - 1.4rem)); }
       .panel-visual { min-height: 16rem; }
       .manifesto { padding: 1.6rem; }
-      h1 { font-size: clamp(2.6rem, 14vw, 4.2rem); }
+      h1 { font-size: clamp(2.25rem, 11vw, 3.6rem); }
+      .hero-copy h1 {
+        max-width: 11ch;
+      }
+
+      html[lang="es"] .hero-copy h1,
+      html[lang="en"] .hero-copy h1 {
+        max-width: 11ch;
+        font-size: clamp(2.25rem, 11vw, 3.6rem);
+      }
       .hero-actions,
       .contact-actions {
         flex-direction: column;
@@ -592,6 +736,14 @@
       .faq-grid {
         grid-template-columns: 1fr;
       }
+
+      .hero-ambient img {
+        width: 100%;
+        height: 100%;
+        object-position: 70% center;
+        opacity: 0.18;
+      }
+
     }
 
     @media (max-width: 480px) {
@@ -621,56 +773,62 @@
   <nav class="nav" aria-label="Principal">
     <div class="container nav-inner">
       <a class="brand" href="#">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>TobyBots</span>
+        <img class="brand-mark" src="img/tobybots-mark.svg" alt="" aria-hidden="true">
+        <span class="brand-wordmark">TobyBots</span>
       </a>
-      <ul class="nav-links">
-        <li><a href="#capacidades">Capacidades</a></li>
-        <li><a href="#modelos">Modelos</a></li>
-        <li><a href="#metodo">Método</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
+      <div class="nav-actions">
+        <ul class="nav-links">
+          <li><a href="#capacidades" data-i18n="navCapabilities">Capacidades</a></li>
+          <li><a href="#modelos" data-i18n="navModels">Modelos</a></li>
+          <li><a href="#metodo" data-i18n="navMethod">Método</a></li>
+          <li><a href="#contacto" data-i18n="navContact">Contacto</a></li>
+        </ul>
+        <button class="lang-toggle" type="button" data-lang-toggle>English</button>
+      </div>
     </div>
   </nav>
 
   <main id="contenido">
     <section class="hero">
+      <div class="hero-ambient" aria-hidden="true">
+        <img src="img/hero-ambient.png" alt="">
+      </div>
       <div class="container hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">Agentes de IA sin teatro</span>
-          <h1>Tu próximo equipo no siempre <span>contrata.</span> A veces se construye.</h1>
-          <p class="lead">TobyBots diseña agentes que hacen trabajo real: organizan, responden, investigan, documentan, siguen procesos y se integran a tu mundo sin volverlo más pesado.</p>
+          <span class="eyebrow" data-i18n="heroEyebrow">Agentes de IA útiles y bien pensados</span>
+          <h1 data-i18n-html="heroTitle">Tu próximo equipo no siempre <span>contrata.</span> A veces se construye.</h1>
+          <p class="lead" data-i18n="heroLead">TobyBots diseña agentes que hacen trabajo real: organizan, responden, investigan, documentan, siguen procesos y se integran a tu entorno sin hacerlo más pesado.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#contacto">Quiero ver uno en acción</a>
-            <a class="btn btn-secondary" href="#modelos">Ver cómo empezar</a>
+            <a class="btn btn-primary" href="#contacto" data-i18n="heroPrimaryCta">Contáctanos</a>
+            <a class="btn btn-secondary" href="#modelos" data-i18n="heroSecondaryCta">Ver cómo empezar</a>
           </div>
           <div class="hero-notes">
             <div class="note">
-              <strong>Local</strong>
-              <span class="muted">Corre en tu máquina cuando la privacidad no se negocia.</span>
+              <strong data-i18n="noteLocalTitle">Local</strong>
+              <span class="muted" data-i18n="noteLocalBody">Funciona en tu equipo cuando la privacidad no se negocia.</span>
             </div>
             <div class="note">
               <strong>Cloud</strong>
-              <span class="muted">Se hospeda, se mantiene y escala sin drama.</span>
+              <span class="muted" data-i18n="noteCloudBody">Se hospeda, se mantiene y escala con una operación simple.</span>
             </div>
             <div class="note">
-              <strong>A medida</strong>
-              <span class="muted">Se adapta a tus herramientas, a tu tono y a tu forma de trabajar.</span>
+              <strong data-i18n="noteCustomTitle">A medida</strong>
+              <span class="muted" data-i18n="noteCustomBody">Se adapta a tus herramientas, a tu estilo y a tu forma de trabajar.</span>
             </div>
           </div>
         </div>
 
-        <aside class="hero-panel" aria-label="Resumen visual de TobyBots">
+        <aside class="hero-panel compact" aria-label="Resumen visual de TobyBots">
           <div class="panel-visual">
-            <img src="img/grisglass.png" alt="">
-            <div class="signal top"><b>Inbox</b> triage + respuesta</div>
-            <div class="signal mid"><b>Proyecto</b> seguimiento automático</div>
-            <div class="signal low"><b>Reporte</b> armado sin perseguir datos</div>
+            <img src="img/hero-ambient.png" alt="">
+            <div class="signal top" data-i18n-html="signalTop"><b>Inbox</b> triage + respuesta</div>
+            <div class="signal mid" data-i18n-html="signalMid"><b>Proyecto</b> seguimiento automático</div>
+            <div class="signal low" data-i18n-html="signalLow"><b>Reporte</b> generado sin perseguir datos</div>
           </div>
           <div class="panel-copy">
-            <span class="label muted">Lo que ya podrías delegar</span>
-            <h3>Menos clicks, menos persecución, menos trabajo zombie.</h3>
-            <p class="muted">No hacemos bots para impresionar demos. Hacemos sistemas que sostienen tareas aburridas con criterio, memoria y continuidad.</p>
+            <span class="label muted" data-i18n="panelLabel">Lo que ya puedes delegar</span>
+            <h3 data-i18n="panelTitle">Menos tareas repetitivas, más tiempo para lo importante.</h3>
+            <p class="muted" data-i18n="panelBody">Diseñamos agentes que sostienen procesos cotidianos con criterio, memoria y continuidad.</p>
           </div>
         </aside>
       </div>
@@ -679,19 +837,19 @@
         <div class="stat-grid" aria-label="Principios de TobyBots">
           <div class="stat">
             <strong>01</strong>
-            <span class="muted">Privacidad primero cuando el problema lo pide.</span>
+            <span class="muted" data-i18n="stat1">Privacidad primero cuando el problema lo pide.</span>
           </div>
           <div class="stat">
             <strong>02</strong>
-            <span class="muted">Automatización útil antes que IA decorativa.</span>
+            <span class="muted" data-i18n="stat2">Automatización útil antes que IA decorativa.</span>
           </div>
           <div class="stat">
             <strong>03</strong>
-            <span class="muted">Integración con herramientas reales, no universos paralelos.</span>
+            <span class="muted" data-i18n="stat3">Integración con herramientas reales, no universos paralelos.</span>
           </div>
           <div class="stat">
             <strong>04</strong>
-            <span class="muted">Diseño humano: el agente acompaña, no reemplaza criterio.</span>
+            <span class="muted" data-i18n="stat4">Diseño humano: el agente acompaña, no reemplaza criterio.</span>
           </div>
         </div>
       </div>
@@ -700,92 +858,92 @@
     <section class="section" id="capacidades">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Capacidades</span>
-          <h2>Donde más rinden no es en la fantasía. Es en la fricción diaria.</h2>
-          <p class="lead">Cada agente se construye alrededor de una carga concreta que hoy te consume tiempo o foco. Estas son algunas de las cargas que mejor resolvemos.</p>
+          <span class="eyebrow" data-i18n="capEyebrow">Capacidades</span>
+          <h2 data-i18n="capTitle">Donde más rinden es en el trabajo diario.</h2>
+          <p class="lead" data-i18n="capLead">Cada agente se construye alrededor de una carga concreta que hoy te consume tiempo o foco. Estas son algunas de las cargas que mejor resolvemos.</p>
         </div>
 
         <div class="capability-grid">
           <article class="card">
-            <span class="label">Operaciones</span>
-            <h3>Seguimiento que no se olvida</h3>
-            <p>El agente persigue tareas, levanta bloqueos, recuerda plazos y deja rastro claro de lo que pasó.</p>
+            <span class="label" data-i18n="opsLabel">Operaciones</span>
+            <h3 data-i18n="opsTitle">Seguimiento que no se olvida</h3>
+            <p data-i18n="opsBody">El agente persigue tareas, levanta bloqueos, recuerda plazos y deja rastro claro de lo que pasó.</p>
             <ul>
-              <li>Actualizaciones de estado</li>
-              <li>Recordatorios inteligentes</li>
-              <li>Checklists vivas</li>
+              <li data-i18n="ops1">Actualizaciones de estado</li>
+              <li data-i18n="ops2">Recordatorios inteligentes</li>
+              <li data-i18n="ops3">Checklists vivas</li>
             </ul>
           </article>
 
           <article class="card">
-            <span class="label">Comunicación</span>
-            <h3>Respuestas que no suenan enlatadas</h3>
-            <p>Memoria, tono, contexto y reglas claras para responder clientes o equipos sin convertir la conversación en script.</p>
+            <span class="label" data-i18n="commsLabel">Comunicación</span>
+            <h3 data-i18n="commsTitle">Respuestas que no se sienten enlatadas</h3>
+            <p data-i18n="commsBody">Memoria, tono, contexto y reglas claras para responder clientes o equipos sin convertir la conversación en script.</p>
             <ul>
-              <li>Correo e inbox triage</li>
-              <li>Respuestas con contexto</li>
-              <li>Escalado cuando importa</li>
+              <li data-i18n="comms1">Correo y clasificación de bandeja</li>
+              <li data-i18n="comms2">Respuestas con contexto</li>
+              <li data-i18n="comms3">Escalado cuando importa</li>
             </ul>
           </article>
 
           <article class="card">
-            <span class="label">Conocimiento</span>
-            <h3>Documentación que se escribe sola</h3>
-            <p>Convierte caos en manuales, reportes, resúmenes y decisiones trazables sin tocar diez pestañas.</p>
+            <span class="label" data-i18n="knowLabel">Conocimiento</span>
+            <h3 data-i18n="knowTitle">Documentación que se genera sola</h3>
+            <p data-i18n="knowBody">Convierte caos en manuales, reportes, resúmenes y decisiones trazables sin tocar diez pestañas.</p>
             <ul>
-              <li>Resúmenes ejecutivos</li>
-              <li>Reportes recurrentes</li>
-              <li>Memoria operativa</li>
+              <li data-i18n="know1">Resúmenes ejecutivos</li>
+              <li data-i18n="know2">Reportes recurrentes</li>
+              <li data-i18n="know3">Memoria operativa</li>
             </ul>
           </article>
         </div>
 
-        <div class="band">Local • Cloud • Integrado con tus procesos • Diseñado con tu lenguaje • Operado con criterio • Hecho para durar</div>
+        <div class="band" data-i18n="capBand">Local • Cloud • Integrado con tus procesos • Diseñado con tu lenguaje • Operado con criterio • Pensado para durar</div>
       </div>
     </section>
 
     <section class="section" id="modelos">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Modelos de trabajo</span>
-          <h2>Tres formas de empezar, sin obligarte a comprar una nave espacial.</h2>
-          <p class="lead">Podemos instalar algo tuyo, operar algo por vos o construir una pieza más profunda dentro de tu sistema.</p>
+          <span class="eyebrow" data-i18n="modelsEyebrow">Modelos de trabajo</span>
+          <h2 data-i18n="modelsTitle">Tres formas de empezar, según lo que hoy necesites.</h2>
+          <p class="lead" data-i18n="modelsLead">Podemos instalar una solución propia, operar una solución contigo o construir una pieza más profunda dentro de tu sistema.</p>
         </div>
 
         <div class="modes-grid">
           <article class="mode">
-            <span class="label">Semilla local</span>
-            <h3>Privado, simple y tuyo</h3>
+            <span class="label" data-i18n="seedLabel">Semilla local</span>
+            <h3 data-i18n="seedTitle">Privado, simple y propio</h3>
             <strong class="price">$0</strong>
-            <p>Ideal para explorar automatización personal o doméstica con herramientas abiertas y datos que no salen de tu equipo.</p>
+            <p data-i18n="seedBody">Ideal para explorar automatización personal o doméstica con herramientas abiertas y datos que no salen de tu entorno.</p>
             <ul>
-              <li>Base open source</li>
-              <li>Guía de instalación</li>
-              <li>Ruta para iterar después</li>
+              <li data-i18n="seed1">Base open source</li>
+              <li data-i18n="seed2">Guía de instalación</li>
+              <li data-i18n="seed3">Ruta para iterar después</li>
             </ul>
           </article>
 
           <article class="mode featured">
-            <span class="label">Operado</span>
-            <h3>Un agente listo para producir</h3>
+            <span class="label" data-i18n="operatedLabel">Operado</span>
+            <h3 data-i18n="operatedTitle">Un agente listo para producir</h3>
             <strong class="price">$29<span style="font-size:1rem;color:var(--muted);font-family:var(--font-body);">/mes</span></strong>
-            <p>Hosting, mantenimiento y evolución liviana para que lo uses sin convertirte en administrador de infraestructura.</p>
+            <p data-i18n="operatedBody">Hosting, mantenimiento y evolución liviana para que lo uses sin convertirte en administrador de infraestructura.</p>
             <ul>
-              <li>Agente en la nube</li>
-              <li>Mantenimiento incluido</li>
-              <li>Soporte prioritario</li>
+              <li data-i18n="operated1">Agente en la nube</li>
+              <li data-i18n="operated2">Mantenimiento incluido</li>
+              <li data-i18n="operated3">Soporte prioritario</li>
             </ul>
           </article>
 
           <article class="mode">
-            <span class="label">A medida</span>
-            <h3>Cuando hay sistema, proceso y ambición</h3>
+            <span class="label" data-i18n="customLabel">A medida</span>
+            <h3 data-i18n="customTitle">Cuando hay sistema, proceso y ambición</h3>
             <strong class="price">Custom</strong>
-            <p>Integraciones, automatizaciones y flujos diseñados alrededor de tu operación real, no de una demo genérica.</p>
+            <p data-i18n="customBody">Integraciones, automatizaciones y flujos diseñados alrededor de tu operación real, no de una demostración genérica.</p>
             <ul>
-              <li>Integraciones específicas</li>
-              <li>Flujos multi-paso</li>
-              <li>Soporte y evolución dedicados</li>
+              <li data-i18n="custom1">Integraciones específicas</li>
+              <li data-i18n="custom2">Flujos multi-paso</li>
+              <li data-i18n="custom3">Soporte y evolución dedicados</li>
             </ul>
           </article>
         </div>
@@ -795,34 +953,34 @@
     <section class="section" id="metodo">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Método</span>
-          <h2>No empieza con prompts. Empieza entendiendo qué trabajo te sobra.</h2>
-          <p class="lead">La diferencia entre un juguete y una herramienta está en cómo se define el problema. Por eso el proceso importa.</p>
+          <span class="eyebrow" data-i18n="methodEyebrow">Método</span>
+          <h2 data-i18n="methodTitle">No empieza con prompts. Empieza entendiendo qué trabajo puedes delegar.</h2>
+          <p class="lead" data-i18n="methodLead">La diferencia entre un juguete y una herramienta está en cómo se define el problema. Por eso el proceso importa.</p>
         </div>
 
         <div class="steps-grid">
           <article class="step">
             <span class="step-number">1</span>
-            <h3>Miramos fricción real</h3>
-            <p>Identificamos dónde se pierde tiempo, atención o consistencia. No buscamos “usar IA”; buscamos quitar peso.</p>
+            <h3 data-i18n="step1Title">Miramos fricción real</h3>
+            <p data-i18n="step1Body">Identificamos dónde se pierde tiempo, atención o consistencia. No buscamos “usar IA”; buscamos quitar peso.</p>
           </article>
 
           <article class="step">
             <span class="step-number">2</span>
-            <h3>Diseñamos comportamiento</h3>
-            <p>Definimos memoria, tono, permisos, escalado y límites. El agente necesita criterio, no solo capacidad.</p>
+            <h3 data-i18n="step2Title">Diseñamos comportamiento</h3>
+            <p data-i18n="step2Body">Definimos memoria, tono, permisos, escalado y límites. El agente necesita criterio, no solo capacidad.</p>
           </article>
 
           <article class="step">
             <span class="step-number">3</span>
-            <h3>Lo conectamos a tu mundo</h3>
-            <p>Correo, docs, procesos internos o flujos propios. El valor aparece cuando el agente entra en contexto.</p>
+            <h3 data-i18n="step3Title">Lo conectamos a tu entorno</h3>
+            <p data-i18n="step3Body">Correo, docs, procesos internos o flujos propios. El valor aparece cuando el agente entra en contexto.</p>
           </article>
 
           <article class="step">
             <span class="step-number">4</span>
-            <h3>Medimos y afinamos</h3>
-            <p>Vemos qué resolvió, qué molestó y qué falta. Los buenos agentes mejoran con uso, no con humo.</p>
+            <h3 data-i18n="step4Title">Medimos y afinamos</h3>
+            <p data-i18n="step4Body">Vemos qué resolvió, qué necesita ajuste y qué falta. Los buenos agentes mejoran con el uso.</p>
           </article>
         </div>
       </div>
@@ -831,8 +989,8 @@
     <section class="section">
       <div class="container">
         <div class="manifesto">
-          <span class="eyebrow">Manifiesto</span>
-          <blockquote>“No queremos bots que imiten gente. Queremos herramientas que te devuelvan tiempo, enfoque y ganas de hacer la parte verdaderamente humana del trabajo.”</blockquote>
+          <span class="eyebrow" data-i18n="manifestEyebrow">Manifiesto</span>
+          <blockquote data-i18n="manifestQuote">“Diseñamos herramientas que te devuelven tiempo, enfoque y espacio para hacer mejor la parte humana del trabajo.”</blockquote>
         </div>
       </div>
     </section>
@@ -840,26 +998,26 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Preguntas normales</span>
-          <h2>Las dudas razonables también forman parte del producto.</h2>
+          <span class="eyebrow" data-i18n="faqEyebrow">Preguntas normales</span>
+          <h2 data-i18n="faqTitle">Las dudas razonables también forman parte del producto.</h2>
         </div>
 
         <div class="faq-grid">
           <article class="faq">
-            <h3>¿Esto reemplaza a una persona?</h3>
-            <p>No. TobyBots está pensado para cargar con lo repetitivo, lo administrativo o lo disperso, para que la persona haga el trabajo que requiere juicio.</p>
+            <h3 data-i18n="faq1Title">¿Esto reemplaza a una persona?</h3>
+            <p data-i18n="faq1Body">No. TobyBots está pensado para cargar con lo repetitivo, lo administrativo o lo disperso, para que la persona haga el trabajo que requiere juicio.</p>
           </article>
           <article class="faq">
-            <h3>¿Tiene que estar todo en la nube?</h3>
-            <p>No. Si tu caso pide privacidad fuerte, podemos trabajar con agentes locales y flujos cerrados.</p>
+            <h3 data-i18n="faq2Title">¿Tiene que estar todo en la nube?</h3>
+            <p data-i18n="faq2Body">No. Si tu caso pide privacidad fuerte, podemos trabajar con agentes locales y flujos cerrados.</p>
           </article>
           <article class="faq">
-            <h3>¿Sirve para una casa o solo para empresa?</h3>
-            <p>Las dos. Hay automatizaciones de vida cotidiana, y hay agentes más estructurados para negocio, equipo u operación.</p>
+            <h3 data-i18n="faq3Title">¿Sirve para una casa o solo para empresa?</h3>
+            <p data-i18n="faq3Body">Las dos. Hay automatizaciones de vida cotidiana, y hay agentes más estructurados para negocio, equipo u operación.</p>
           </article>
           <article class="faq">
-            <h3>¿Qué pasa si no sé por dónde empezar?</h3>
-            <p>Perfecto. Ese suele ser el mejor punto de partida: mirar juntos dos o tres tareas que hoy te drenan energía y elegir la primera.</p>
+            <h3 data-i18n="faq4Title">¿Qué pasa si no sé por dónde empezar?</h3>
+            <p data-i18n="faq4Body">Perfecto. Ese suele ser el mejor punto de partida: revisar juntos dos o tres tareas que hoy consumen energía y elegir la primera.</p>
           </article>
         </div>
       </div>
@@ -869,13 +1027,13 @@
       <div class="container">
         <div class="cta-panel">
           <div>
-            <span class="eyebrow">Contacto</span>
-            <h2>Si ya tenés una tarea en mente, ya tenemos una conversación.</h2>
-            <p>Mandame un mail con una sola cosa: qué tarea te gustaría dejar de hacer tan seguido. Desde ahí vemos si conviene local, cloud o algo a medida.</p>
+            <span class="eyebrow" data-i18n="contactEyebrow">Contacto</span>
+            <h2 data-i18n="contactTitle">Si ya tienes una tarea en mente, ya tenemos una conversación.</h2>
+            <p data-i18n="contactBody">Envíanos un correo con una sola idea: qué tarea te gustaría dejar de hacer tan seguido. A partir de ahí vemos si conviene una solución local, cloud o a medida.</p>
           </div>
           <div class="contact-actions">
-            <a class="btn btn-primary" href="mailto:toniom75@gmail.com">toniom75@gmail.com</a>
-            <a class="btn btn-secondary" href="#contenido">Volver arriba</a>
+            <a class="btn btn-primary" href="mailto:toniom75@gmail.com" data-i18n="contactCta">Contáctanos</a>
+            <a class="btn btn-secondary" href="#contenido" data-i18n="backTop">Volver arriba</a>
           </div>
         </div>
       </div>
@@ -884,9 +1042,240 @@
 
   <footer class="footer">
     <div class="container footer-inner">
-      <p>TobyBots © 2026</p>
-      <p>Hecho en Ecuador para trabajo real, no para humo.</p>
+      <p class="footer-copy"><span class="footer-brand"><span class="brand"><img class="brand-mark" src="img/tobybots-mark.svg" alt="" aria-hidden="true"><span class="brand-wordmark">TobyBots</span></span></span><span>© 2026</span></p>
+      <p data-i18n="footerMade">Hecho en Ecuador.</p>
     </div>
   </footer>
+  <script>
+    const translations = {
+      es: {
+        navCapabilities: "Capacidades",
+        navModels: "Modelos",
+        navMethod: "Método",
+        navContact: "Contacto",
+        heroEyebrow: "Agentes de IA útiles y bien pensados",
+        heroTitle: "Tu próximo equipo<br>no siempre <span>se contrata.</span><br>A veces <span>se construye.</span>",
+        heroLead: "TobyBots diseña agentes que hacen trabajo real: organizan, responden, investigan, documentan, siguen procesos y se integran a tu entorno sin hacerlo más pesado.",
+        heroPrimaryCta: "Contáctanos",
+        heroSecondaryCta: "Ver cómo empezar",
+        noteLocalTitle: "Local",
+        noteLocalBody: "Funciona en tu equipo cuando la privacidad no se negocia.",
+        noteCloudBody: "Se hospeda, se mantiene y escala con una operación simple.",
+        noteCustomTitle: "A medida",
+        noteCustomBody: "Se adapta a tus herramientas, a tu estilo y a tu forma de trabajar.",
+        signalTop: "<b>Inbox</b> triage + respuesta",
+        signalMid: "<b>Proyecto</b> seguimiento automático",
+        signalLow: "<b>Reporte</b> generado sin perseguir datos",
+        panelLabel: "Lo que ya puedes delegar",
+        panelTitle: "Menos tareas repetitivas, más tiempo para lo importante.",
+        panelBody: "Diseñamos agentes que sostienen procesos cotidianos con criterio, memoria y continuidad.",
+        stat1: "Privacidad primero cuando el problema lo pide.",
+        stat2: "Automatización útil antes que IA decorativa.",
+        stat3: "Integración con herramientas reales, no universos paralelos.",
+        stat4: "Diseño humano: el agente acompaña, no reemplaza criterio.",
+        capEyebrow: "Capacidades",
+        capTitle: "Donde más rinden es en el trabajo diario.",
+        capLead: "Cada agente se construye alrededor de una carga concreta que hoy te consume tiempo o foco. Estas son algunas de las cargas que mejor resolvemos.",
+        opsLabel: "Operaciones",
+        opsTitle: "Seguimiento que no se olvida",
+        opsBody: "El agente persigue tareas, levanta bloqueos, recuerda plazos y deja rastro claro de lo que pasó.",
+        ops1: "Actualizaciones de estado",
+        ops2: "Recordatorios inteligentes",
+        ops3: "Checklists vivas",
+        commsLabel: "Comunicación",
+        commsTitle: "Respuestas que no se sienten enlatadas",
+        commsBody: "Memoria, tono, contexto y reglas claras para responder clientes o equipos sin convertir la conversación en script.",
+        comms1: "Correo y clasificación de bandeja",
+        comms2: "Respuestas con contexto",
+        comms3: "Escalado cuando importa",
+        knowLabel: "Conocimiento",
+        knowTitle: "Documentación que se genera sola",
+        knowBody: "Convierte caos en manuales, reportes, resúmenes y decisiones trazables sin tocar diez pestañas.",
+        know1: "Resúmenes ejecutivos",
+        know2: "Reportes recurrentes",
+        know3: "Memoria operativa",
+        capBand: "Local • Cloud • Integrado con tus procesos • Diseñado con tu lenguaje • Operado con criterio • Pensado para durar",
+        modelsEyebrow: "Modelos de trabajo",
+        modelsTitle: "Tres formas de empezar, según lo que hoy necesites.",
+        modelsLead: "Podemos instalar una solución propia, operar una solución contigo o construir una pieza más profunda dentro de tu sistema.",
+        seedLabel: "Semilla local",
+        seedTitle: "Privado, simple y propio",
+        seedBody: "Ideal para explorar automatización personal o doméstica con herramientas abiertas y datos que no salen de tu entorno.",
+        seed1: "Base open source",
+        seed2: "Guía de instalación",
+        seed3: "Ruta para iterar después",
+        operatedLabel: "Operado",
+        operatedTitle: "Un agente listo para producir",
+        operatedBody: "Hosting, mantenimiento y evolución liviana para que lo uses sin convertirte en administrador de infraestructura.",
+        operated1: "Agente en la nube",
+        operated2: "Mantenimiento incluido",
+        operated3: "Soporte prioritario",
+        customLabel: "A medida",
+        customTitle: "Cuando hay sistema, proceso y ambición",
+        customBody: "Integraciones, automatizaciones y flujos diseñados alrededor de tu operación real, no de una demostración genérica.",
+        custom1: "Integraciones específicas",
+        custom2: "Flujos multi-paso",
+        custom3: "Soporte y evolución dedicados",
+        methodEyebrow: "Método",
+        methodTitle: "No empieza con prompts. Empieza entendiendo qué trabajo puedes delegar.",
+        methodLead: "La diferencia entre un juguete y una herramienta está en cómo se define el problema. Por eso el proceso importa.",
+        step1Title: "Miramos fricción real",
+        step1Body: "Identificamos dónde se pierde tiempo, atención o consistencia. No buscamos “usar IA”; buscamos quitar peso.",
+        step2Title: "Diseñamos comportamiento",
+        step2Body: "Definimos memoria, tono, permisos, escalado y límites. El agente necesita criterio, no solo capacidad.",
+        step3Title: "Lo conectamos a tu entorno",
+        step3Body: "Correo, docs, procesos internos o flujos propios. El valor aparece cuando el agente entra en contexto.",
+        step4Title: "Medimos y afinamos",
+        step4Body: "Vemos qué resolvió, qué necesita ajuste y qué falta. Los buenos agentes mejoran con el uso.",
+        manifestEyebrow: "Manifiesto",
+        manifestQuote: "“Diseñamos herramientas que te devuelven tiempo, enfoque y espacio para hacer mejor la parte humana del trabajo.”",
+        faqEyebrow: "Preguntas normales",
+        faqTitle: "Las dudas razonables también forman parte del producto.",
+        faq1Title: "¿Esto reemplaza a una persona?",
+        faq1Body: "No. TobyBots está pensado para cargar con lo repetitivo, lo administrativo o lo disperso, para que la persona haga el trabajo que requiere juicio.",
+        faq2Title: "¿Tiene que estar todo en la nube?",
+        faq2Body: "No. Si tu caso pide privacidad fuerte, podemos trabajar con agentes locales y flujos cerrados.",
+        faq3Title: "¿Sirve para una casa o solo para empresa?",
+        faq3Body: "Las dos. Hay automatizaciones de vida cotidiana, y hay agentes más estructurados para negocio, equipo u operación.",
+        faq4Title: "¿Qué pasa si no sé por dónde empezar?",
+        faq4Body: "Perfecto. Ese suele ser el mejor punto de partida: revisar juntos dos o tres tareas que hoy consumen energía y elegir la primera.",
+        contactEyebrow: "Contacto",
+        contactTitle: "Si ya tienes una tarea en mente, ya tenemos una conversación.",
+        contactBody: "Envíanos un correo con una sola idea: qué tarea te gustaría dejar de hacer tan seguido. A partir de ahí vemos si conviene una solución local, cloud o a medida.",
+        contactCta: "Contáctanos",
+        backTop: "Volver arriba",
+        footerMade: "Hecho en Ecuador."
+      },
+      en: {
+        navCapabilities: "Capabilities",
+        navModels: "Models",
+        navMethod: "Method",
+        navContact: "Contact",
+        heroEyebrow: "Useful, well-designed AI agents",
+        heroTitle: "Your next team member is not always <span>hired.</span><br>Sometimes it is <span>built.</span>",
+        heroLead: "TobyBots designs agents that do real work: they organize, respond, investigate, document, follow processes, and integrate into your environment without making it heavier.",
+        heroPrimaryCta: "Contact us",
+        heroSecondaryCta: "See how to start",
+        noteLocalTitle: "Local",
+        noteLocalBody: "Runs on your own machine when privacy is not negotiable.",
+        noteCloudBody: "Hosted, maintained, and scaled through a simple operating model.",
+        noteCustomTitle: "Custom",
+        noteCustomBody: "Adapts to your tools, your style, and the way you work.",
+        signalTop: "<b>Inbox</b> triage + reply",
+        signalMid: "<b>Project</b> automatic follow-up",
+        signalLow: "<b>Report</b> generated without chasing data",
+        panelLabel: "What you can already delegate",
+        panelTitle: "Fewer repetitive tasks, more time for what matters.",
+        panelBody: "We design agents that support everyday processes with judgment, memory, and continuity.",
+        stat1: "Privacy first when the problem requires it.",
+        stat2: "Useful automation before decorative AI.",
+        stat3: "Integration with real tools, not parallel universes.",
+        stat4: "Human-centered design: the agent supports, it does not replace judgment.",
+        capEyebrow: "Capabilities",
+        capTitle: "Their best work happens in everyday operations.",
+        capLead: "Each agent is built around a specific load that is consuming time or focus today. These are some of the areas we solve best.",
+        opsLabel: "Operations",
+        opsTitle: "Follow-up that does not forget",
+        opsBody: "The agent tracks tasks, surfaces blockers, remembers deadlines, and keeps a clear record of what happened.",
+        ops1: "Status updates",
+        ops2: "Smart reminders",
+        ops3: "Living checklists",
+        commsLabel: "Communication",
+        commsTitle: "Replies that do not feel canned",
+        commsBody: "Memory, tone, context, and clear rules to respond to customers or teams without turning the conversation into a script.",
+        comms1: "Email and inbox triage",
+        comms2: "Context-aware replies",
+        comms3: "Escalation when it matters",
+        knowLabel: "Knowledge",
+        knowTitle: "Documentation that generates itself",
+        knowBody: "Turns chaos into manuals, reports, summaries, and traceable decisions without touching ten tabs.",
+        know1: "Executive summaries",
+        know2: "Recurring reports",
+        know3: "Operational memory",
+        capBand: "Local • Cloud • Integrated with your processes • Designed around your language • Operated with judgment • Built to last",
+        modelsEyebrow: "Work models",
+        modelsTitle: "Three ways to start, based on what you need today.",
+        modelsLead: "We can install a self-owned solution, operate one with you, or build a deeper layer inside your system.",
+        seedLabel: "Local seed",
+        seedTitle: "Private, simple, and yours",
+        seedBody: "Ideal for exploring personal or household automation with open tools and data that stays inside your environment.",
+        seed1: "Open-source base",
+        seed2: "Setup guide",
+        seed3: "Path to iterate later",
+        operatedLabel: "Operated",
+        operatedTitle: "An agent ready for production",
+        operatedBody: "Hosting, maintenance, and light evolution so you can use it without becoming an infrastructure administrator.",
+        operated1: "Cloud agent",
+        operated2: "Maintenance included",
+        operated3: "Priority support",
+        customLabel: "Custom",
+        customTitle: "When there is system, process, and ambition",
+        customBody: "Integrations, automations, and flows designed around your real operation, not a generic demo.",
+        custom1: "Specific integrations",
+        custom2: "Multi-step flows",
+        custom3: "Dedicated support and evolution",
+        methodEyebrow: "Method",
+        methodTitle: "It does not start with prompts. It starts by understanding what work you can delegate.",
+        methodLead: "The difference between a toy and a tool lies in how the problem is defined. That is why the process matters.",
+        step1Title: "We look at real friction",
+        step1Body: "We identify where time, attention, or consistency is being lost. We are not trying to “use AI”; we are trying to remove weight.",
+        step2Title: "We design behavior",
+        step2Body: "We define memory, tone, permissions, escalation, and limits. An agent needs judgment, not just capability.",
+        step3Title: "We connect it to your environment",
+        step3Body: "Email, docs, internal processes, or custom flows. Value appears when the agent enters context.",
+        step4Title: "We measure and refine",
+        step4Body: "We review what it solved, what needs adjustment, and what is still missing. Good agents improve through use.",
+        manifestEyebrow: "Manifesto",
+        manifestQuote: "“We design tools that give you back time, focus, and room to do the human part of work better.”",
+        faqEyebrow: "Common questions",
+        faqTitle: "Reasonable questions are part of the product too.",
+        faq1Title: "Does this replace a person?",
+        faq1Body: "No. TobyBots is built to carry repetitive, administrative, or scattered work so that people can focus on the part that requires judgment.",
+        faq2Title: "Does everything have to be in the cloud?",
+        faq2Body: "No. If your case requires strong privacy, we can work with local agents and closed flows.",
+        faq3Title: "Is this for households or only for companies?",
+        faq3Body: "Both. There are everyday automations, and there are more structured agents for business, teams, or operations.",
+        faq4Title: "What if I do not know where to start?",
+        faq4Body: "Perfect. That is usually the best starting point: review two or three tasks that are draining energy today and choose the first one.",
+        contactEyebrow: "Contact",
+        contactTitle: "If you already have a task in mind, we already have a conversation.",
+        contactBody: "Send us one simple idea by email: which task would you like to stop doing so often? From there, we can see whether a local, cloud, or custom solution makes sense.",
+        contactCta: "Contact us",
+        backTop: "Back to top",
+        footerMade: "Made in Ecuador."
+      }
+    };
+
+    const toggle = document.querySelector("[data-lang-toggle]");
+    const textNodes = document.querySelectorAll("[data-i18n]");
+    const htmlNodes = document.querySelectorAll("[data-i18n-html]");
+    let currentLanguage = "es";
+
+    function applyLanguage(language) {
+      const dict = translations[language];
+      textNodes.forEach((node) => {
+        const key = node.dataset.i18n;
+        if (dict[key]) node.textContent = dict[key];
+      });
+      htmlNodes.forEach((node) => {
+        const key = node.dataset.i18nHtml;
+        if (dict[key]) node.innerHTML = dict[key];
+      });
+      document.documentElement.lang = language === "es" ? "es" : "en";
+      toggle.textContent = language === "es" ? "English" : "Español";
+      const heroTitle = document.querySelector(".hero-copy h1");
+      if (heroTitle) {
+        heroTitle.style.maxWidth = "";
+        heroTitle.style.fontSize = "";
+      }
+      currentLanguage = language;
+    }
+
+    toggle.addEventListener("click", () => {
+      applyLanguage(currentLanguage === "es" ? "en" : "es");
+    });
+
+    applyLanguage("es");
+  </script>
 </body>
 </html>
