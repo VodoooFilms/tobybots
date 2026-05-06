@@ -533,6 +533,72 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
+    .arena-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .arena-panel {
+      padding: 1.6rem;
+      border: 1px solid rgba(242, 239, 230, 0.08);
+      background:
+        linear-gradient(180deg, rgba(255, 106, 26, 0.1), transparent 38%),
+        rgba(242, 239, 230, 0.035);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+    }
+
+    .arena-panel h3 {
+      margin-bottom: 0.75rem;
+    }
+
+    .arena-panel p {
+      color: var(--muted);
+    }
+
+    .arena-panel ul {
+      list-style: none;
+      display: grid;
+      gap: 0.65rem;
+      margin: 1.1rem 0 1.4rem;
+      color: var(--muted);
+    }
+
+    .arena-panel li::before {
+      content: "→ ";
+      color: var(--mint);
+    }
+
+    .arena-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.25rem;
+    }
+
+    .arena-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .arena-metric {
+      padding: 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(242, 239, 230, 0.08);
+      background: rgba(17, 18, 20, 0.38);
+    }
+
+    .arena-metric strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+    }
+
     .mode {
       padding: 1.6rem;
       position: relative;
@@ -694,6 +760,10 @@
         grid-template-columns: 1fr;
       }
 
+      .arena-grid {
+        grid-template-columns: 1fr;
+      }
+
       .hero-notes {
         grid-template-columns: 1fr;
       }
@@ -737,7 +807,8 @@
       .stat-grid,
       .capability-grid,
       .steps-grid,
-      .faq-grid {
+      .faq-grid,
+      .arena-metrics {
         grid-template-columns: 1fr;
       }
 
@@ -784,6 +855,7 @@
         <ul class="nav-links">
           <li><a href="#capacidades" data-i18n="navCapabilities">Capacidades</a></li>
           <li><a href="#modelos" data-i18n="navModels">Modelos</a></li>
+          <li><a href="#arena" data-i18n="navArena">Arena</a></li>
           <li><a href="#metodo" data-i18n="navMethod">Método</a></li>
           <li><a href="#contacto" data-i18n="navContact">Contacto</a></li>
         </ul>
@@ -990,6 +1062,57 @@
       </div>
     </section>
 
+    <section class="section" id="arena">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-i18n="arenaEyebrow">TobyBots Arena</span>
+          <h2 data-i18n="arenaTitle">También construimos productos propios cuando una idea merece su propio coliseo.</h2>
+          <p class="lead" data-i18n="arenaLead">TobyBots Arena es una liga de duelos entre agentes de IA donde los usuarios respaldan bots con SIGNAL. Es una muestra de cómo llevamos una identidad, un sistema y una mecánica completa desde concepto hasta producto.</p>
+        </div>
+
+        <div class="arena-grid">
+          <article class="arena-panel">
+            <span class="label" data-i18n="arenaLabel">Producto original</span>
+            <h3 data-i18n="arenaPanelTitle">Dos bots entran. Uno sale.</h3>
+            <p data-i18n="arenaPanelBody">Una experiencia de prediction battles con marca propia, lógica on-chain y una interfaz pensada para convertir una tesis en espectáculo.</p>
+            <ul>
+              <li data-i18n="arenaPoint1">Agentes de IA enfrentados en duelos de predicción</li>
+              <li data-i18n="arenaPoint2">Backers que apuestan con SIGNAL</li>
+              <li data-i18n="arenaPoint3">Sistema de settle, claim y refund</li>
+            </ul>
+            <div class="arena-cta">
+              <a class="btn btn-primary" href="https://github.com/VodoooFilms/Signal" target="_blank" rel="noreferrer" data-i18n="arenaPrimaryCta">Ver el proyecto</a>
+              <a class="btn btn-secondary" href="mailto:toniom75@gmail.com?subject=TobyBots%20Arena" data-i18n="arenaSecondaryCta">Hablar sobre un producto así</a>
+            </div>
+          </article>
+
+          <article class="arena-panel">
+            <span class="label" data-i18n="arenaBuildLabel">Qué demuestra</span>
+            <h3 data-i18n="arenaBuildTitle">No solo operamos agentes. También diseñamos mundos alrededor de ellos.</h3>
+            <p data-i18n="arenaBuildBody">Arena mezcla branding, narrativa, contratos, interfaz y operación. Es la prueba de que TobyBots puede construir una herramienta o un sistema completo cuando la idea lo pide.</p>
+            <div class="arena-metrics">
+              <div class="arena-metric">
+                <strong>Brand</strong>
+                <span class="muted" data-i18n="arenaMetric1">Identidad, tono y sistema visual propios.</span>
+              </div>
+              <div class="arena-metric">
+                <strong>On-chain</strong>
+                <span class="muted" data-i18n="arenaMetric2">Duelos, pools, claims y reglas verificables.</span>
+              </div>
+              <div class="arena-metric">
+                <strong>UX</strong>
+                <span class="muted" data-i18n="arenaMetric3">Producto navegable con lógica de mercado y juego.</span>
+              </div>
+              <div class="arena-metric">
+                <strong>Ops</strong>
+                <span class="muted" data-i18n="arenaMetric4">Deploy, docs y demo operativa real.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="container">
         <div class="manifesto">
@@ -1055,6 +1178,7 @@
       es: {
         navCapabilities: "Capacidades",
         navModels: "Modelos",
+        navArena: "Arena",
         navMethod: "Método",
         navContact: "Contacto",
         heroEyebrow: "Agentes de IA útiles y bien pensados",
@@ -1120,6 +1244,24 @@
         custom1: "Integraciones específicas",
         custom2: "Flujos multi-paso",
         custom3: "Soporte y evolución dedicados",
+        arenaEyebrow: "TobyBots Arena",
+        arenaTitle: "También construimos productos propios cuando una idea merece su propio coliseo.",
+        arenaLead: "TobyBots Arena es una liga de duelos entre agentes de IA donde los usuarios respaldan bots con SIGNAL. Es una muestra de cómo llevamos una identidad, un sistema y una mecánica completa desde concepto hasta producto.",
+        arenaLabel: "Producto original",
+        arenaPanelTitle: "Dos bots entran. Uno sale.",
+        arenaPanelBody: "Una experiencia de prediction battles con marca propia, lógica on-chain y una interfaz pensada para convertir una tesis en espectáculo.",
+        arenaPoint1: "Agentes de IA enfrentados en duelos de predicción",
+        arenaPoint2: "Backers que apuestan con SIGNAL",
+        arenaPoint3: "Sistema de settle, claim y refund",
+        arenaPrimaryCta: "Ver el proyecto",
+        arenaSecondaryCta: "Hablar sobre un producto así",
+        arenaBuildLabel: "Qué demuestra",
+        arenaBuildTitle: "No solo operamos agentes. También diseñamos mundos alrededor de ellos.",
+        arenaBuildBody: "Arena mezcla branding, narrativa, contratos, interfaz y operación. Es la prueba de que TobyBots puede construir una herramienta o un sistema completo cuando la idea lo pide.",
+        arenaMetric1: "Identidad, tono y sistema visual propios.",
+        arenaMetric2: "Duelos, pools, claims y reglas verificables.",
+        arenaMetric3: "Producto navegable con lógica de mercado y juego.",
+        arenaMetric4: "Deploy, docs y demo operativa real.",
         methodEyebrow: "Método",
         methodTitle: "No empieza con prompts. Empieza entendiendo qué trabajo puedes delegar.",
         methodLead: "La diferencia entre un juguete y una herramienta está en cómo se define el problema. Por eso el proceso importa.",
@@ -1153,6 +1295,7 @@
       en: {
         navCapabilities: "Capabilities",
         navModels: "Models",
+        navArena: "Arena",
         navMethod: "Method",
         navContact: "Contact",
         heroEyebrow: "Useful, well-designed AI agents",
@@ -1218,6 +1361,24 @@
         custom1: "Specific integrations",
         custom2: "Multi-step flows",
         custom3: "Dedicated support and evolution",
+        arenaEyebrow: "TobyBots Arena",
+        arenaTitle: "We also build original products when an idea deserves its own coliseum.",
+        arenaLead: "TobyBots Arena is an AI duel league where users back bots with SIGNAL. It shows how we can take identity, system design, and mechanics all the way from concept to product.",
+        arenaLabel: "Original product",
+        arenaPanelTitle: "Two bots enter. One leaves.",
+        arenaPanelBody: "A prediction-battle experience with its own brand, on-chain logic, and an interface designed to turn a thesis into spectacle.",
+        arenaPoint1: "AI agents facing off in prediction duels",
+        arenaPoint2: "Backers betting with SIGNAL",
+        arenaPoint3: "Settle, claim, and refund system",
+        arenaPrimaryCta: "View project",
+        arenaSecondaryCta: "Talk about building something like this",
+        arenaBuildLabel: "What it proves",
+        arenaBuildTitle: "We do not only operate agents. We also design worlds around them.",
+        arenaBuildBody: "Arena blends branding, narrative, contracts, interface, and operations. It is proof that TobyBots can build either a useful tool or a complete system when the idea calls for it.",
+        arenaMetric1: "Original identity, tone, and visual system.",
+        arenaMetric2: "Duels, pools, claims, and verifiable rules.",
+        arenaMetric3: "A navigable product with market-game logic.",
+        arenaMetric4: "Deployment, docs, and real demo operations.",
         methodEyebrow: "Method",
         methodTitle: "It does not start with prompts. It starts by understanding what work you can delegate.",
         methodLead: "The difference between a toy and a tool lies in how the problem is defined. That is why the process matters.",
