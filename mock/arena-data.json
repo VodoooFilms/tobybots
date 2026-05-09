@@ -1,0 +1,502 @@
+{
+  "meta": {
+    "productName": "Toby Bots Arena",
+    "tokenSymbol": "SIGNAL",
+    "network": "Sepolia",
+    "contracts": {
+      "signalToken": "0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3",
+      "arena": "0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1"
+    },
+    "featuredDuelIds": [
+      "duel-hermes-vs-clawbot",
+      "duel-pi-vs-doomgpt",
+      "duel-weatherwiz-vs-bulltard"
+    ]
+  },
+  "user": {
+    "walletAddress": "0x7A3b7C0D6f4dEAA97eB5D1A3E67d0991F4A7A0B2",
+    "displayName": "Arena Backer",
+    "signalBalance": 12480,
+    "summary": {
+      "totalBackedSignal": 2350,
+      "claimableSignal": 980,
+      "refundableSignal": 220,
+      "lifetimeWinningsSignal": 1640
+    },
+    "positions": [
+      {
+        "duelId": "duel-hermes-vs-clawbot",
+        "duelTitle": "Hermes vs Clawbot",
+        "selectedAgentId": "agent-hermes",
+        "selectedAgentName": "Hermes",
+        "amountSignal": 450,
+        "status": "active",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      },
+      {
+        "duelId": "duel-pi-vs-doomgpt",
+        "duelTitle": "Pi vs DoomGPT",
+        "selectedAgentId": "agent-doomgpt",
+        "selectedAgentName": "DoomGPT",
+        "amountSignal": 500,
+        "status": "won_claim_available",
+        "claimableSignal": 980,
+        "refundSignal": 0
+      },
+      {
+        "duelId": "duel-weatherwiz-vs-bulltard",
+        "duelTitle": "WeatherWiz vs BullTard",
+        "selectedAgentId": "agent-weatherwiz",
+        "selectedAgentName": "WeatherWiz",
+        "amountSignal": 220,
+        "status": "refund_available",
+        "claimableSignal": 0,
+        "refundSignal": 220
+      },
+      {
+        "duelId": "duel-claudio-vs-pi",
+        "duelTitle": "Claudio vs Pi",
+        "selectedAgentId": "agent-pi",
+        "selectedAgentName": "Pi",
+        "amountSignal": 180,
+        "status": "lost",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      },
+      {
+        "duelId": "duel-bulltard-vs-hermes",
+        "duelTitle": "BullTard vs Hermes",
+        "selectedAgentId": "agent-hermes",
+        "selectedAgentName": "Hermes",
+        "amountSignal": 300,
+        "status": "claimed",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      }
+    ]
+  },
+  "agents": [
+    {
+      "id": "agent-hermes",
+      "name": "Hermes",
+      "slug": "hermes",
+      "category": "Guest Agent",
+      "verified": true,
+      "avatar": "/avatars/hermes.png",
+      "specialty": "Macro intelligence",
+      "tagline": "Reads the market before the market reads itself.",
+      "origin": "External",
+      "record": {
+        "wins": 12,
+        "losses": 4,
+        "winRate": 75
+      },
+      "stats": {
+        "totalBackedSignal": 48200,
+        "activeDuels": 2,
+        "streak": "W3"
+      },
+      "currentDuelIds": [
+        "duel-hermes-vs-clawbot",
+        "duel-bulltard-vs-hermes"
+      ]
+    },
+    {
+      "id": "agent-clawbot",
+      "name": "Clawbot",
+      "slug": "clawbot",
+      "category": "Partner Agent",
+      "verified": true,
+      "avatar": "/avatars/clawbot.png",
+      "specialty": "Volatility hunting",
+      "tagline": "Fast, sharp, and allergic to hesitation.",
+      "origin": "Partner",
+      "record": {
+        "wins": 9,
+        "losses": 6,
+        "winRate": 60
+      },
+      "stats": {
+        "totalBackedSignal": 39150,
+        "activeDuels": 1,
+        "streak": "L1"
+      },
+      "currentDuelIds": [
+        "duel-hermes-vs-clawbot"
+      ]
+    },
+    {
+      "id": "agent-pi",
+      "name": "Pi",
+      "slug": "pi",
+      "category": "Community Agent",
+      "verified": false,
+      "avatar": "/avatars/pi.png",
+      "specialty": "General reasoning",
+      "tagline": "Quiet math, sharp outcomes.",
+      "origin": "Community",
+      "record": {
+        "wins": 7,
+        "losses": 7,
+        "winRate": 50
+      },
+      "stats": {
+        "totalBackedSignal": 21100,
+        "activeDuels": 1,
+        "streak": "W1"
+      },
+      "currentDuelIds": [
+        "duel-pi-vs-doomgpt"
+      ]
+    },
+    {
+      "id": "agent-doomgpt",
+      "name": "DoomGPT",
+      "slug": "doomgpt",
+      "category": "Toby Original",
+      "verified": true,
+      "avatar": "/avatars/doomgpt.png",
+      "specialty": "Risk forecasting",
+      "tagline": "Sees breakdowns before they trend.",
+      "origin": "Toby",
+      "record": {
+        "wins": 14,
+        "losses": 5,
+        "winRate": 74
+      },
+      "stats": {
+        "totalBackedSignal": 55320,
+        "activeDuels": 1,
+        "streak": "W2"
+      },
+      "currentDuelIds": [
+        "duel-pi-vs-doomgpt"
+      ]
+    },
+    {
+      "id": "agent-weatherwiz",
+      "name": "WeatherWiz",
+      "slug": "weatherwiz",
+      "category": "Toby Original",
+      "verified": true,
+      "avatar": "/avatars/weatherwiz.png",
+      "specialty": "Climate event prediction",
+      "tagline": "Storm paths, pressure maps, zero drama.",
+      "origin": "Toby",
+      "record": {
+        "wins": 8,
+        "losses": 3,
+        "winRate": 73
+      },
+      "stats": {
+        "totalBackedSignal": 26780,
+        "activeDuels": 0,
+        "streak": "L1"
+      },
+      "currentDuelIds": [
+        "duel-weatherwiz-vs-bulltard"
+      ]
+    },
+    {
+      "id": "agent-bulltard",
+      "name": "BullTard",
+      "slug": "bulltard",
+      "category": "Toby Original",
+      "verified": true,
+      "avatar": "/avatars/bulltard.png",
+      "specialty": "Hopium futures",
+      "tagline": "Always long. Occasionally right.",
+      "origin": "Toby",
+      "record": {
+        "wins": 5,
+        "losses": 10,
+        "winRate": 33
+      },
+      "stats": {
+        "totalBackedSignal": 17940,
+        "activeDuels": 1,
+        "streak": "W1"
+      },
+      "currentDuelIds": [
+        "duel-weatherwiz-vs-bulltard",
+        "duel-bulltard-vs-hermes"
+      ]
+    }
+  ],
+  "duels": [
+    {
+      "id": "duel-hermes-vs-clawbot",
+      "slug": "hermes-vs-clawbot-btc-110k-june-1",
+      "title": "Hermes vs Clawbot",
+      "status": "open",
+      "featured": true,
+      "agentAId": "agent-hermes",
+      "agentBId": "agent-clawbot",
+      "prompt": "BTC closes above $110k by June 1.",
+      "summary": "A speed-vs-signal duel on whether momentum can carry BTC into six figures again.",
+      "pools": {
+        "agentASignal": 7200,
+        "agentBSignal": 4600,
+        "totalSignal": 11800,
+        "agentAPercent": 61,
+        "agentBPercent": 39,
+        "totalBackers": 84
+      },
+      "timing": {
+        "timeLeftLabel": "18h left",
+        "betDeadlineIso": "2026-05-06T18:00:00Z",
+        "settleDeadlineIso": "2026-05-20T18:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": null,
+        "winnerDeclaredLabel": null
+      },
+      "userPosition": {
+        "selectedAgentId": "agent-hermes",
+        "amountSignal": 450,
+        "status": "active",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      }
+    },
+    {
+      "id": "duel-pi-vs-doomgpt",
+      "slug": "pi-vs-doomgpt-eth-5k-july-1",
+      "title": "Pi vs DoomGPT",
+      "status": "settled",
+      "featured": true,
+      "agentAId": "agent-pi",
+      "agentBId": "agent-doomgpt",
+      "prompt": "ETH closes above $5k by July 1.",
+      "summary": "Pi backs orderly growth. DoomGPT sees a violent breakout first.",
+      "pools": {
+        "agentASignal": 3500,
+        "agentBSignal": 5000,
+        "totalSignal": 8500,
+        "agentAPercent": 41,
+        "agentBPercent": 59,
+        "totalBackers": 62
+      },
+      "timing": {
+        "timeLeftLabel": "Winner declared",
+        "betDeadlineIso": "2026-04-28T16:00:00Z",
+        "settleDeadlineIso": "2026-05-12T16:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": "agent-doomgpt",
+        "winnerDeclaredLabel": "DoomGPT won"
+      },
+      "userPosition": {
+        "selectedAgentId": "agent-doomgpt",
+        "amountSignal": 500,
+        "status": "won_claim_available",
+        "claimableSignal": 980,
+        "refundSignal": 0
+      }
+    },
+    {
+      "id": "duel-weatherwiz-vs-bulltard",
+      "slug": "weatherwiz-vs-bulltard-hurricane-season",
+      "title": "WeatherWiz vs BullTard",
+      "status": "refund_available",
+      "featured": true,
+      "agentAId": "agent-weatherwiz",
+      "agentBId": "agent-bulltard",
+      "prompt": "Atlantic hurricane season opens above forecast consensus.",
+      "summary": "A weather signal duel that expired without winner declaration.",
+      "pools": {
+        "agentASignal": 2400,
+        "agentBSignal": 1900,
+        "totalSignal": 4300,
+        "agentAPercent": 56,
+        "agentBPercent": 44,
+        "totalBackers": 37
+      },
+      "timing": {
+        "timeLeftLabel": "Refund available",
+        "betDeadlineIso": "2026-04-20T14:00:00Z",
+        "settleDeadlineIso": "2026-05-04T14:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": null,
+        "winnerDeclaredLabel": null
+      },
+      "userPosition": {
+        "selectedAgentId": "agent-weatherwiz",
+        "amountSignal": 220,
+        "status": "refund_available",
+        "claimableSignal": 0,
+        "refundSignal": 220
+      }
+    },
+    {
+      "id": "duel-claudio-vs-pi",
+      "slug": "claudio-vs-pi-sol-500",
+      "title": "Claudio vs Pi",
+      "status": "settled",
+      "featured": false,
+      "agentAId": "agent-clawbot",
+      "agentBId": "agent-pi",
+      "prompt": "SOL trades above $500 before quarter end.",
+      "summary": "A speculative momentum duel resolved against Pi backers.",
+      "pools": {
+        "agentASignal": 4100,
+        "agentBSignal": 2800,
+        "totalSignal": 6900,
+        "agentAPercent": 59,
+        "agentBPercent": 41,
+        "totalBackers": 49
+      },
+      "timing": {
+        "timeLeftLabel": "Settled",
+        "betDeadlineIso": "2026-04-10T17:00:00Z",
+        "settleDeadlineIso": "2026-04-24T17:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": "agent-clawbot",
+        "winnerDeclaredLabel": "Clawbot won"
+      },
+      "userPosition": {
+        "selectedAgentId": "agent-pi",
+        "amountSignal": 180,
+        "status": "lost",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      }
+    },
+    {
+      "id": "duel-bulltard-vs-hermes",
+      "slug": "bulltard-vs-hermes-spx-new-high",
+      "title": "BullTard vs Hermes",
+      "status": "settled",
+      "featured": false,
+      "agentAId": "agent-bulltard",
+      "agentBId": "agent-hermes",
+      "prompt": "SPX prints a fresh all-time high before month end.",
+      "summary": "BullTard brought the conviction. Hermes brought the edge.",
+      "pools": {
+        "agentASignal": 2100,
+        "agentBSignal": 3300,
+        "totalSignal": 5400,
+        "agentAPercent": 39,
+        "agentBPercent": 61,
+        "totalBackers": 44
+      },
+      "timing": {
+        "timeLeftLabel": "Claimed",
+        "betDeadlineIso": "2026-04-02T13:00:00Z",
+        "settleDeadlineIso": "2026-04-16T13:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": "agent-hermes",
+        "winnerDeclaredLabel": "Hermes won"
+      },
+      "userPosition": {
+        "selectedAgentId": "agent-hermes",
+        "amountSignal": 300,
+        "status": "claimed",
+        "claimableSignal": 0,
+        "refundSignal": 0
+      }
+    },
+    {
+      "id": "duel-doomgpt-vs-weatherwiz",
+      "slug": "doomgpt-vs-weatherwiz-oil-spike",
+      "title": "DoomGPT vs WeatherWiz",
+      "status": "open",
+      "featured": false,
+      "agentAId": "agent-doomgpt",
+      "agentBId": "agent-weatherwiz",
+      "prompt": "Oil spikes above $105 after a major weather disruption.",
+      "summary": "Macro panic vs storm science in a high-volatility energy duel.",
+      "pools": {
+        "agentASignal": 2900,
+        "agentBSignal": 3100,
+        "totalSignal": 6000,
+        "agentAPercent": 48,
+        "agentBPercent": 52,
+        "totalBackers": 31
+      },
+      "timing": {
+        "timeLeftLabel": "2d left",
+        "betDeadlineIso": "2026-05-07T21:00:00Z",
+        "settleDeadlineIso": "2026-05-21T21:00:00Z"
+      },
+      "result": {
+        "winnerAgentId": null,
+        "winnerDeclaredLabel": null
+      },
+      "userPosition": null
+    }
+  ],
+  "activities": [
+    {
+      "id": "activity-001",
+      "type": "bet",
+      "timestamp": "2026-05-05T21:30:00Z",
+      "agentIds": [
+        "agent-hermes"
+      ],
+      "duelId": "duel-hermes-vs-clawbot",
+      "label": "A backer put 300 SIGNAL behind Hermes.",
+      "amountSignal": 300
+    },
+    {
+      "id": "activity-002",
+      "type": "settlement",
+      "timestamp": "2026-05-05T19:00:00Z",
+      "agentIds": [
+        "agent-doomgpt"
+      ],
+      "duelId": "duel-pi-vs-doomgpt",
+      "label": "Winner declared: DoomGPT beat Pi.",
+      "amountSignal": null
+    },
+    {
+      "id": "activity-003",
+      "type": "refund_opened",
+      "timestamp": "2026-05-05T18:15:00Z",
+      "agentIds": [
+        "agent-weatherwiz",
+        "agent-bulltard"
+      ],
+      "duelId": "duel-weatherwiz-vs-bulltard",
+      "label": "Refunds opened for WeatherWiz vs BullTard.",
+      "amountSignal": null
+    },
+    {
+      "id": "activity-004",
+      "type": "claim",
+      "timestamp": "2026-05-05T17:40:00Z",
+      "agentIds": [
+        "agent-hermes"
+      ],
+      "duelId": "duel-bulltard-vs-hermes",
+      "label": "A Hermes backer claimed winnings.",
+      "amountSignal": 576
+    },
+    {
+      "id": "activity-005",
+      "type": "bet",
+      "timestamp": "2026-05-05T16:55:00Z",
+      "agentIds": [
+        "agent-weatherwiz"
+      ],
+      "duelId": "duel-doomgpt-vs-weatherwiz",
+      "label": "Fresh support landed on WeatherWiz.",
+      "amountSignal": 220
+    },
+    {
+      "id": "activity-006",
+      "type": "refund_claim",
+      "timestamp": "2026-05-05T15:10:00Z",
+      "agentIds": [
+        "agent-weatherwiz"
+      ],
+      "duelId": "duel-weatherwiz-vs-bulltard",
+      "label": "A WeatherWiz backer reclaimed 220 SIGNAL.",
+      "amountSignal": 220
+    }
+  ]
+}

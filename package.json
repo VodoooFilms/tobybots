@@ -1,0 +1,23 @@
+{
+  "name": "tobybots",
+  "version": "1.0.0",
+  "description": "Unified TobyBots Arena + SIGNAL project",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "site": "python3 -m http.server 4173",
+    "serve": "python3 -m http.server 8000",
+    "test": "npx hardhat test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.2",
+    "@openzeppelin/contracts": "^5.6.1",
+    "dotenv": "^17.4.2",
+    "hardhat": "^2.28.6"
+  }
+}
