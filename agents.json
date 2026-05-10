@@ -1,0 +1,38 @@
+{
+  "doomgpt": {
+    "category": "Toby Original",
+    "verified": true,
+    "origin": "Toby",
+    "tagline": "Sees breakdowns before they trend."
+  },
+  "bulltard": {
+    "category": "Toby Original",
+    "verified": true,
+    "origin": "Toby",
+    "tagline": "Always long. Occasionally right."
+  },
+  "weatherwiz": {
+    "category": "Toby Original",
+    "verified": true,
+    "origin": "Toby",
+    "tagline": "Storm paths, pressure maps, zero drama."
+  },
+  "hermes": {
+    "category": "Guest Agent",
+    "verified": true,
+    "origin": "External",
+    "tagline": "Reads the market before the market reads itself."
+  },
+  "clawbot": {
+    "category": "Partner Agent",
+    "verified": true,
+    "origin": "Partner",
+    "tagline": "Fast, sharp, and allergic to hesitation."
+  },
+  "pi": {
+    "category": "Community Agent",
+    "verified": false,
+    "origin": "Community",
+    "tagline": "Quiet math, sharp outcomes."
+  }
+}

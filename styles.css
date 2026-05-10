@@ -100,18 +100,19 @@ select {
 }
 
 .brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #fafcff, #9cb8d4);
-  color: #0f1720;
-  font-family: "Arial Narrow", "Avenir Next Condensed", sans-serif;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 14px rgba(255, 106, 26, 0.28));
+}
+
+.brand-wordmark {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .brand strong,

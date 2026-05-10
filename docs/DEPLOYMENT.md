@@ -86,13 +86,11 @@ npx hardhat verify --network sepolia \
 
 ## Current Local Head Status
 
-As of May 6, 2026, local `main` includes one contract improvement that is **not live on Sepolia yet**:
+As of May 9, 2026, the deployed Arena bytecode on Sepolia differs from the local compiled bytecode (live: 15362 hex chars, local: 15346 hex chars). The local `main` branch includes at minimum the following improvement **not live on Sepolia**:
 
 - `emergencyRefund()` is permissionless locally, so any wallet can unlock refunds after `settleDeadline`
 
-Why this is not deployed yet:
-
-- the owner wallet is below safe operating balance for redeploy / migration
+Owner wallet now has 0.101 ETH — sufficient for a redeploy when ready.
 
 Current local test status:
 

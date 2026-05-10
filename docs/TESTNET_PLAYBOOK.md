@@ -323,9 +323,7 @@ En Etherscan → Arena contract → Write Contract → `withdrawFees`:
 (sin argumentos)
 ```
 
-`withdrawFees()` retira únicamente `accruedFees`. Aun así, para operación de demo conviene ejecutarlo solo cuando ya terminó el flujo que quieres mostrar.
-
-Transfiere todo el balance de $SIGNAL del Arena al owner.
+`withdrawFees()` retira únicamente los fees acumulados (`accruedFees`). No transfiere el balance completo del Arena — el escrow de duelos abiertos queda intacto. Para operación de demo conviene ejecutarlo solo cuando ya no hay duelos activos que mostrar.
 
 ---
 

@@ -1,12 +1,24 @@
 import { ethers } from "https://esm.sh/ethers@6.13.5";
 
-const CHAIN = {
+const CHAIN_DEFAULTS = {
   id: 11155111,
   name: "Sepolia",
   rpcUrl: "https://1rpc.io/sepolia",
   signalToken: "0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3",
   arena: "0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1"
 };
+
+let CHAIN = { ...CHAIN_DEFAULTS };
+
+try {
+  const configRes = await fetch("./config.json");
+  if (configRes.ok) {
+    const config = await configRes.json();
+    if (config.chain) CHAIN = config.chain;
+  }
+} catch (e) {
+  console.warn("Usando config por defecto (config.json no encontrado)");
+}
 
 const ACTIVITY_LOOKBACK_BLOCKS = 9500;
 
@@ -35,44 +47,26 @@ const ARENA_ABI = [
   "event WinningsClaimed(uint256 indexed duelId, address indexed bettor, uint256 amount)"
 ];
 
-const AGENT_METADATA = {
-  doomgpt: {
-    category: "Toby Original",
-    verified: true,
-    origin: "Toby",
-    tagline: "Sees breakdowns before they trend."
-  },
-  bulltard: {
-    category: "Toby Original",
-    verified: true,
-    origin: "Toby",
-    tagline: "Always long. Occasionally right."
-  },
-  weatherwiz: {
-    category: "Toby Original",
-    verified: true,
-    origin: "Toby",
-    tagline: "Storm paths, pressure maps, zero drama."
-  },
-  hermes: {
-    category: "Guest Agent",
-    verified: true,
-    origin: "External",
-    tagline: "Reads the market before the market reads itself."
-  },
-  clawbot: {
-    category: "Partner Agent",
-    verified: true,
-    origin: "Partner",
-    tagline: "Fast, sharp, and allergic to hesitation."
-  },
-  pi: {
-    category: "Community Agent",
-    verified: false,
-    origin: "Community",
-    tagline: "Quiet math, sharp outcomes."
-  }
+const AGENT_METADATA_FALLBACK = {
+  doomgpt: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Sees breakdowns before they trend." },
+  bulltard: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Always long. Occasionally right." },
+  weatherwiz: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Storm paths, pressure maps, zero drama." },
+  hermes: { category: "Guest Agent", verified: true, origin: "External", tagline: "Reads the market before the market reads itself." },
+  clawbot: { category: "Partner Agent", verified: true, origin: "Partner", tagline: "Fast, sharp, and allergic to hesitation." },
+  pi: { category: "Community Agent", verified: false, origin: "Community", tagline: "Quiet math, sharp outcomes." }
 };
+
+let AGENT_METADATA = { ...AGENT_METADATA_FALLBACK };
+
+try {
+  const agentsRes = await fetch("./agents.json");
+  if (agentsRes.ok) {
+    const agentsJson = await agentsRes.json();
+    AGENT_METADATA = { ...AGENT_METADATA_FALLBACK, ...agentsJson };
+  }
+} catch (e) {
+  console.warn("Usando metadata de agentes por defecto (agents.json no encontrado)");
+}
 
 const statusMap = {
   open: { label: "Abierto", className: "status-open" },

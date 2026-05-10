@@ -391,12 +391,35 @@ Además:
 - la landing anterior quedó archivada en `archive/legacy-landing/`
 - no queda otra carpeta `Signal` separada
 
-## Siguiente nivel recomendado
+## Mejoras aplicadas (auditoría Mayo 2026)
 
-Si este repo va a seguir creciendo, las mejoras de arquitectura más claras serían:
+Resultados de la auditoría del 9 de mayo. Issues resueltos sin gastar gas en Sepolia:
 
-1. mover config de contratos a un archivo separado por entorno
-2. separar metadatos editoriales del `app.js`
-3. introducir build step ligero para frontend
-4. agregar script de sync para cambiar direcciones tras deploy
-5. documentar un flujo formal de release web + contratos
+1. ✅ **Config de contratos externalizada** — `config.json` contiene las direcciones de `SIGNAL` y `Arena`. `app.js` las carga con fetch y tiene fallback hardcodeado. Si se redepliegan contratos, solo se edita un archivo.
+2. ✅ **Metadata de agentes externalizada** — `agents.json` contiene categorías, verified, origen y taglines. `app.js` mergea el JSON con un fallback inline. Agregar/quitar agentes no requiere tocar JS.
+3. ✅ **CI/CD con GitHub Actions** — `.github/workflows/ci.yml` ejecuta `npx hardhat compile` + `npm test` en cada push a `main` y en cada PR.
+4. ✅ **Documentación corregida** — `TESTNET_PLAYBOOK.md` ya no dice que `withdrawFees` transfiere todo el balance (solo transfiere `accruedFees`).
+5. ✅ **DEPLOYMENT.md actualizado** — confirmado con comparación de bytecode que el Arena desplegado en Sepolia difiere del código local (15362 vs 15346 hex chars). El fix de `emergencyRefund` permissionless está en local pero no en Sepolia.
+6. ✅ **Logo unificado** — las 5 páginas de la Arena (index, explore, duel, agent, portfolio) ahora usan el mismo logo SVG + "TobyBots x SIGNAL" que `how-it-works.html`.
+7. ✅ **LAUNCH_CHECKLIST sincronizado** — wallet owner con 0.101 ETH, items nuevos marcados.
+
+Estado live en Sepolia (Mayo 9, 2026):
+
+| Campo | Valor |
+|-------|-------|
+| Owner ETH | 0.101 ETH |
+| `duelCount` | 2 |
+| `agentCount` | 3 (doomgpt, bulltard, weatherwiz) |
+| Arena $SIGNAL balance | 0.0 |
+| Tests | 23/23 passing |
+
+## Próximos pasos
+
+Lo que falta para cerrar el círculo pre-demo:
+
+1. **Redeploy del Arena** — el código local tiene `emergencyRefund` permissionless. El Arena en Sepolia no. Con 0.101 ETH hay saldo de sobra para redeploy. Después del redeploy, actualizar `config.json` con las nuevas direcciones.
+2. **Fondear wallets demo** — transferir ~2,000 SIGNAL + 0.02 ETH a 2-3 wallets de prueba.
+3. **Crear duelos demo** — 1 duelo `Settled` con claims, 1 duelo `Open` visible. El `TESTNET_PLAYBOOK.md` tiene los pasos exactos.
+4. **Probar frontend contra Sepolia** — con MetaMask y wallets demo, verificar el flujo completo: approve → bet → settle → claim → refund.
+5. **Build step ligero** — evaluar esbuild o vite para minimizar y cache-bustear el frontend.
+6. **Modularizar app.js** — separar en data.js, render.js, wallet.js, utils.js (~30 min de refactor).

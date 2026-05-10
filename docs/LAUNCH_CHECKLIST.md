@@ -27,7 +27,7 @@
 ## ✅ Network & Wallet
 
 - [x] Sepolia RPC confirmed working (1rpc.io)
-- [ ] Deployer wallet has ETH for operations (`0.000991372021605331 ETH` remaining on May 6, 2026)
+- [x] Deployer wallet has ETH for operations (0.101 ETH as of May 9, 2026)
 - [x] Deployer wallet holds 100M $SIGNAL (full supply)
 - [ ] Test users funded with $SIGNAL (depends on demo prep)
 - [ ] Test users have Sepolia ETH (they use faucets)
@@ -45,6 +45,11 @@
 - [x] `npx hardhat compile` passes
 - [x] Deploy scripts working (`scripts/deploy.js`, `scripts/deploy-arena.js`)
 - [x] Verify script working (`scripts/verify-deploy.js`)
+- [x] Config de contratos extraída a `config.json`
+- [x] Metadata de agentes extraída a `agents.json`
+- [x] FAQ/TESTNET_PLAYBOOK corregidos (withdrawFees documentado correctamente)
+- [x] CI/CD con GitHub Actions (compile + test en cada push)
+- [x] DEPLOYMENT.md actualizado (estado de emergencyRefund, bytecode verification)
 
 ## ⚠️ Known Risks
 
