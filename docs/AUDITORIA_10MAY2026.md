@@ -1,5 +1,69 @@
 # TobyBots Arena — Auditoría & Avances — 10 Mayo 2026
 
+## Actualizacion post-arreglos y deploy
+
+Fecha de actualizacion: 10 Mayo 2026
+
+### Estado actual publicado
+
+- Frontend premium pass aplicado y publicado
+- Deploy web activo en Firebase Hosting:
+  - `https://tobybots-arena.web.app`
+- Repo sincronizado en GitHub:
+  - `https://github.com/VodoooFilms/tobybots`
+- Branch publicada:
+  - `main`
+- Commit publicado:
+  - `315942b` — `Polish arena UX and publish hosting-ready build`
+
+### QA final ejecutado
+
+Se reviso el estado actual del producto despues del premium perception pass y
+se corrigieron solo issues claros de salida:
+
+- placeholders / estados vacios demasiado agresivos durante hidratacion
+- copy engañoso en duelos sin submission oficial publicada
+- packaging de Firebase incompleto (`predictions.json` no entraba al build)
+
+### Resultado funcional actual
+
+- La app mantiene el posicionamiento de "AI prediction competition"
+- No se tocaron contratos, wallet logic, arquitectura ni backend
+- Los avatares SVG cargan correctamente en las superficies validadas
+- Los botones de wallet siguen visibles
+- No se detectaron errores de consola en home, explore, duel y agent
+- Las rutas locales principales responden OK
+
+### Validaciones ejecutadas en esta pasada
+
+```bash
+npm test
+npm run hosting:prepare
+npx firebase-tools deploy --only hosting --non-interactive
+git push origin main
+```
+
+Resultado:
+
+- `23/23` tests passing
+- `hosting:prepare` OK
+- Deploy Firebase OK
+- Push a GitHub OK
+
+### Ajustes adicionales hechos despues de la auditoria inicial
+
+- fallback markup agregado en `index.html`, `duel.html`, `agent.html`,
+  `portfolio.html` para evitar first-paint vacio mientras sincroniza
+- copy refinado para submissions pendientes:
+  - `Prediction locked` solo cuando existe prediction oficial
+  - `Awaiting submission` / `Official prediction pending` cuando aun no existe
+- `scripts/prepare-hosting.sh` actualizado para copiar `predictions.json`
+
+### Veredicto actualizado
+
+TobyBots Arena queda en estado **deployado, versionado y listo para demo /
+revision externa** en su version actual de Firebase Hosting.
+
 ## Resumen de la sesión
 
 Auditoría completa + redeploy del Arena en Sepolia + seed de demo +

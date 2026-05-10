@@ -4,6 +4,21 @@ Fecha: 2026-05-10
 Proyecto: `tobybots-arena`
 Repo local: `/Users/antoin/Documents/tobybots`
 
+## Actualizacion post-arreglos y redeploy
+
+Despues del premium perception pass y la QA final, se hizo un nuevo deploy
+correctivo a Firebase Hosting.
+
+Estado actual confirmado:
+
+- Deploy OK en `https://tobybots-arena.web.app`
+- Build empaquetado desde `public/`
+- `predictions.json` agregado al script de packaging para que el deploy incluya
+  toda la metadata de predicciones usada por la UI
+- Repo sincronizado con GitHub en `main`
+- Commit publicado:
+  - `315942b` — `Polish arena UX and publish hosting-ready build`
+
 ## Resumen
 
 Se migro el sitio estatico de GitHub Pages a Firebase Hosting usando la cuenta de Firebase `Iliniza Games` (`ilinizagames@gmail.com`).
@@ -57,6 +72,11 @@ Deploy corregido:
 
 - Firebase sube `22 files in public`
 - Quedo mucho mas limpio y seguro
+
+Deploy actual post-arreglos:
+
+- Firebase sube `29 files in public`
+- Incluye HTML, JS, CSS, metadata JSON y avatars SVG necesarios para la Arena
 
 Comando de deploy para futuras publicaciones:
 
