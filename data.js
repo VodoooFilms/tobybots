@@ -1,5 +1,5 @@
 // data.js — on-chain data fetching and model building
-import { CHAIN, AGENT_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js";
+import { CHAIN, AGENT_METADATA, PREDICTION_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js";
 import { formatTokenNumber, deriveTimeLabel, calculatePayout, shortAddress } from "./utils.js";
 
 // ─── Main orchestrator ─────────────────────────────────────────
@@ -52,7 +52,11 @@ async function buildAgent(id) {
     category: "Community Agent",
     verified: false,
     origin: "Community",
-    tagline: `${raw.name} entra a la arena buscando su primer gran duelo.`
+    tagline: `${raw.name} entra a la arena buscando su primer gran duelo.`,
+    provider: "Unknown",
+    model: "Unknown",
+    recentForm: "N/A",
+    streakLabel: "Sin historial"
   };
   const wins = Number(raw.wins);
   const losses = Number(raw.losses);
@@ -67,6 +71,11 @@ async function buildAgent(id) {
     specialty: raw.specialty,
     tagline: meta.tagline,
     origin: meta.origin,
+    provider: meta.provider,
+    model: meta.model,
+    avatar: meta.avatar || null,
+    statusTag: meta.statusTag || "Tracked agent",
+    heatTag: meta.heatTag || "Live",
     record: {
       wins,
       losses,
@@ -75,7 +84,10 @@ async function buildAgent(id) {
     stats: {
       totalBackedSignal: formatTokenNumber(raw.totalWagered),
       activeDuels: 0,
-      streak: totalMatches ? `Récord ${wins}-${losses}` : "Sin historial"
+      totalPredictions: totalMatches,
+      recentForm: meta.recentForm || "N/A",
+      streak: meta.streakLabel || (totalMatches ? `Récord ${wins}-${losses}` : "Sin historial"),
+      aliveSignal: meta.heatTag || "Live"
     }
   };
 }
@@ -119,6 +131,8 @@ async function buildDuel(rawDuel, agentsById, account) {
       winnerAgentId: Number(rawDuel.winningAgent) > 0 ? String(rawDuel.winningAgent) : null,
       winnerDeclaredLabel: Number(rawDuel.winningAgent) > 0 ? agentsById[String(rawDuel.winningAgent)]?.name || null : null
     },
+    predictions: buildPredictions(duelId, [agentAId, agentBId], agentsById),
+    liveSignal: deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal),
     userPosition: null,
     _account: account
   };
@@ -126,6 +140,8 @@ async function buildDuel(rawDuel, agentsById, account) {
   if (duel.status === "open") {
     agentsById[agentAId].stats.activeDuels += 1;
     agentsById[agentBId].stats.activeDuels += 1;
+    agentsById[agentAId].stats.totalPredictions += 1;
+    agentsById[agentBId].stats.totalPredictions += 1;
   }
 
   if (!account) return duel;
@@ -173,6 +189,52 @@ async function buildDuel(rawDuel, agentsById, account) {
   };
 
   return duel;
+}
+
+function buildPredictions(duelId, agentIds, agentsById) {
+  const duelPredictions = PREDICTION_METADATA[duelId] || {};
+  const byAgentId = {};
+
+  for (const agentId of agentIds) {
+    const raw = duelPredictions[agentId];
+    const agent = agentsById[agentId];
+    byAgentId[agentId] = raw ? {
+      ...raw,
+      duelId: String(raw.duelId),
+      agentId: String(raw.agentId),
+      provider: raw.provider || agent?.provider || "Unknown",
+      model: raw.model || agent?.model || "Unknown",
+      category: raw.category || agent?.specialty || "general",
+      confidence: Number(raw.confidence || 0)
+    } : {
+      id: `duel-${duelId}-agent-${agentId}-placeholder`,
+      duelId: String(duelId),
+      agentId: String(agentId),
+      predictionValue: "TBD",
+      predictionLabel: "Official prediction pending.",
+      confidence: 0,
+      provider: agent?.provider || "Unknown",
+      model: agent?.model || "Unknown",
+      category: agent?.specialty || "general",
+      shortReasoning: "No official submission has been published for this side yet.",
+      submittedAt: null,
+      sourceType: "official"
+    };
+  }
+
+  return { byAgentId };
+}
+
+function deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal) {
+  const duelPredictions = PREDICTION_METADATA[String(rawDuel.id)] || {};
+  const predictionA = duelPredictions[agentAId];
+  const predictionB = duelPredictions[agentBId];
+  const topConfidence = Math.max(Number(predictionA?.confidence || 0), Number(predictionB?.confidence || 0));
+
+  if (topConfidence >= 75) return "Confidence locked";
+  if (totalSignal >= 100) return "Most backed today";
+  if (agentsById[agentAId]?.stats.recentForm === "W-W-W" || agentsById[agentBId]?.stats.recentForm === "W-W-W") return "Hot streak";
+  return "New prediction submitted";
 }
 
 // ─── User ──────────────────────────────────────────────────────

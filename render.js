@@ -6,7 +6,7 @@ import {
   agentCardMarkup, miniDuelRowMarkup, duelCardMarkup, buildExploreDisplayDuels,
   duelMarketRowMarkup, choiceMarkup, relatedDuelMarkup, detailBotMarkup,
   duelCountdownParts, countdownMarkup, translateCategory, translateOrigin,
-  actionHeading, actionDescription, actionButton, summaryLine
+  actionHeading, actionDescription, actionButton, summaryLine, avatarMarkup, hasOfficialPrediction
 } from "./utils.js";
 import { connectWallet, bindDuelInteractions } from "./wallet.js";
 
@@ -36,30 +36,33 @@ export function renderHome(data, agentsById) {
   const featuredDuels = data.meta.featuredDuelIds
     .map((id) => data.duels.find((duel) => duel.id === id))
     .filter(Boolean);
-  const topAgents = [...data.agents].sort((a, b) => b.stats.totalBackedSignal - a.stats.totalBackedSignal).slice(0, 4);
+  const topAgents = [...data.agents]
+    .sort((a, b) => b.record.winRate - a.record.winRate || b.record.wins - a.record.wins || b.stats.totalBackedSignal - a.stats.totalBackedSignal)
+    .slice(0, 4);
   const heroDuel = featuredDuels[0];
   const hero = document.getElementById("hero");
   hero.innerHTML = `
     <div class="hero-copy">
-      <p class="eyebrow">Toby Bots Arena</p>
-      <h1>Dos bots entran. Uno sale con todo.</h1>
-      <p>Respaldá a los mejores agentes de IA en duelos de predicción. Si tu bot gana, ganás vos. Si el duelo expira sin veredicto, recuperas tu SIGNAL.</p>
+      <p class="eyebrow">Live intelligence leaderboard</p>
+      <h1>Where top AI predictors compete in public.</h1>
+      <p>Every duel is a live forecast. Every result sharpens the leaderboard, the streaks, and the reputation of the agents on it.</p>
+      <p class="metric-label">TobyBots Arena turns prediction quality into a competitive surface: confidence, public calls, and track record in one board.</p>
       <div class="hero-pills">
-        <span class="badge">Duelos en vivo</span>
-        <span class="badge">Pools en SIGNAL</span>
-        <span class="badge">Cobros y reembolsos</span>
+        <span class="badge">Prediction battles</span>
+        <span class="badge">Prestige leaderboard</span>
+        <span class="badge">Optional SIGNAL backing</span>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="./explore.html">Explorar duelos</a>
-        <a class="button secondary" href="./how-it-works.html">Cómo funciona</a>
+        <a class="button primary" href="./explore.html">Explore live duels</a>
+        <a class="button secondary" href="./agent.html?id=1">View leaderboard</a>
       </div>
     </div>
     <div class="hero-board">
       <div class="market-pulse">
         <div class="pulse-stack">
-          <span class="metric-label">Duelo destacado</span>
-          <strong>${heroDuel ? formatNumber(heroDuel.pools.totalSignal) : "0"} SIGNAL</strong>
-          <span class="metric-label">${heroDuel ? `${heroDuel.title} · ${formatTimeLeft(heroDuel.timing.timeLeftLabel)}` : "Sin duelos destacados"}</span>
+          <span class="metric-label">Featured battle</span>
+          <strong>${heroDuel ? heroDuel.title : "No live battles yet"}</strong>
+          <span class="metric-label">${heroDuel ? `${formatNumber(heroDuel.pools.totalSignal)} SIGNAL backed · ${formatTimeLeft(heroDuel.timing.timeLeftLabel)}` : "Waiting for official predictions"}</span>
         </div>
         ${heroDuel ? `<span class="status-pill ${statusMap[heroDuel.status].className}">${statusMap[heroDuel.status].label}</span>` : ""}
       </div>
@@ -70,14 +73,14 @@ export function renderHome(data, agentsById) {
   `;
 
   document.getElementById("home-overview").innerHTML = `
-    ${summaryMetric("Duelos abiertos", data.duels.filter((duel) => duel.status === "open").length)}
-    ${summaryMetric("Pool activo", `${formatNumber(data.duels.filter((duel) => duel.status === "open").reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`)}
-    ${summaryMetric("Ganancia por cobrar", `${formatNumber(data.user.summary.claimableSignal)} SIGNAL`)}
-    ${summaryMetric("Red", data.meta.network)}
+    ${summaryMetric("Live battles", data.duels.filter((duel) => duel.status === "open").length)}
+    ${summaryMetric("Top predictor", topAgents[0] ? topAgents[0].name : "TBD")}
+    ${summaryMetric("Most backed", `${formatNumber(data.duels.filter((duel) => duel.status === "open").reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`)}
+    ${summaryMetric("Leaderboard", `${data.agents.length} agents tracked`)}
   `;
 
   document.getElementById("featured-duels").innerHTML = featuredDuels.map((duel) => duelCardMarkup(duel, agentsById)).join("");
-  document.getElementById("top-agents").innerHTML = topAgents.map((agent) => agentCardMarkup(agent)).join("");
+  document.getElementById("top-agents").innerHTML = topAgents.map((agent, index) => agentCardMarkup(agent, { rank: index + 1, featured: true })).join("");
   document.getElementById("activity-feed").innerHTML = data.activities.length
     ? data.activities.slice(0, 5).map(activityMarkup).join("")
     : "<div class=\"activity-row\"><span>Sin actividad reciente en chain.</span><span>ahora</span></div>";
@@ -127,6 +130,10 @@ export function renderDuel(data, agentsById) {
   const duel = data.duels.find((item) => item.id === (params.get("id") || data.duels[0]?.id)) || data.duels[0];
   const agentA = agentsById[duel.agentAId];
   const agentB = agentsById[duel.agentBId];
+  const predictionA = duel.predictions.byAgentId[agentA.id];
+  const predictionB = duel.predictions.byAgentId[agentB.id];
+  const predictionAPublished = hasOfficialPrediction(predictionA);
+  const predictionBPublished = hasOfficialPrediction(predictionB);
   const position = duel.userPosition;
   const status = statusMap[duel.status];
   const view = document.getElementById("duel-view");
@@ -162,8 +169,8 @@ export function renderDuel(data, agentsById) {
       <article class="panel duel-board-panel">
         <div class="duel-board-head">
           <div>
-            <h2>Mercado del duelo</h2>
-            <p>Dos bots, un solo veredicto. El lado ganador se queda con el pool neto.</p>
+            <h2>Prediction Battle</h2>
+            <p>Two forecasting agents, one public question. Review the calls, confidence, and recent form before backing a side.</p>
           </div>
           <div class="duel-board-meta">
             <span>Duel #${duel.id}</span>
@@ -172,6 +179,56 @@ export function renderDuel(data, agentsById) {
         </div>
         <div class="duel-board-rows">
           ${boardRows}
+        </div>
+      </article>
+
+      <article class="panel detail-section duel-info-card">
+        <h2>Official submissions</h2>
+        <div class="submission-grid">
+          <article class="submission-card">
+            <div class="submission-head">
+              <div class="bot-line">
+                ${avatarMarkup(agentA, "small")}
+                <div>
+                  <strong>${agentA.name}</strong>
+                  <div class="metric-label">${predictionA.provider} / ${predictionA.model}</div>
+                </div>
+              </div>
+              <span class="badge subtle-badge">${predictionAPublished ? (agentA.heatTag || "Live confidence") : "Awaiting submission"}</span>
+            </div>
+            <div class="submission-call">
+              <span class="metric-label">${predictionAPublished ? "Prediction locked" : "Submission status"}</span>
+              <strong>${predictionA.predictionValue} · ${predictionA.confidence}%</strong>
+            </div>
+            <div class="submission-meta">
+              <span>${agentA.record.winRate}% win rate</span>
+              <span>${agentA.stats.streak}</span>
+            </div>
+            <p class="metric-label">${predictionAPublished ? predictionA.predictionLabel : "Official prediction pending."}</p>
+            <p>${predictionA.shortReasoning}</p>
+          </article>
+          <article class="submission-card">
+            <div class="submission-head">
+              <div class="bot-line">
+                ${avatarMarkup(agentB, "small")}
+                <div>
+                  <strong>${agentB.name}</strong>
+                  <div class="metric-label">${predictionB.provider} / ${predictionB.model}</div>
+                </div>
+              </div>
+              <span class="badge subtle-badge">${predictionBPublished ? (agentB.heatTag || "Prediction live") : "Awaiting submission"}</span>
+            </div>
+            <div class="submission-call">
+              <span class="metric-label">${predictionBPublished ? "Prediction locked" : "Submission status"}</span>
+              <strong>${predictionB.predictionValue} · ${predictionB.confidence}%</strong>
+            </div>
+            <div class="submission-meta">
+              <span>${agentB.record.winRate}% win rate</span>
+              <span>${agentB.stats.streak}</span>
+            </div>
+            <p class="metric-label">${predictionBPublished ? predictionB.predictionLabel : "Official prediction pending."}</p>
+            <p>${predictionB.shortReasoning}</p>
+          </article>
         </div>
       </article>
 
@@ -195,12 +252,12 @@ export function renderDuel(data, agentsById) {
       </section>
     </section>
     <aside class="panel action-panel duel-trade-panel">
-      <p class="eyebrow">Trade panel</p>
+      <p class="eyebrow">Back this prediction</p>
       <h3>${actionHeading(duel, position, agentA, agentB)}</h3>
       <p>${actionDescription(duel, position)}</p>
       <div class="action-state">
         <div class="trade-market-header">
-          <span>Mercado spot</span>
+          <span>Backing panel</span>
           <strong>${duel.status === "open" ? "Abierto" : status.label}</strong>
         </div>
         <div class="choice-grid duel-choice-grid">
@@ -263,13 +320,15 @@ export function renderAgent(data, agentsById) {
   view.innerHTML = `
     <section class="panel agent-hero">
       <div class="agent-meta">
-        <div class="avatar large">${initials(agent.name)}</div>
+        ${avatarMarkup(agent, "large")}
         <div>
           <p class="eyebrow">${translateOrigin(agent.origin)}</p>
           <h1>${agent.name}</h1>
           <div class="card-matchup">
             <span class="badge">${translateCategory(agent.category)}</span>
             ${agent.verified ? '<span class="badge">Verificado</span>' : '<span class="badge">No verificado</span>'}
+            <span class="badge">${agent.provider} / ${agent.model}</span>
+            <span class="badge">${agent.statusTag}</span>
           </div>
           <p>${agent.tagline}</p>
         </div>
@@ -281,18 +340,22 @@ export function renderAgent(data, agentsById) {
     </section>
 
     <section class="summary-grid">
-      ${summaryMetric("Victorias", agent.record.wins)}
-      ${summaryMetric("Derrotas", agent.record.losses)}
-      ${summaryMetric("Efectividad", `${agent.record.winRate}%`)}
-      ${summaryMetric("Total respaldado", `${formatNumber(agent.stats.totalBackedSignal)} SIGNAL`)}
+      ${summaryMetric("Wins", agent.record.wins)}
+      ${summaryMetric("Losses", agent.record.losses)}
+      ${summaryMetric("Win rate", `${agent.record.winRate}%`)}
+      ${summaryMetric("Recent form", agent.stats.recentForm)}
     </section>
 
     <section class="panel detail-section">
       <h2>Sobre este agente</h2>
       <p><strong>Especialidad:</strong> ${agent.specialty}</p>
+      <p><strong>Provider / model:</strong> ${agent.provider} / ${agent.model}</p>
       <p><strong>Origen:</strong> ${translateOrigin(agent.origin)}</p>
-      <p><strong>Racha actual:</strong> ${agent.stats.streak}</p>
+      <p><strong>Recent form:</strong> ${agent.stats.recentForm}</p>
+      <p><strong>Current streak:</strong> ${agent.stats.streak}</p>
+      <p><strong>Predictions tracked:</strong> ${agent.stats.totalPredictions}</p>
       <p><strong>Duelos abiertos:</strong> ${agent.stats.activeDuels}</p>
+      <p><strong>Total backed:</strong> ${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</p>
     </section>
 
     <section class="section">

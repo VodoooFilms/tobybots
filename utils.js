@@ -16,6 +16,11 @@ export function formatIso(value) {
   return new Intl.DateTimeFormat("es-EC", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
 }
 
+export function formatPredictionTimestamp(value) {
+  if (!value) return "Pending";
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
+}
+
 export function relativeTimestamp(value) {
   const diffMinutes = Math.max(1, Math.round((Date.now() - new Date(value).getTime()) / 60000));
   if (diffMinutes < 60) return `hace ${diffMinutes} min`;
@@ -38,6 +43,24 @@ export function shortAddress(address) {
 
 export function initials(name) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() || "").join("");
+}
+
+export function truncateText(value, maxLength = 84) {
+  if (!value) return "";
+  return value.length > maxLength ? `${value.slice(0, maxLength).trim()}...` : value;
+}
+
+export function avatarMarkup(agent, size = "default") {
+  const className = size === "large" ? "avatar large avatar-image" : size === "small" ? "avatar small avatar-image" : "avatar avatar-image";
+  if (agent.avatar) {
+    return `<span class="${className}"><img src="${agent.avatar}" alt="${agent.name}" /></span>`;
+  }
+  return `<span class="${size === "large" ? "avatar large" : size === "small" ? "avatar small" : "avatar"}">${initials(agent.name)}</span>`;
+}
+
+export function hasOfficialPrediction(prediction) {
+  if (!prediction) return false;
+  return prediction.predictionValue && prediction.predictionValue !== "TBD" && Number(prediction.confidence) > 0;
 }
 
 // ─── Math ──────────────────────────────────────────────────────
@@ -123,7 +146,7 @@ export function translateOrigin(value) {
 
 export function actionHeading(duel, position, agentA, agentB) {
   if (!duel._account) return "Conecta tu wallet";
-  if (duel.status === "open" && !position) return "Respalda un bot";
+  if (duel.status === "open" && !position) return "Back the agent you trust";
   if (position?.status === "won_claim_available") return `Cobrar victoria de ${agentName(position.selectedAgentId, agentA, agentB)}`;
   if (position?.status === "refund_available") return "Cobrar reembolso";
   if (duel.status === "refund_available" && !position) return "Abrir refunds";
@@ -132,7 +155,7 @@ export function actionHeading(duel, position, agentA, agentB) {
 
 export function actionDescription(duel, position) {
   if (!duel._account) return "Conecta MetaMask en Sepolia para ver tus posiciones reales y operar con SIGNAL.";
-  if (duel.status === "open" && !position) return "Aprueba SIGNAL, elige un lado y entra al duelo antes del cierre.";
+  if (duel.status === "open" && !position) return "Review each submission, compare confidence and track record, then back the forecast you trust.";
   if (position?.status === "won_claim_available") return "Esta posición ganó. Tu payout ya está listo para cobrar.";
   if (position?.status === "refund_available") return "Este duelo expiró sin veredicto. Tu apuesta original puede volver a tu wallet.";
   if (duel.status === "refund_available" && !position) return "El duelo venció sin settlement. Cualquier wallet puede desbloquear refunds.";
@@ -142,7 +165,7 @@ export function actionDescription(duel, position) {
 
 export function actionButton(duel, position) {
   if (!duel._account) return "Conectar billetera";
-  if (duel.status === "open" && !position) return "Aprobar y respaldar";
+  if (duel.status === "open" && !position) return "Back this prediction";
   if (position?.status === "won_claim_available") return "Cobrar ganancia";
   if (position?.status === "refund_available") return "Cobrar reembolso";
   if (duel.status === "refund_available" && !position) return "Abrir refunds";
@@ -189,6 +212,26 @@ export function activityMarkup(activity) {
   return `<div class="activity-row"><span>${activity.label}</span><span>${relativeTimestamp(activity.timestamp)}</span></div>`;
 }
 
+export function recentFormMarkup(form) {
+  const tokens = (form || "")
+    .split("-")
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .slice(0, 5);
+
+  if (!tokens.length) return '<div class="form-strip"><span class="form-chip neutral">N/A</span></div>';
+
+  return `
+    <div class="form-strip">
+      ${tokens.map((token) => {
+        const normalized = token.toUpperCase();
+        const className = normalized === "W" ? "win" : normalized === "L" ? "loss" : "neutral";
+        return `<span class="form-chip ${className}">${normalized}</span>`;
+      }).join("")}
+    </div>
+  `;
+}
+
 export function positionMarkup(position) {
   const state = positionMap[position.status];
   const action = position.status === "won_claim_available" ? "Cobrar ganancia" : position.status === "refund_available" ? "Cobrar reembolso" : "Ver duelo";
@@ -206,15 +249,47 @@ export function positionMarkup(position) {
   `;
 }
 
-export function agentCardMarkup(agent) {
+export function agentCardMarkup(agent, options = {}) {
+  const { rank = null, featured = false } = options;
+  const prestigeClass = rank && rank <= 3 ? ` podium podium-${rank}` : "";
+  const cueLabel = agent.heatTag || agent.statusTag;
+  const liveLabel = agent.stats.activeDuels ? `${agent.stats.activeDuels} live duel${agent.stats.activeDuels === 1 ? "" : "s"}` : agent.stats.aliveSignal;
   return `
-    <article class="agent-card">
-      <div class="avatar large">${initials(agent.name)}</div>
-      <h3>${agent.name}</h3>
-      <span class="badge">${translateCategory(agent.category)}</span>
-      <p>${agent.specialty}</p>
-      <div class="stats-row"><span class="metric-label">Récord</span><strong>${agent.record.wins}W - ${agent.record.losses}L</strong></div>
-      <div class="stats-row"><span class="metric-label">Respaldado</span><strong>${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</strong></div>
+    <article class="agent-card${featured ? " featured-leaderboard-card" : ""}${prestigeClass}">
+      <div class="card-meta">
+        <div class="leaderboard-meta">
+          ${rank ? `<span class="leaderboard-rank">#${rank}</span>` : `<span class="status-pill status-open">${agent.statusTag}</span>`}
+          <span class="status-pill status-open">${cueLabel}</span>
+        </div>
+        <span class="metric-label">${liveLabel}</span>
+      </div>
+      <div class="agent-card-head">
+        ${avatarMarkup(agent, "large")}
+        <div>
+          <h3>${agent.name}</h3>
+          <p>${agent.specialty}</p>
+        </div>
+      </div>
+      <div class="card-matchup">
+        <span class="badge">${translateCategory(agent.category)}</span>
+        <span class="badge">${agent.provider} / ${agent.model}</span>
+      </div>
+      <div class="agent-card-stats">
+        <div><span class="metric-label">Win rate</span><strong>${agent.record.winRate}%</strong></div>
+        <div><span class="metric-label">Record</span><strong>${agent.record.wins}-${agent.record.losses}</strong></div>
+        <div><span class="metric-label">Most backed</span><strong>${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</strong></div>
+      </div>
+      <div class="agent-form-row">
+        <div>
+          <span class="metric-label">Recent form</span>
+          ${recentFormMarkup(agent.stats.recentForm)}
+        </div>
+        <div class="metric-copy">${agent.stats.streak}</div>
+      </div>
+      <div class="card-footer">
+        <div class="metric-label">Trending predictor</div>
+        <div class="metric-label">${agent.statusTag}</div>
+      </div>
       <a class="button secondary" href="./agent.html?id=${agent.id}">Ver perfil</a>
     </article>
   `;
@@ -227,7 +302,7 @@ export function miniDuelRowMarkup(duel, agentsById) {
     <a class="mini-row" href="./duel.html?id=${duel.id}">
       <div>
         <strong>${duel.title}</strong>
-        <span>${agentA.name} ${duel.pools.agentAPercent}% · ${agentB.name} ${duel.pools.agentBPercent}%</span>
+        <span>${duel.liveSignal} · ${agentA.name} ${duel.predictions.byAgentId[agentA.id].confidence}% · ${agentB.name} ${duel.predictions.byAgentId[agentB.id].confidence}%</span>
       </div>
       <span>${formatTimeLeft(duel.timing.timeLeftLabel)}</span>
     </a>
@@ -238,48 +313,70 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
   const agentA = agentsById[duel.agentAId];
   const agentB = agentsById[duel.agentBId];
   const status = statusMap[duel.status];
+  const predictionA = duel.predictions.byAgentId[agentA.id];
+  const predictionB = duel.predictions.byAgentId[agentB.id];
+  const hasPredictionA = hasOfficialPrediction(predictionA);
+  const hasPredictionB = hasOfficialPrediction(predictionB);
+  const leadPrediction = predictionA.confidence >= predictionB.confidence
+    ? { agent: agentA, prediction: predictionA, percent: duel.pools.agentAPercent, signal: duel.pools.agentASignal }
+    : { agent: agentB, prediction: predictionB, percent: duel.pools.agentBPercent, signal: duel.pools.agentBSignal };
+  const trailingPrediction = leadPrediction.agent.id === agentA.id
+    ? { agent: agentB, prediction: predictionB }
+    : { agent: agentA, prediction: predictionA };
   return `
     <a class="duel-card duel-card-link" href="./duel.html?id=${duel.id}" data-instance="${instanceIndex}">
       <div class="card-meta">
-        <span class="status-pill ${status.className}">${status.label}</span>
-        <span class="metric-label">${formatTimeLeft(duel.timing.timeLeftLabel)}</span>
+        <div class="leaderboard-meta">
+          <span class="status-pill ${status.className}">${status.label}</span>
+          <span class="badge subtle-badge">${hasPredictionA || hasPredictionB ? "Prediction locked" : "Awaiting submissions"}</span>
+        </div>
+        <span class="metric-label">${duel.liveSignal}</span>
       </div>
       <h3>${duel.title}</h3>
       <div class="duel-bots">
         <div class="bot-line">
-          <span class="avatar">${initials(agentA.name)}</span>
+          ${avatarMarkup(agentA, "small")}
           <div>
             <strong>${agentA.name}</strong>
-            <div class="metric-label">${translateCategory(agentA.category)}</div>
+            <div class="metric-label">${predictionA.provider} / ${predictionA.model}</div>
           </div>
         </div>
         <div class="bot-line">
-          <span class="avatar">${initials(agentB.name)}</span>
+          ${avatarMarkup(agentB, "small")}
           <div>
             <strong>${agentB.name}</strong>
-            <div class="metric-label">${translateCategory(agentB.category)}</div>
+            <div class="metric-label">${predictionB.provider} / ${predictionB.model}</div>
           </div>
         </div>
       </div>
-      <p>${duel.prompt}</p>
+      <p>${truncateText(duel.prompt, 96)}</p>
+      <div class="duel-card-signal">
+        <div>
+          <span class="metric-label">${hasPredictionA || hasPredictionB ? "Live confidence" : "Submission status"}</span>
+          <strong>${hasPredictionA || hasPredictionB ? `${leadPrediction.agent.name} ${leadPrediction.prediction.confidence}%` : "No official call yet"}</strong>
+        </div>
+        <div>
+          <span class="metric-label">Most backed</span>
+          <strong>${leadPrediction.percent}% of pool</strong>
+        </div>
+      </div>
       <div class="outcome-book">
-        <div class="outcome-row">
+        <div class="outcome-row ${leadPrediction.agent.id === agentA.id ? "is-leading" : ""}">
           <span>${agentA.name}</span>
-          <strong>${duel.pools.agentAPercent}%</strong>
+          <strong>${predictionA.predictionValue} · ${predictionA.confidence}%</strong>
         </div>
-        <div class="outcome-row">
+        <div class="outcome-row ${leadPrediction.agent.id === agentB.id ? "is-leading" : ""}">
           <span>${agentB.name}</span>
-          <strong>${duel.pools.agentBPercent}%</strong>
+          <strong>${predictionB.predictionValue} · ${predictionB.confidence}%</strong>
         </div>
+      </div>
+      <div class="duel-card-teaser">
+        <span class="metric-label">${truncateText(leadPrediction.prediction.shortReasoning, 82)}</span>
       </div>
       <div class="split-bar"><div class="split-fill" style="width: ${duel.pools.agentAPercent}%"></div></div>
-      <div class="trade-actions">
-        <span class="trade-button yes">${compact ? "Abrir" : agentA.name}</span>
-        <span class="trade-button no">${compact ? "Ver duelo" : agentB.name}</span>
-      </div>
       <div class="card-footer">
-        <div class="metric-copy">Pool ${formatNumber(duel.pools.totalSignal)} SIGNAL</div>
-        <div class="metric-label">${duel.result.winnerDeclaredLabel ? `Ganó ${duel.result.winnerDeclaredLabel}` : "Sepolia live"}</div>
+        <div class="metric-copy">${hasPredictionA || hasPredictionB ? `${leadPrediction.agent.name} leads ${leadPrediction.prediction.confidence}% to ${trailingPrediction.prediction.confidence}% confidence` : "Official submissions pending"}</div>
+        <div class="metric-label">${formatNumber(duel.pools.totalSignal)} SIGNAL backed</div>
       </div>
     </a>
   `;
@@ -289,29 +386,43 @@ export function duelMarketRowMarkup(agent, duel, position, selected, slotLabel) 
   const percent = agent.id === duel.agentAId ? duel.pools.agentAPercent : duel.pools.agentBPercent;
   const signal = agent.id === duel.agentAId ? duel.pools.agentASignal : duel.pools.agentBSignal;
   const selectedLabel = position?.selectedAgentId === agent.id ? "Tu lado" : selected ? "Lado sugerido" : "En juego";
+  const prediction = duel.predictions.byAgentId[agent.id];
+  const published = hasOfficialPrediction(prediction);
 
   return `
     <div class="duel-market-row ${selected ? "is-selected" : ""}">
       <div class="duel-market-agent">
-        <span class="avatar large">${initials(agent.name)}</span>
+        ${avatarMarkup(agent, "large")}
         <div>
           <div class="duel-market-label">${slotLabel}</div>
           <strong>${agent.name}</strong>
-          <div class="metric-label">${agent.tagline}</div>
+          <div class="metric-label">${agent.provider} / ${agent.model} · ${agent.statusTag}</div>
         </div>
       </div>
       <div class="duel-market-stats">
         <div>
+          <span>Prediction</span>
+          <strong>${prediction.predictionValue} · ${prediction.confidence}%</strong>
+        </div>
+        <div>
+          <span>Provider</span>
+          <strong>${prediction.provider} / ${prediction.model}</strong>
+        </div>
+        <div>
+          <span>Track record</span>
+          <strong>${agent.record.wins}W - ${agent.record.losses}L</strong>
+        </div>
+      </div>
+      <div class="metric-label">${published ? prediction.predictionLabel : "Official prediction pending."}</div>
+      <div class="metric-label">${truncateText(prediction.shortReasoning, 120)}</div>
+      <div class="duel-market-stats">
+        <div>
           <span>${selectedLabel}</span>
-          <strong>${percent}% del pool</strong>
+          <strong>${percent}% of backing</strong>
         </div>
         <div>
           <span>Pool</span>
           <strong>${formatNumber(signal)} SIGNAL</strong>
-        </div>
-        <div>
-          <span>Récord</span>
-          <strong>${agent.record.wins}W - ${agent.record.losses}L</strong>
         </div>
       </div>
     </div>
@@ -341,7 +452,7 @@ export function detailBotMarkup(agent, percent) {
   return `
     <div class="bot-panel">
       <div class="bot-line">
-        <span class="avatar large">${initials(agent.name)}</span>
+        ${avatarMarkup(agent, "large")}
         <div>
           <strong>${agent.name}</strong>
           <div class="metric-label">${translateCategory(agent.category)}</div>

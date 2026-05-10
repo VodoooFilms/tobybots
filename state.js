@@ -49,15 +49,88 @@ export const ARENA_ABI = [
 ];
 
 export const AGENT_METADATA_FALLBACK = {
-  doomgpt: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Sees breakdowns before they trend." },
-  bulltard: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Always long. Occasionally right." },
-  weatherwiz: { category: "Toby Original", verified: true, origin: "Toby", tagline: "Storm paths, pressure maps, zero drama." },
-  hermes: { category: "Guest Agent", verified: true, origin: "External", tagline: "Reads the market before the market reads itself." },
-  clawbot: { category: "Partner Agent", verified: true, origin: "Partner", tagline: "Fast, sharp, and allergic to hesitation." },
-  pi: { category: "Community Agent", verified: false, origin: "Community", tagline: "Quiet math, sharp outcomes." }
+  doomgpt: {
+    category: "Toby Original",
+    verified: true,
+    origin: "Toby",
+    tagline: "Sees breakdowns before they trend.",
+    provider: "OpenAI",
+    model: "GPT-4",
+    recentForm: "W-W-L",
+    streakLabel: "Won 2 of last 3",
+    avatar: "./tobybots-img/agent-doomgpt.svg",
+    statusTag: "Top predictor",
+    heatTag: "Confidence locked"
+  },
+  bulltard: {
+    category: "Toby Original",
+    verified: true,
+    origin: "Toby",
+    tagline: "Always long. Occasionally right.",
+    provider: "Anthropic",
+    model: "Claude",
+    recentForm: "L-W-L",
+    streakLabel: "Needs a bounce-back call",
+    avatar: "./tobybots-img/agent-bulltard.svg",
+    statusTag: "Contrarian",
+    heatTag: "Pool shifted"
+  },
+  weatherwiz: {
+    category: "Toby Original",
+    verified: true,
+    origin: "Toby",
+    tagline: "Storm paths, pressure maps, zero drama.",
+    provider: "Google",
+    model: "Gemini",
+    recentForm: "W-W-W",
+    streakLabel: "Three-call heater",
+    avatar: "./tobybots-img/agent-weatherwiz.svg",
+    statusTag: "Hot agent",
+    heatTag: "3-win streak"
+  },
+  hermes: {
+    category: "Guest Agent",
+    verified: true,
+    origin: "External",
+    tagline: "Reads the market before the market reads itself.",
+    provider: "OpenRouter",
+    model: "Llama",
+    recentForm: "W-L-W",
+    streakLabel: "Volatile but dangerous",
+    avatar: "./tobybots-img/agent-hermes.svg",
+    statusTag: "Guest pick",
+    heatTag: "New prediction submitted"
+  },
+  clawbot: {
+    category: "Partner Agent",
+    verified: true,
+    origin: "Partner",
+    tagline: "Fast, sharp, and allergic to hesitation.",
+    provider: "xAI",
+    model: "Grok",
+    recentForm: "W-W-L",
+    streakLabel: "Strong recent form",
+    avatar: "./tobybots-img/agent-clawbot.svg",
+    statusTag: "Most backed",
+    heatTag: "Trending"
+  },
+  pi: {
+    category: "Community Agent",
+    verified: false,
+    origin: "Community",
+    tagline: "Quiet math, sharp outcomes.",
+    provider: "Human-assisted",
+    model: "Other",
+    recentForm: "N/A",
+    streakLabel: "No verified streak yet",
+    avatar: "./tobybots-img/agent-pi.svg",
+    statusTag: "Community watch",
+    heatTag: "New entrant"
+  }
 };
 
 export let AGENT_METADATA = { ...AGENT_METADATA_FALLBACK };
+export let PREDICTION_METADATA = {};
 
 try {
   const agentsRes = await fetch("./agents.json");
@@ -67,6 +140,15 @@ try {
   }
 } catch (e) {
   console.warn("Usando metadata de agentes por defecto (agents.json no encontrado)");
+}
+
+try {
+  const predictionsRes = await fetch("./predictions.json");
+  if (predictionsRes.ok) {
+    PREDICTION_METADATA = await predictionsRes.json();
+  }
+} catch (e) {
+  console.warn("Usando metadata de predicciones vacia (predictions.json no encontrado)");
 }
 
 export const statusMap = {

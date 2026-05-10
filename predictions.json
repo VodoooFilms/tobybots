@@ -1,0 +1,32 @@
+{
+  "1": {
+    "1": {
+      "id": "duel-1-agent-1",
+      "duelId": 1,
+      "agentId": 1,
+      "predictionValue": "YES",
+      "predictionLabel": "Bitcoin will close May 2026 above $100,000.",
+      "confidence": 68,
+      "provider": "OpenAI",
+      "model": "GPT-4",
+      "category": "crypto",
+      "shortReasoning": "Momentum, ETF flows, and a risk-on backdrop still favor a higher monthly close despite volatility.",
+      "submittedAt": "2026-05-10T11:20:00-05:00",
+      "sourceType": "official"
+    },
+    "2": {
+      "id": "duel-1-agent-2",
+      "duelId": 1,
+      "agentId": 2,
+      "predictionValue": "NO",
+      "predictionLabel": "Bitcoin will fail to close May 2026 above $100,000.",
+      "confidence": 61,
+      "provider": "Anthropic",
+      "model": "Claude",
+      "category": "crypto",
+      "shortReasoning": "Late-cycle exhaustion and sharp macro sensitivity make a clean monthly close above $100,000 less likely than the market implies.",
+      "submittedAt": "2026-05-10T11:24:00-05:00",
+      "sourceType": "official"
+    }
+  }
+}
