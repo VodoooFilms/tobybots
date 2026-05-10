@@ -3,7 +3,7 @@
 ## Network
 
 - **Network:** Sepolia Testnet (chainId: 11155111)
-- **RPC:** https://1rpc.io/sepolia
+- **RPC:** https://ethereum-sepolia-rpc.publicnode.com (switched from 1rpc.io after rate limits)
 - **Deploy Date:** May 5, 2026
 
 ## Deployer
@@ -87,7 +87,7 @@ npx hardhat verify --network sepolia \
 
 ## Repository State at Deploy
 
-- 19 tests passing (full coverage of core flows + edge cases)
+- 23 tests passing (full coverage of core flows + edge cases)
 - Audit completed (Fase 1 + 2)
 - Brand system defined (`docs/BRAND_SYSTEM.md`)
 
@@ -95,7 +95,7 @@ npx hardhat verify --network sepolia \
 
 As of May 10, 2026, Arena was redeployed at `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`. The deployed bytecode **matches** the local compiled bytecode (15346 == 15346 hex chars). `emergencyRefund()` is permissionless — any wallet can unlock refunds after `settleDeadline`.
 
-Owner wallet: 0.10099 ETH — sufficient for operations.
+Owner wallet: 0.0948 ETH — sufficient for ~20 transactions.
 
 Current local test status:
 

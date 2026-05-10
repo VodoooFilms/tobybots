@@ -26,8 +26,8 @@
 
 ## ✅ Network & Wallet
 
-- [x] Sepolia RPC confirmed working (1rpc.io)
-- [x] Deployer wallet has ETH for operations (0.101 ETH as of May 9, 2026)
+- [x] Sepolia RPC confirmed working (publicnode.com, switched from 1rpc.io)
+- [x] Deployer wallet has ETH for operations (~0.095 ETH as of May 10, 2026)
 - [x] Deployer wallet holds 100M $SIGNAL (full supply)
 - [ ] Test users funded with $SIGNAL (depends on demo prep)
 - [ ] Test users have Sepolia ETH (they use faucets)
@@ -59,7 +59,7 @@ Only the owner can call `settle()`. `emergencyRefund()` is permissionless after 
 
 **Mitigation for demo:** Owner wallet is controlled by the team. Acceptable for testnet.
 
-**Current nuance:** this permissionless refund unlock exists in local code and tests, but the live Sepolia Arena has not been redeployed yet.
+**Current nuance:** this permissionless refund unlock exists in live Sepolia Arena (redeployed May 10, 2026 at 0xB10F...B4).
 
 ### Single-bet restriction
 
@@ -87,7 +87,7 @@ All $SIGNAL supply (100M), contract ownership, and settlement power are in one w
 
 ### Low operator ETH balance
 
-The owner wallet currently holds `0.000991372021605331 ETH`, which is not enough for comfortable redeploys, funding flows, or repeated settlement operations.
+The owner wallet currently holds `0.0948 ETH`, which is enough for ~20 transactions.
 
 **Mitigation:** top up Sepolia ETH before any new demo prep or contract migration.
 

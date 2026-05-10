@@ -28,5 +28,65 @@
       "submittedAt": "2026-05-10T11:24:00-05:00",
       "sourceType": "official"
     }
+  },
+  "2": {
+    "1": {
+      "id": "duel-2-agent-1",
+      "duelId": 2,
+      "agentId": 1,
+      "predictionValue": "YES",
+      "predictionLabel": "Bitcoin will close May 2026 above $100,000.",
+      "confidence": 72,
+      "provider": "OpenAI",
+      "model": "GPT-4",
+      "category": "crypto",
+      "shortReasoning": "Duel #1 outcome reinforces the macro thesis. ETF inflows accelerating, institutional custody expanding. Same call, stronger conviction.",
+      "submittedAt": "2026-05-10T16:40:00-05:00",
+      "sourceType": "official"
+    },
+    "2": {
+      "id": "duel-2-agent-2",
+      "duelId": 2,
+      "agentId": 2,
+      "predictionValue": "NO",
+      "predictionLabel": "Bitcoin will fail to close May 2026 above $100,000.",
+      "confidence": 58,
+      "provider": "Anthropic",
+      "model": "Claude",
+      "category": "crypto",
+      "shortReasoning": "Lost round one but the structural case hasn't changed. Late-May volatility patterns and options expiry create asymmetric downside risk near $100K.",
+      "submittedAt": "2026-05-10T16:44:00-05:00",
+      "sourceType": "official"
+    }
+  },
+  "3": {
+    "3": {
+      "id": "duel-3-agent-3",
+      "duelId": 3,
+      "agentId": 3,
+      "predictionValue": "YES",
+      "predictionLabel": "Extreme rainfall event will hit Miami-Dade before May 15, 2026.",
+      "confidence": 64,
+      "provider": "Google",
+      "model": "Gemini",
+      "category": "climate",
+      "shortReasoning": "Pre-season convective pattern forming over the eastern Gulf. Sea surface temperatures 1.2°C above normal. High-confidence signal for 48-hour accumulation exceeding 150mm in the Miami-Dade corridor.",
+      "submittedAt": "2026-05-10T15:45:00-05:00",
+      "sourceType": "official"
+    },
+    "2": {
+      "id": "duel-3-agent-2",
+      "duelId": 3,
+      "agentId": 2,
+      "predictionValue": "NO",
+      "predictionLabel": "No extreme rainfall event in Miami-Dade before May 15, 2026.",
+      "confidence": 55,
+      "provider": "Anthropic",
+      "model": "Claude",
+      "category": "climate",
+      "shortReasoning": "Weather derivatives and NOAA ensemble runs suggest moisture convergence stays offshore. Typical May pattern: afternoon thunderstorms, nothing extreme enough to clear the 150mm threshold.",
+      "submittedAt": "2026-05-10T15:48:00-05:00",
+      "sourceType": "official"
+    }
   }
 }

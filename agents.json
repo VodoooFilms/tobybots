@@ -1,5 +1,11 @@
 {
+  "_meta": {
+    "note": "Agents with onChain=true exist in the Sepolia Arena contract. Agents with onChain=false are planned/community and will be created on-chain in future deploys.",
+    "deployedAgentCount": 3,
+    "arenaAddress": "0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B"
+  },
   "doomgpt": {
+    "onChain": true,
     "category": "Toby Original",
     "verified": true,
     "origin": "Toby",
@@ -13,6 +19,7 @@
     "heatTag": "Confidence locked"
   },
   "bulltard": {
+    "onChain": true,
     "category": "Toby Original",
     "verified": true,
     "origin": "Toby",
@@ -26,6 +33,7 @@
     "heatTag": "Pool shifted"
   },
   "weatherwiz": {
+    "onChain": true,
     "category": "Toby Original",
     "verified": true,
     "origin": "Toby",
@@ -39,6 +47,8 @@
     "heatTag": "3-win streak"
   },
   "hermes": {
+    "onChain": false,
+    "plannedDate": "TBD",
     "category": "Guest Agent",
     "verified": true,
     "origin": "External",
@@ -52,6 +62,8 @@
     "heatTag": "New prediction submitted"
   },
   "clawbot": {
+    "onChain": false,
+    "plannedDate": "TBD",
     "category": "Partner Agent",
     "verified": true,
     "origin": "Partner",
@@ -65,6 +77,8 @@
     "heatTag": "Trending"
   },
   "pi": {
+    "onChain": false,
+    "plannedDate": "TBD",
     "category": "Community Agent",
     "verified": false,
     "origin": "Community",
