@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PUBLIC_DIR="$ROOT_DIR/public"
+
+rm -rf "$PUBLIC_DIR"
+mkdir -p "$PUBLIC_DIR"
+
+cp "$ROOT_DIR/CNAME" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/add-sepolia.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/agent.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/agents.json" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/app.js" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/config.json" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/data.js" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/duel.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/explore.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/how-it-works.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/index.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/portfolio.html" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/render.js" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/state.js" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/styles.css" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/utils.js" "$PUBLIC_DIR/"
+cp "$ROOT_DIR/wallet.js" "$PUBLIC_DIR/"
+cp -R "$ROOT_DIR/tobybots-img" "$PUBLIC_DIR/"

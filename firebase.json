@@ -1,0 +1,12 @@
+{
+  "hosting": {
+    "site": "tobybots-arena",
+    "public": "public",
+    "predeploy": "npm run hosting:prepare",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*"
+    ]
+  }
+}

@@ -271,6 +271,34 @@ RPC: `https://ethereum-sepolia-rpc.publicnode.com`
 
 La capa de config runtime existe: `config.json` se carga al iniciar y las direcciones se leen desde `state.js`.
 
+## Hosting y dominio
+
+El frontend público se publica en Firebase Hosting.
+
+Configuración actual:
+
+- proyecto Firebase: `tobybots-arena`
+- sitio Firebase Hosting: `tobybots-arena`
+- carpeta publicada: `public`
+- `predeploy`: `npm run hosting:prepare`
+
+Referencias:
+
+- [firebase.json](/Users/antoin/Documents/tobybots/firebase.json)
+- [.firebaserc](/Users/antoin/Documents/tobybots/.firebaserc)
+- [scripts/prepare-hosting.sh](/Users/antoin/Documents/tobybots/scripts/prepare-hosting.sh)
+
+Dominios conectados:
+
+- `tobybots.com` -> Firebase Hosting
+- `www.tobybots.com` -> `CNAME tobybots-arena.web.app`
+
+Nota operativa:
+
+- si `www.tobybots.com` fue movido recientemente desde otro proveedor, Firebase puede quedar un rato en `Requiere configuración` mientras termina la validación ACME y la emisión del certificado SSL
+- durante esa ventana, el DNS puede ya estar correcto pero `https://www.tobybots.com` todavía mostrar error de certificado hasta que Firebase termine de provisionarlo
+- no conviene seguir cambiando DNS durante esa etapa
+
 ## Comandos útiles
 
 Instalación:
@@ -319,6 +347,18 @@ Verificación rápida del estado live:
 
 ```bash
 npx hardhat run scripts/verify-deploy.js --network sepolia
+```
+
+Preparar artefactos para Firebase Hosting:
+
+```bash
+npm run hosting:prepare
+```
+
+Deploy de Hosting:
+
+```bash
+firebase deploy --only hosting
 ```
 
 ## Variables de entorno
