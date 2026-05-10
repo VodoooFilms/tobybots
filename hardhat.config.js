@@ -12,7 +12,7 @@ module.exports = {
   },
   networks: {
     sepolia: {
-      url: process.env.SEPOLIA_RPC || "https://1rpc.io/sepolia",
+      url: process.env.SEPOLIA_RPC || "https://ethereum-sepolia-rpc.publicnode.com",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
     hardhat: {

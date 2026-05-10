@@ -36,20 +36,27 @@ State:
 
 | Field | Value |
 |-------|-------|
-| **Address** | `0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1` |
+| **Address** | `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B` |
 | **Contract** | `contracts/Arena.sol:Arena` |
 | **Compiler** | Solidity 0.8.26, EVM Cancun, optimizer 200 runs |
 | **Constructor arg** | `0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3` ($SIGNAL address) |
-| **Etherscan** | https://sepolia.etherscan.io/address/0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1#code |
-| **Sourcify** | https://repo.sourcify.dev/contracts/full_match/11155111/0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1/ |
-| **Status** | ✅ Verified (Etherscan + Sourcify) |
+| **Deploy Date** | May 10, 2026 (redeploy with emergencyRefund permissionless fix) |
+| **Status** | Pending verification (bytecode confirmed 15346 == 15346 local) |
 
 State:
 - Owner: deployer
 - duelCount at deploy: 0
-- duelCount on May 6, 2026: 2
-- agentCount: 3
+- agentCount at deploy: 3 (doomgpt, bulltard, weatherwiz)
 - Arena cut: 2% (200 bps)
+- Bytecode: MATCHES local — emergencyRefund is permissionless
+
+### Previous Arena (deprecated)
+
+| Field | Value |
+|-------|-------|
+| **Address** | `0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1` |
+| **Deploy Date** | May 5, 2026 |
+| **Status** | Replaced — had old emergencyRefund (onlyOwner) |
 
 ## Post-Deploy Steps Executed
 
@@ -72,9 +79,9 @@ npx hardhat verify --network sepolia \
   0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3 \
   0xC242829F7A7Fd6fe910738fe165ce5D19c1448FA
 
-# Arena
+# Arena (new)
 npx hardhat verify --network sepolia \
-  0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1 \
+  0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B \
   0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3
 ```
 
@@ -86,11 +93,9 @@ npx hardhat verify --network sepolia \
 
 ## Current Local Head Status
 
-As of May 9, 2026, the deployed Arena bytecode on Sepolia differs from the local compiled bytecode (live: 15362 hex chars, local: 15346 hex chars). The local `main` branch includes at minimum the following improvement **not live on Sepolia**:
+As of May 10, 2026, Arena was redeployed at `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`. The deployed bytecode **matches** the local compiled bytecode (15346 == 15346 hex chars). `emergencyRefund()` is permissionless — any wallet can unlock refunds after `settleDeadline`.
 
-- `emergencyRefund()` is permissionless locally, so any wallet can unlock refunds after `settleDeadline`
-
-Owner wallet now has 0.101 ETH — sufficient for a redeploy when ready.
+Owner wallet: 0.10099 ETH — sufficient for operations.
 
 Current local test status:
 

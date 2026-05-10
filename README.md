@@ -46,7 +46,12 @@ Archivos principales:
 - [agent.html](/Users/antoin/Documents/tobybots/agent.html)
 - [portfolio.html](/Users/antoin/Documents/tobybots/portfolio.html)
 - [how-it-works.html](/Users/antoin/Documents/tobybots/how-it-works.html)
-- [app.js](/Users/antoin/Documents/tobybots/app.js)
+- [app.js](/Users/antoin/Documents/tobybots/app.js) — entry point (43 líneas)
+- [state.js](/Users/antoin/Documents/tobybots/state.js) — constantes y estado
+- [utils.js](/Users/antoin/Documents/tobybots/utils.js) — helpers y markup
+- [data.js](/Users/antoin/Documents/tobybots/data.js) — lectura on-chain
+- [render.js](/Users/antoin/Documents/tobybots/render.js) — renderizado UI
+- [wallet.js](/Users/antoin/Documents/tobybots/wallet.js) — wallet y transacciones
 - [styles.css](/Users/antoin/Documents/tobybots/styles.css)
 
 Responsabilidad:
@@ -57,7 +62,7 @@ Responsabilidad:
 - conectar MetaMask
 - ejecutar acciones onchain del usuario
 
-La UI usa `document.body.dataset.page` para decidir qué vista renderizar. `app.js` centraliza estado, lectura onchain, construcción de modelos de vista y acciones de wallet.
+La UI usa `document.body.dataset.page` para decidir qué vista renderizar. La lógica está modularizada en 6 archivos: `state.js` (constantes y estado), `data.js` (lectura on-chain), `render.js` (renderizado), `wallet.js` (transacciones), `utils.js` (helpers), y `app.js` (entry point).
 
 ### 2. Token `SIGNAL`
 
@@ -137,6 +142,9 @@ Archivos principales:
 - [scripts/demo.js](/Users/antoin/Documents/tobybots/scripts/demo.js)
 - [scripts/demo-setup.js](/Users/antoin/Documents/tobybots/scripts/demo-setup.js)
 - [scripts/demo-fund.js](/Users/antoin/Documents/tobybots/scripts/demo-fund.js)
+- [scripts/seed-light.js](/Users/antoin/Documents/tobybots/scripts/seed-light.js)
+- [scripts/seed-settle.js](/Users/antoin/Documents/tobybots/scripts/seed-settle.js)
+- [scripts/claim-winnings.js](/Users/antoin/Documents/tobybots/scripts/claim-winnings.js)
 
 Responsabilidad:
 
@@ -171,7 +179,7 @@ La UI usa dos modos de acceso:
 
 - lectura:
   - `ethers.JsonRpcProvider`
-  - RPC por defecto: `https://1rpc.io/sepolia`
+  - RPC por defecto: `https://ethereum-sepolia-rpc.publicnode.com`
 
 - escritura:
   - `ethers.BrowserProvider(window.ethereum)`
@@ -212,14 +220,21 @@ Si se agrega un agente onchain que no exista en `AGENT_METADATA`, la app igual f
 
 ```text
 tobybots/
+├── app.js               ← Entry point (43 líneas)
+├── state.js             ← Constantes y estado global
+├── utils.js             ← Helpers y markup builders
+├── data.js              ← Lectura on-chain
+├── render.js            ← Renderizado de UI
+├── wallet.js            ← Wallet y transacciones
 ├── index.html
 ├── explore.html
 ├── duel.html
 ├── agent.html
 ├── portfolio.html
 ├── how-it-works.html
-├── app.js
 ├── styles.css
+├── config.json           ← Direcciones de contratos
+├── agents.json           ← Metadata de agentes
 ├── tobybots-img/
 ├── contracts/
 ├── scripts/
@@ -227,6 +242,8 @@ tobybots/
 ├── mock/
 ├── docs/
 ├── archive/legacy-landing/
+├── .github/workflows/ci.yml
+├── .env.example
 ├── package.json
 └── hardhat.config.js
 ```
@@ -243,17 +260,16 @@ Qué guarda cada zona:
 
 ## Red y despliegue actual
 
-La configuración actual del frontend apunta a Sepolia.
+La configuración actual apunta a Sepolia.
 
-Direcciones codificadas hoy en [app.js](/Users/antoin/Documents/tobybots/app.js):
+Direcciones en [config.json](/Users/antoin/Documents/tobybots/config.json) y [state.js](/Users/antoin/Documents/tobybots/state.js):
 
 - `SIGNAL`: `0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3`
-- `Arena`: `0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1`
+- `Arena`: `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`
 
-Implicación importante:
+RPC: `https://ethereum-sepolia-rpc.publicnode.com`
 
-- si se redepliegan contratos, hay que actualizar esas direcciones en `app.js`
-- no hay capa de config runtime
+La capa de config runtime existe: `config.json` se carga al iniciar y las direcciones se leen desde `state.js`.
 
 ## Comandos útiles
 
@@ -393,33 +409,66 @@ Además:
 
 ## Mejoras aplicadas (auditoría Mayo 2026)
 
-Resultados de la auditoría del 9 de mayo. Issues resueltos sin gastar gas en Sepolia:
+Auditoría completa del 10 de mayo. 5 de 5 issues corregidos, frontend modularizado.
 
-1. ✅ **Config de contratos externalizada** — `config.json` contiene las direcciones de `SIGNAL` y `Arena`. `app.js` las carga con fetch y tiene fallback hardcodeado. Si se redepliegan contratos, solo se edita un archivo.
-2. ✅ **Metadata de agentes externalizada** — `agents.json` contiene categorías, verified, origen y taglines. `app.js` mergea el JSON con un fallback inline. Agregar/quitar agentes no requiere tocar JS.
-3. ✅ **CI/CD con GitHub Actions** — `.github/workflows/ci.yml` ejecuta `npx hardhat compile` + `npm test` en cada push a `main` y en cada PR.
-4. ✅ **Documentación corregida** — `TESTNET_PLAYBOOK.md` ya no dice que `withdrawFees` transfiere todo el balance (solo transfiere `accruedFees`).
-5. ✅ **DEPLOYMENT.md actualizado** — confirmado con comparación de bytecode que el Arena desplegado en Sepolia difiere del código local (15362 vs 15346 hex chars). El fix de `emergencyRefund` permissionless está en local pero no en Sepolia.
-6. ✅ **Logo unificado** — las 5 páginas de la Arena (index, explore, duel, agent, portfolio) ahora usan el mismo logo SVG + "TobyBots x SIGNAL" que `how-it-works.html`.
-7. ✅ **LAUNCH_CHECKLIST sincronizado** — wallet owner con 0.101 ETH, items nuevos marcados.
+### Fixes cerrados
 
-Estado live en Sepolia (Mayo 9, 2026):
+1. ✅ **Redeploy Arena** — `emergencyRefund` ahora es permissionless (antes `onlyOwner`). Nuevo Arena: `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`. Bytecode verificado: match exacto con local.
+2. ✅ **LAUNCH_CHECKLIST corregido** — "19 tests" → "23 tests".
+3. ✅ **calculatePayout sin floating point** — `utils.js` usa math entera como Solidity.
+4. ✅ **buildExploreDisplayDuels sin duplicados** — eliminado relleno cíclico de cards.
+5. ✅ **Modularización de app.js** — De 1,203 líneas monolíticas a 6 archivos (1,281 líneas total):
+
+| Archivo | Líneas | Responsabilidad |
+|---------|--------|-----------------|
+| `state.js` | 99 | Constantes, ABIs, appState, carga de config |
+| `utils.js` | 360 | Formatos, math exacta, markup builders |
+| `data.js` | 284 | Lectura on-chain, construcción de modelos |
+| `render.js` | 363 | Renderizado de las 5 páginas |
+| `wallet.js` | 132 | Wallet, transacciones, interacciones |
+| `app.js` | 43 | Entry point, init(), refreshApp() |
+
+### Extras
+
+- Wallet en red incorrecta ya no crashea (modo solo lectura)
+- RPC cambiado de 1rpc.io → publicnode.com (sin rate limits)
+- Seed de demo ligero (1 duelo, 50 SIGNAL, costo mínimo)
+- Scripts nuevos: `scripts/seed-light.js`, `scripts/seed-settle.js`, `scripts/seed-claim.js`, `scripts/claim-winnings.js`, `scripts/check-duel.js`
+
+### Estado live en Sepolia (Mayo 10, 2026)
 
 | Campo | Valor |
 |-------|-------|
-| Owner ETH | 0.101 ETH |
-| `duelCount` | 2 |
+| Owner ETH | 0.099 ETH |
+| Owner SIGNAL | 99,969,974 |
+| `duelCount` | 1 |
 | `agentCount` | 3 (doomgpt, bulltard, weatherwiz) |
-| Arena $SIGNAL balance | 0.0 |
+| Arena SIGNAL balance | 1.0 (fee 2% de duelo #1) |
+| Bettor demo SIGNAL | 25 |
 | Tests | 23/23 passing |
+
+### Duelo #1 — Completado
+
+| Campo | Valor |
+|-------|-------|
+| Tema | BTC cierra mayo 2026 arriba de $100K |
+| Agentes | doomgpt (A) vs bulltard (B) |
+| Pool | 50 SIGNAL (25 cada lado) |
+| Ganador | doomgpt |
+| Fee Arena (2%) | 1 SIGNAL |
+| Prize pool | 49 SIGNAL |
+| Claim | Owner reclamó 49 SIGNAL ✅ |
+| W/L | doomgpt 1/0, bulltard 0/1 |
 
 ## Próximos pasos
 
-Lo que falta para cerrar el círculo pre-demo:
-
-1. **Redeploy del Arena** — el código local tiene `emergencyRefund` permissionless. El Arena en Sepolia no. Con 0.101 ETH hay saldo de sobra para redeploy. Después del redeploy, actualizar `config.json` con las nuevas direcciones.
-2. **Fondear wallets demo** — transferir ~2,000 SIGNAL + 0.02 ETH a 2-3 wallets de prueba.
-3. **Crear duelos demo** — 1 duelo `Settled` con claims, 1 duelo `Open` visible. El `TESTNET_PLAYBOOK.md` tiene los pasos exactos.
-4. **Probar frontend contra Sepolia** — con MetaMask y wallets demo, verificar el flujo completo: approve → bet → settle → claim → refund.
-5. **Build step ligero** — evaluar esbuild o vite para minimizar y cache-bustear el frontend.
-6. **Modularizar app.js** — separar en data.js, render.js, wallet.js, utils.js (~30 min de refactor).
+- [x] Redeploy Arena con emergencyRefund permissionless
+- [x] Seed de demo ligero (1 duelo, 50 SIGNAL)
+- [x] Modularizar app.js (6 archivos)
+- [x] Settlear duelo #1
+- [x] Claim winnings duelo #1
+- [ ] Ejecutar demo-setup completo con 2-3 wallets
+- [ ] Verificar contrato nuevo en Etherscan/Sourcify
+- [ ] Agregar tests para SignalToken standalone
+- [ ] Agregar loading states en UI
+- [ ] Refactor styles.css

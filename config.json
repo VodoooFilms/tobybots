@@ -2,8 +2,8 @@
   "chain": {
     "id": 11155111,
     "name": "Sepolia",
-    "rpcUrl": "https://1rpc.io/sepolia",
+    "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
     "signalToken": "0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3",
-    "arena": "0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1"
+    "arena": "0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B"
   }
 }

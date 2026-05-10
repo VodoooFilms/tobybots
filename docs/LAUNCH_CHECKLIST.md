@@ -41,7 +41,7 @@
 
 ## ✅ Code & Tooling
 
-- [x] `npm test` runs 19 tests
+- [x] `npm test` runs 23 tests
 - [x] `npx hardhat compile` passes
 - [x] Deploy scripts working (`scripts/deploy.js`, `scripts/deploy-arena.js`)
 - [x] Verify script working (`scripts/verify-deploy.js`)

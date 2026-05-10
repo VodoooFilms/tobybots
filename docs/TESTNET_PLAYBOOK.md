@@ -145,7 +145,7 @@ Notas:
 2. Arena → `bet`
 
 ```text
-approve.spender: 0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1
+approve.spender: 0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B
 approve.amount:  500000000000000000000
 
 bet.duelId:      1
@@ -156,7 +156,7 @@ bet.amount:      500000000000000000000
 `bettor B`:
 
 ```text
-approve.spender: 0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1
+approve.spender: 0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B
 approve.amount:  300000000000000000000
 
 bet.duelId:      1
@@ -250,7 +250,7 @@ Esto abre un duelo con 1 hora de ventana de apuestas.
 En Etherscan → $SIGNAL contract → Write Contract → `approve`:
 
 ```
-spender: 0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1   (Arena)
+spender: 0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B   (Arena)
 amount:  500000000000000000000                           (500 $SIGNAL en wei)
 ```
 
@@ -332,7 +332,7 @@ En Etherscan → Arena contract → Write Contract → `withdrawFees`:
 | Contrato | Dirección |
 |----------|-----------|
 | $SIGNAL | `0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3` |
-| Arena | `0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1` |
+| Arena | `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B` |
 
 ### Agentes seed
 

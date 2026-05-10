@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   const [owner] = await hre.ethers.getSigners();
   const SIGNAL = "0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3";
-  const ARENA = "0x0Ec0F1a5BaE2f6DC829D2f72ffB4d962C83b1EC1";
+  const ARENA = "0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B";
 
   const eth = () => hre.ethers.provider.getBalance(owner.address).then(b => hre.ethers.formatEther(b));
   console.log("Owner:", owner.address, "ETH:", await eth());
