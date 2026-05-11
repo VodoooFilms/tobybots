@@ -10,6 +10,7 @@
     "hosting:prepare": "bash ./scripts/prepare-hosting.sh",
     "site": "python3 -m http.server 4173",
     "serve": "python3 -m http.server 8000",
+    "seed:varied": "node ./scripts/seed-varied-duels.js",
     "test": "npx hardhat test"
   },
   "keywords": [],

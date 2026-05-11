@@ -59,7 +59,7 @@ body::before {
   opacity: 0.85;
 }
 
-body[data-page="home"] {
+body[data-page="arena"] {
   --home-eyebrow-size: 0.75rem;
   --home-section-title-size: clamp(1.5rem, 1.38rem + 0.6vw, 1.75rem);
   --home-section-title-weight: 600;
@@ -74,15 +74,15 @@ body[data-page="home"] {
   --home-body-leading: 1.58;
 }
 
-body[data-page="home"] .page {
+body[data-page="arena"] .page {
   gap: 18px;
 }
 
-body[data-page="home"] .section {
+body[data-page="arena"] .section {
   gap: 10px;
 }
 
-body[data-page="home"] .section-head {
+body[data-page="arena"] .section-head {
   gap: 14px;
 }
 
@@ -1187,7 +1187,7 @@ select:focus-visible,
   line-height: 0.98;
 }
 
-body[data-page="home"] .section-head h2 {
+body[data-page="arena"] .section-head h2 {
   font-size: var(--home-section-title-size);
   font-weight: var(--home-section-title-weight);
   line-height: var(--home-section-title-leading);
@@ -1195,24 +1195,24 @@ body[data-page="home"] .section-head h2 {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
-body[data-page="home"] .section-head a {
+body[data-page="arena"] .section-head a {
   font-size: 0.875rem;
   font-weight: 500;
   color: #7fb9f4;
 }
 
-body[data-page="home"] .card-grid,
-body[data-page="home"] .steps-grid,
-body[data-page="home"] .summary-grid {
+body[data-page="arena"] .card-grid,
+body[data-page="arena"] .steps-grid,
+body[data-page="arena"] .summary-grid {
   gap: 12px;
 }
 
-body[data-page="home"] .steps-grid article {
+body[data-page="arena"] .steps-grid article {
   padding: 13px 14px 14px;
   border-radius: 14px;
 }
 
-body[data-page="home"] .steps-grid h3 {
+body[data-page="arena"] .steps-grid h3 {
   font-size: var(--home-step-title-size);
   font-weight: var(--home-step-title-weight);
   line-height: var(--home-step-title-leading);
@@ -1220,7 +1220,7 @@ body[data-page="home"] .steps-grid h3 {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
-body[data-page="home"] .cta-panel h2 {
+body[data-page="arena"] .cta-panel h2 {
   font-size: var(--home-cta-title-size);
   font-weight: var(--home-cta-title-weight);
   line-height: var(--home-cta-title-leading);
@@ -1228,18 +1228,18 @@ body[data-page="home"] .cta-panel h2 {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
-body[data-page="home"] .eyebrow {
+body[data-page="arena"] .eyebrow {
   font-size: var(--home-eyebrow-size);
   letter-spacing: 0.12em;
 }
 
-body[data-page="home"] .steps-grid p,
-body[data-page="home"] .cta-panel p {
+body[data-page="arena"] .steps-grid p,
+body[data-page="arena"] .cta-panel p {
   font-size: var(--home-body-size);
   line-height: var(--home-body-leading);
 }
 
-body[data-page="home"] .cta-panel {
+body[data-page="arena"] .cta-panel {
   gap: 12px;
   padding: 20px 22px;
 }
@@ -1904,33 +1904,33 @@ input:focus {
   flex: 1;
 }
 
-body[data-page="home"] .hero {
+body[data-page="arena"] .hero {
   gap: 24px;
 }
 
-body[data-page="home"] .hero-copy {
+body[data-page="arena"] .hero-copy {
   gap: 12px;
 }
 
-body[data-page="home"] .hero-copy h1 {
+body[data-page="arena"] .hero-copy h1 {
   max-width: 11ch;
 }
 
-body[data-page="home"] .hero-copy p {
+body[data-page="arena"] .hero-copy p {
   max-width: 42rem;
 }
 
-body[data-page="home"] .summary-card strong {
+body[data-page="arena"] .summary-card strong {
   font-size: 1.45rem;
   margin-top: 2px;
 }
 
-body[data-page="home"] .agent-card,
-body[data-page="home"] .duel-card {
+body[data-page="arena"] .agent-card,
+body[data-page="arena"] .duel-card {
   min-height: 0;
 }
 
-body[data-page="home"] .steps-grid {
+body[data-page="arena"] .steps-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
@@ -2109,7 +2109,7 @@ body[data-page="home"] .steps-grid {
   .agent-card-stats,
   .duel-card-signal,
   .submission-grid,
-  body[data-page="home"] .steps-grid {
+  body[data-page="arena"] .steps-grid {
     grid-template-columns: 1fr;
   }
 

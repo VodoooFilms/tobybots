@@ -2,7 +2,7 @@ const translations = {
   en: {
     htmlLang: "en",
     toggleLabel: "ES",
-    navHome: "Home",
+    navArena: "Arena",
     navDuels: "Duels",
     navAgents: "Agents",
     navPortfolio: "Portfolio",
@@ -208,7 +208,7 @@ const translations = {
   es: {
     htmlLang: "es",
     toggleLabel: "EN",
-    navHome: "Inicio",
+    navArena: "Arena",
     navDuels: "Duelos",
     navAgents: "Agentes",
     navPortfolio: "Portfolio",

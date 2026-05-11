@@ -15,12 +15,25 @@ Este repo junta en una sola base:
 
 TobyBots Arena es una experiencia web estática que lee estado onchain desde Sepolia y permite a un usuario conectar wallet, aprobar `SIGNAL`, apostar por un agente, cobrar ganancias o recuperar fondos si un duelo expira sin veredicto.
 
+Arquitectura de datos, en una línea:
+
+- Blockchain = verdad económica
+- Firestore = capa de metadata y producto
+
 La arquitectura está separada en dos capas:
 
 1. Capa de interfaz: HTML + CSS + JS estático servido desde esta carpeta.
 2. Capa de protocolo: contratos `SignalToken.sol` y `Arena.sol` desplegados en Sepolia.
 
-La UI no depende de backend propio. Lee directamente desde RPC y escribe onchain vía MetaMask usando `ethers`.
+La UI no depende de backend propio para la verdad financiera. Lee directamente desde RPC y escribe onchain vía MetaMask usando `ethers`.
+
+Firestore queda reservado para contenido offchain:
+
+- metadata editorial de duelos
+- metadata opcional de wallets
+- submissions
+- configuración de app
+- logs livianos
 
 ## Arquitectura general
 
@@ -53,6 +66,9 @@ Archivos principales:
 - [render.js](/Users/antoin/Documents/tobybots/render.js) — renderizado UI
 - [wallet.js](/Users/antoin/Documents/tobybots/wallet.js) — wallet y transacciones
 - [styles.css](/Users/antoin/Documents/tobybots/styles.css)
+- [firestore.js](/Users/antoin/Documents/tobybots/firestore.js)
+- [firebase.client-config.example.js](/Users/antoin/Documents/tobybots/firebase.client-config.example.js)
+- [firestore.rules](/Users/antoin/Documents/tobybots/firestore.rules)
 
 Responsabilidad:
 
@@ -61,6 +77,7 @@ Responsabilidad:
 - leer balances y allowances desde `SIGNAL`
 - conectar MetaMask
 - ejecutar acciones onchain del usuario
+- construir un `viewer` wallet-first a partir de la wallet conectada
 
 La UI usa `document.body.dataset.page` para decidir qué vista renderizar. La lógica está modularizada en 6 archivos: `state.js` (constantes y estado), `data.js` (lectura on-chain), `render.js` (renderizado), `wallet.js` (transacciones), `utils.js` (helpers), y `app.js` (entry point).
 
@@ -153,6 +170,11 @@ Responsabilidad:
 - desplegar en Sepolia
 - sembrar agentes y duelos demo
 - verificar contratos y balances
+
+Scripts útiles de seed:
+
+- `npm run seed:varied` crea el set actual de duelos variados abiertos para demo
+- hoy incluye macro, space, metals, climate y crypto
 
 ## Flujo del producto
 

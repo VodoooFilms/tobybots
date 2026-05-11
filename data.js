@@ -1,9 +1,14 @@
-// data.js — on-chain data fetching and model building
+// data.js — on-chain data fetching and wallet-first view model building
 import { CHAIN, AGENT_METADATA, PREDICTION_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js";
 import { formatTokenNumber, deriveTimeLabel, calculatePayout, shortAddress } from "./utils.js";
 import { getLanguage } from "./i18n.js";
 
 const isSpanish = () => getLanguage() === "es";
+
+// Architecture boundary:
+// - Blockchain = economic truth (balances, bets, positions, settlement, refunds)
+// - Firestore = product metadata layer (duel copy, bot metadata, submissions, config, logs)
+// The viewer below is intentionally derived at runtime from on-chain state.
 
 // ─── Main orchestrator ─────────────────────────────────────────
 
@@ -38,7 +43,7 @@ export async function buildAppData(account) {
         .slice(0, 3)
         .map((duel) => duel.id)
     },
-    user: await buildUser(account, duels),
+    viewer: await buildWalletViewer(account, duels),
     agents,
     agentsById,
     duels,
@@ -240,12 +245,13 @@ function deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal) 
   return "New prediction submitted";
 }
 
-// ─── User ──────────────────────────────────────────────────────
+// ─── Viewer ────────────────────────────────────────────────────
 
-async function buildUser(account, duels) {
+async function buildWalletViewer(account, duels) {
   if (!account) {
     return {
-      walletAddress: isSpanish() ? "Wallet no conectada" : "Wallet not connected",
+      type: "visitor",
+      walletAddress: null,
       displayName: isSpanish() ? "Visitante" : "Visitor",
       signalBalance: 0,
       summary: { totalBackedSignal: 0, claimableSignal: 0, refundableSignal: 0, lifetimeWinningsSignal: 0 },
@@ -268,6 +274,7 @@ async function buildUser(account, duels) {
     }));
 
   return {
+    type: "wallet",
     walletAddress: account,
     displayName: "Arena Backer",
     signalBalance,

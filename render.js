@@ -32,11 +32,11 @@ function translateArenaTag(value) {
 
 // ─── Wallet summary ────────────────────────────────────────────
 
-export function setWalletSummary(user) {
+export function setWalletSummary(viewer) {
   const wallet = document.getElementById("wallet-summary");
   if (!wallet) return;
   wallet.innerHTML = appState.account
-    ? `<span class="wallet-pill-inner"><img class="wallet-pill-icon" src="./tobybots-img/signalcoin_image.png" alt="" aria-hidden="true" /><span>${formatNumber(user.signalBalance)} SIGNAL</span></span>`
+    ? `<span class="wallet-pill-inner"><img class="wallet-pill-icon" src="./tobybots-img/signalcoin_image.png" alt="" aria-hidden="true" /><span>${formatNumber(viewer.signalBalance)} SIGNAL</span></span>`
     : t("walletConnect");
   wallet.style.cursor = "pointer";
   wallet.onclick = () => (appState.account ? window.location.assign("./portfolio.html") : connectWallet());
@@ -45,7 +45,7 @@ export function setWalletSummary(user) {
 // ─── Nav state ─────────────────────────────────────────────────
 
 export function setNavState(current) {
-  const navMap = { home: "home", explore: "explore", duel: "explore", agent: "agents", portfolio: "portfolio" };
+  const navMap = { arena: "arena", explore: "explore", duel: "explore", agent: "agents", portfolio: "portfolio" };
   document.querySelectorAll(".nav a").forEach((item) => item.classList.remove("active"));
   const navKey = navMap[current];
   if (!navKey) return;
@@ -55,7 +55,7 @@ export function setNavState(current) {
 
 // ─── Home ──────────────────────────────────────────────────────
 
-export function renderHome(data, agentsById) {
+export function renderArena(data, agentsById) {
   const statusMap = getStatusMap();
   const featuredDuels = data.meta.featuredDuelIds
     .map((id) => data.duels.find((duel) => duel.id === id))
@@ -96,7 +96,7 @@ export function renderHome(data, agentsById) {
     </div>
   `;
 
-  document.getElementById("home-overview").innerHTML = `
+  document.getElementById("arena-overview").innerHTML = `
     ${summaryMetric(t("homeLiveBattles"), data.duels.filter((duel) => duel.status === "open").length)}
     ${summaryMetric(t("homeTopPredictor"), topAgents[0] ? topAgents[0].name : "TBD")}
     ${summaryMetric(t("homeMostBacked"), `${formatNumber(data.duels.filter((duel) => duel.status === "open").reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`)}
@@ -123,7 +123,7 @@ export function renderExplore(data, agentsById) {
     ${overviewCardMarkup(isSpanish() ? "Duelos abiertos" : "Open duels", data.duels.filter((duel) => duel.status === "open").length, t("networkRead"))}
     ${overviewCardMarkup(isSpanish() ? "Duelos finalizados" : "Settled duels", data.duels.filter((duel) => duel.status === "settled").length, t("contractStatus"))}
     ${overviewCardMarkup(isSpanish() ? "Volumen total" : "Total volume", `${formatNumber(data.duels.reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`, "Sepolia live")}
-    ${overviewCardMarkup(isSpanish() ? "Tus posiciones" : "Your positions", data.user.positions.length, appState.account ? t("walletConnected") : t("connectWalletShort"))}
+    ${overviewCardMarkup(isSpanish() ? "Tus posiciones" : "Your positions", data.viewer.positions.length, appState.account ? t("walletConnected") : t("connectWalletShort"))}
   `;
 
   const rerender = () => {
@@ -301,7 +301,7 @@ export function renderDuel(data, agentsById) {
           <button type="button" class="quick-amount-button" data-amount="500" ${inputDisabled ? "disabled" : ""}>+500</button>
         </div>
         <div class="action-summary">
-          ${summaryLine(t("balance"), `${formatNumber(data.user.signalBalance)} SIGNAL`)}
+          ${summaryLine(t("balance"), `${formatNumber(data.viewer.signalBalance)} SIGNAL`)}
           ${summaryLine(t("state"), position ? positionMap[position.status].label : status.label)}
           ${summaryLine(t("totalPool"), `${formatNumber(duel.pools.totalSignal)} SIGNAL`)}
           ${position?.claimableSignal ? summaryLine(t("winnings"), `${formatNumber(position.claimableSignal)} SIGNAL`) : ""}
@@ -404,10 +404,10 @@ export function renderAgent(data, agentsById) {
 
 export function renderPortfolio(data) {
   const grouped = {
-    open: data.user.positions.filter((position) => position.status === "active"),
-    winnings: data.user.positions.filter((position) => position.status === "won_claim_available"),
-    refunds: data.user.positions.filter((position) => position.status === "refund_available"),
-    history: data.user.positions.filter((position) => !["active", "won_claim_available", "refund_available"].includes(position.status))
+    open: data.viewer.positions.filter((position) => position.status === "active"),
+    winnings: data.viewer.positions.filter((position) => position.status === "won_claim_available"),
+    refunds: data.viewer.positions.filter((position) => position.status === "refund_available"),
+    history: data.viewer.positions.filter((position) => !["active", "won_claim_available", "refund_available"].includes(position.status))
   };
 
   const view = document.getElementById("portfolio-view");
@@ -416,13 +416,13 @@ export function renderPortfolio(data) {
       <article class="panel page-intro">
         <p class="eyebrow">${t("arenaHistory")}</p>
         <h1>${t("managePositions")}</h1>
-        <p>${data.user.walletAddress}</p>
+        <p>${data.viewer.walletAddress || t("walletConnect")}</p>
       </article>
       <div class="summary-grid">
-        ${summaryMetric(t("signalBalance"), `${formatNumber(data.user.signalBalance)} SIGNAL`)}
-        ${summaryMetric(t("totalBacked"), `${formatNumber(data.user.summary.totalBackedSignal)} SIGNAL`)}
-        ${summaryMetric(t("claimableWinnings"), `${formatNumber(data.user.summary.claimableSignal)} SIGNAL`)}
-        ${summaryMetric(t("claimableRefunds"), `${formatNumber(data.user.summary.refundableSignal)} SIGNAL`)}
+        ${summaryMetric(t("signalBalance"), `${formatNumber(data.viewer.signalBalance)} SIGNAL`)}
+        ${summaryMetric(t("totalBacked"), `${formatNumber(data.viewer.summary.totalBackedSignal)} SIGNAL`)}
+        ${summaryMetric(t("claimableWinnings"), `${formatNumber(data.viewer.summary.claimableSignal)} SIGNAL`)}
+        ${summaryMetric(t("claimableRefunds"), `${formatNumber(data.viewer.summary.refundableSignal)} SIGNAL`)}
       </div>
     </section>
 

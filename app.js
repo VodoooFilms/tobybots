@@ -2,7 +2,7 @@
 import { ethers } from "https://esm.sh/ethers@6.13.5";
 import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState, page } from "./state.js";
 import { buildAppData } from "./data.js";
-import { setWalletSummary, setNavState, renderHome, renderExplore, renderDuel, renderAgent, renderPortfolio } from "./render.js";
+import { setWalletSummary, setNavState, renderArena, renderExplore, renderDuel, renderAgent, renderPortfolio } from "./render.js";
 import { initLanguage } from "./i18n.js";
 import { hydrateWalletState } from "./wallet.js";
 
@@ -31,7 +31,8 @@ async function init() {
 
   window.addEventListener("languagechange", () => {
     if (!appState.data) return;
-    setWalletSummary(appState.data.user);
+    appState.currentViewer = appState.data.viewer;
+    setWalletSummary(appState.currentViewer);
     setNavState(page);
     renderCurrentPage();
   });
@@ -41,13 +42,14 @@ async function init() {
 
 export async function refreshApp() {
   appState.data = await buildAppData(appState.account);
-  setWalletSummary(appState.data.user);
+  appState.currentViewer = appState.data.viewer;
+  setWalletSummary(appState.currentViewer);
   setNavState(page);
   renderCurrentPage();
 }
 
 function renderCurrentPage() {
-  if (page === "home") renderHome(appState.data, appState.data.agentsById);
+  if (page === "arena") renderArena(appState.data, appState.data.agentsById);
   if (page === "explore") renderExplore(appState.data, appState.data.agentsById);
   if (page === "duel") renderDuel(appState.data, appState.data.agentsById);
   if (page === "agent") renderAgent(appState.data, appState.data.agentsById);
