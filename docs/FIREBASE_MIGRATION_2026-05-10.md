@@ -9,6 +9,30 @@ Repo local: `/Users/antoin/Documents/tobybots`
 Despues del premium perception pass y la QA final, se hizo un nuevo deploy
 correctivo a Firebase Hosting.
 
+### Actualizacion UX y contenido SIGNAL
+
+En la iteracion mas reciente del sitio se agrego una capa nueva de producto y
+se pulio la navegacion principal.
+
+Cambios incluidos:
+
+- header principal renombrado a `TobyBots Arena`
+- toggle bilingue movido a la fila inferior de tabs, con ingles por defecto
+- nueva pagina interna `signal.html`
+- nuevo tab `Signal` dentro de la fila de mercado
+- pagina `Signal` construida a partir del contrato real `SignalToken.sol`
+- asset visual `signalcoin_image.png` integrado en la pagina y en metricas con
+  SIGNAL
+- script de packaging de Firebase actualizado para incluir:
+  - `i18n.js`
+  - `signal.html`
+
+Objetivo de esta pasada:
+
+- hacer que la capa `SIGNAL` se vea mas seria, confiable y audit-friendly
+- mantener la arena como superficie competitiva y dejar la pagina de token en
+  tono mas institucional
+
 Estado actual confirmado:
 
 - Deploy OK en `https://tobybots-arena.web.app`

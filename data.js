@@ -1,6 +1,9 @@
 // data.js — on-chain data fetching and model building
 import { CHAIN, AGENT_METADATA, PREDICTION_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js";
 import { formatTokenNumber, deriveTimeLabel, calculatePayout, shortAddress } from "./utils.js";
+import { getLanguage } from "./i18n.js";
+
+const isSpanish = () => getLanguage() === "es";
 
 // ─── Main orchestrator ─────────────────────────────────────────
 
@@ -48,15 +51,15 @@ export async function buildAppData(account) {
 async function buildAgent(id) {
   const raw = await appState.arenaRead.agents(id);
   const slug = raw.name.toLowerCase();
-  const meta = AGENT_METADATA[slug] || {
-    category: "Community Agent",
-    verified: false,
-    origin: "Community",
-    tagline: `${raw.name} entra a la arena buscando su primer gran duelo.`,
-    provider: "Unknown",
-    model: "Unknown",
-    recentForm: "N/A",
-    streakLabel: "Sin historial"
+    const meta = AGENT_METADATA[slug] || {
+      category: "Community Agent",
+      verified: false,
+      origin: "Community",
+      tagline: isSpanish() ? `${raw.name} entra a la arena buscando su primer gran duelo.` : `${raw.name} enters the arena looking for a first breakout duel.`,
+      provider: "Unknown",
+      model: "Unknown",
+      recentForm: "N/A",
+      streakLabel: isSpanish() ? "Sin historial" : "No track record yet"
   };
   const wins = Number(raw.wins);
   const losses = Number(raw.losses);
@@ -86,7 +89,7 @@ async function buildAgent(id) {
       activeDuels: 0,
       totalPredictions: totalMatches,
       recentForm: meta.recentForm || "N/A",
-      streak: meta.streakLabel || (totalMatches ? `Récord ${wins}-${losses}` : "Sin historial"),
+      streak: meta.streakLabel || (totalMatches ? (isSpanish() ? `Récord ${wins}-${losses}` : `Record ${wins}-${losses}`) : (isSpanish() ? "Sin historial" : "No track record")),
       aliveSignal: meta.heatTag || "Live"
     }
   };
@@ -242,8 +245,8 @@ function deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal) 
 async function buildUser(account, duels) {
   if (!account) {
     return {
-      walletAddress: "Wallet no conectada",
-      displayName: "Visitante",
+      walletAddress: isSpanish() ? "Wallet no conectada" : "Wallet not connected",
+      displayName: isSpanish() ? "Visitante" : "Visitor",
       signalBalance: 0,
       summary: { totalBackedSignal: 0, claimableSignal: 0, refundableSignal: 0, lifetimeWinningsSignal: 0 },
       positions: []
@@ -312,23 +315,31 @@ async function buildActivities(agentsById) {
     return events.map(({ type, event }, index) => {
       const args = event.args || [];
       const duelId = String(args.duelId || "");
-      let label = `Actividad en duelo #${duelId}`;
+      let label = isSpanish() ? `Actividad en duelo #${duelId}` : `Activity on duel #${duelId}`;
 
       if (type === "bet") {
         const agent = agentsById[String(args.agentId)];
-        label = `${shortAddress(args.bettor)} respaldó a ${agent?.name || "un bot"} con ${formatTokenNumber(args.amount)} SIGNAL.`;
+        label = isSpanish()
+          ? `${shortAddress(args.bettor)} respaldó a ${agent?.name || "un bot"} con ${formatTokenNumber(args.amount)} SIGNAL.`
+          : `${shortAddress(args.bettor)} backed ${agent?.name || "a bot"} with ${formatTokenNumber(args.amount)} SIGNAL.`;
       }
       if (type === "settled") {
-        label = `Ganador declarado: ${agentsById[String(args.winner)]?.name || "bot"} ganó el duelo #${duelId}.`;
+        label = isSpanish()
+          ? `Ganador declarado: ${agentsById[String(args.winner)]?.name || "bot"} ganó el duelo #${duelId}.`
+          : `Winner declared: ${agentsById[String(args.winner)]?.name || "bot"} won duel #${duelId}.`;
       }
       if (type === "refund-open") {
-        label = `Se abrieron reembolsos para el duelo #${duelId}.`;
+        label = isSpanish() ? `Se abrieron reembolsos para el duelo #${duelId}.` : `Refunds opened for duel #${duelId}.`;
       }
       if (type === "claim") {
-        label = `${shortAddress(args.bettor)} cobró ${formatTokenNumber(args.amount)} SIGNAL en el duelo #${duelId}.`;
+        label = isSpanish()
+          ? `${shortAddress(args.bettor)} cobró ${formatTokenNumber(args.amount)} SIGNAL en el duelo #${duelId}.`
+          : `${shortAddress(args.bettor)} claimed ${formatTokenNumber(args.amount)} SIGNAL on duel #${duelId}.`;
       }
       if (type === "refund-claim") {
-        label = `${shortAddress(args.bettor)} recuperó ${formatTokenNumber(args.amount)} SIGNAL en el duelo #${duelId}.`;
+        label = isSpanish()
+          ? `${shortAddress(args.bettor)} recuperó ${formatTokenNumber(args.amount)} SIGNAL en el duelo #${duelId}.`
+          : `${shortAddress(args.bettor)} recovered ${formatTokenNumber(args.amount)} SIGNAL on duel #${duelId}.`;
       }
 
       return {

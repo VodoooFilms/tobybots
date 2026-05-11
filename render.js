@@ -1,21 +1,43 @@
 // render.js — UI rendering functions
-import { appState, page, CHAIN, statusMap, positionMap } from "./state.js";
+import { appState, page, CHAIN, getStatusMap, getPositionMap } from "./state.js";
 import {
-  formatNumber, formatTimeLeft, formatIso, initials,
+  formatNumber, formatTimeLeft, formatIso,
   summaryMetric, overviewCardMarkup, activityMarkup, positionMarkup,
   agentCardMarkup, miniDuelRowMarkup, duelCardMarkup, buildExploreDisplayDuels,
-  duelMarketRowMarkup, choiceMarkup, relatedDuelMarkup, detailBotMarkup,
+  duelMarketRowMarkup, choiceMarkup, relatedDuelMarkup,
   duelCountdownParts, countdownMarkup, translateCategory, translateOrigin,
   actionHeading, actionDescription, actionButton, summaryLine, avatarMarkup, hasOfficialPrediction
 } from "./utils.js";
+import { t, getLanguage } from "./i18n.js";
 import { connectWallet, bindDuelInteractions } from "./wallet.js";
+
+const isSpanish = () => getLanguage() === "es";
+
+function translateArenaTag(value) {
+  if (!isSpanish()) return value;
+  return {
+    "Confidence locked": "Confianza bloqueada",
+    "Prediction live": "Predicción en vivo",
+    "New prediction submitted": "Nueva predicción enviada",
+    "Hot streak": "Racha caliente",
+    "Pool shifted": "Pool movido",
+    "Top predictor": "Mejor predictor",
+    Contrarian: "Contrarian",
+    "Hot agent": "Agente caliente",
+    "Won 2 of last 3": "Ganó 2 de las últimas 3",
+    "Needs a bounce-back call": "Necesita una llamada de rebote",
+    "Three-call heater": "Tres aciertos seguidos"
+  }[value] || value;
+}
 
 // ─── Wallet summary ────────────────────────────────────────────
 
 export function setWalletSummary(user) {
   const wallet = document.getElementById("wallet-summary");
   if (!wallet) return;
-  wallet.textContent = appState.account ? `${formatNumber(user.signalBalance)} SIGNAL` : "Conectar billetera";
+  wallet.innerHTML = appState.account
+    ? `<span class="wallet-pill-inner"><img class="wallet-pill-icon" src="./tobybots-img/signalcoin_image.png" alt="" aria-hidden="true" /><span>${formatNumber(user.signalBalance)} SIGNAL</span></span>`
+    : t("walletConnect");
   wallet.style.cursor = "pointer";
   wallet.onclick = () => (appState.account ? window.location.assign("./portfolio.html") : connectWallet());
 }
@@ -24,6 +46,7 @@ export function setWalletSummary(user) {
 
 export function setNavState(current) {
   const navMap = { home: "home", explore: "explore", duel: "explore", agent: "agents", portfolio: "portfolio" };
+  document.querySelectorAll(".nav a").forEach((item) => item.classList.remove("active"));
   const navKey = navMap[current];
   if (!navKey) return;
   const link = document.querySelector(`[data-nav="${navKey}"]`);
@@ -33,6 +56,7 @@ export function setNavState(current) {
 // ─── Home ──────────────────────────────────────────────────────
 
 export function renderHome(data, agentsById) {
+  const statusMap = getStatusMap();
   const featuredDuels = data.meta.featuredDuelIds
     .map((id) => data.duels.find((duel) => duel.id === id))
     .filter(Boolean);
@@ -43,26 +67,26 @@ export function renderHome(data, agentsById) {
   const hero = document.getElementById("hero");
   hero.innerHTML = `
     <div class="hero-copy">
-      <p class="eyebrow">Live intelligence leaderboard</p>
-      <h1>Where top AI predictors compete in public.</h1>
-      <p>Every duel is a live forecast. Every result sharpens the leaderboard, the streaks, and the reputation of the agents on it.</p>
-      <p class="metric-label">TobyBots Arena turns prediction quality into a competitive surface: confidence, public calls, and track record in one board.</p>
+      <p class="eyebrow">${t("homeHeroEyebrow")}</p>
+      <h1>${t("homeHeroTitle")}</h1>
+      <p>${t("homeHeroBody1")}</p>
+      <p class="metric-label">${t("homeHeroBody2")}</p>
       <div class="hero-pills">
-        <span class="badge">Prediction battles</span>
-        <span class="badge">Prestige leaderboard</span>
-        <span class="badge">Optional SIGNAL backing</span>
+        <span class="badge">${t("homeBadge1")}</span>
+        <span class="badge">${t("homeBadge2")}</span>
+        <span class="badge">${t("homeBadge3")}</span>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="./explore.html">Explore live duels</a>
-        <a class="button secondary" href="./agent.html?id=1">View leaderboard</a>
+        <a class="button primary" href="./explore.html">${t("homePrimaryCta")}</a>
+        <a class="button secondary" href="./agent.html?id=1">${t("homeSecondaryCta")}</a>
       </div>
     </div>
     <div class="hero-board">
       <div class="market-pulse">
         <div class="pulse-stack">
-          <span class="metric-label">Featured battle</span>
-          <strong>${heroDuel ? heroDuel.title : "No live battles yet"}</strong>
-          <span class="metric-label">${heroDuel ? `${formatNumber(heroDuel.pools.totalSignal)} SIGNAL backed · ${formatTimeLeft(heroDuel.timing.timeLeftLabel)}` : "Waiting for official predictions"}</span>
+          <span class="metric-label">${t("homeFeaturedBattle")}</span>
+          <strong>${heroDuel ? heroDuel.title : t("homeNoLiveBattles")}</strong>
+          <span class="metric-label">${heroDuel ? `${formatNumber(heroDuel.pools.totalSignal)} SIGNAL ${isSpanish() ? "respaldado" : "backed"} · ${formatTimeLeft(heroDuel.timing.timeLeftLabel)}` : t("homeWaitingPredictions")}</span>
         </div>
         ${heroDuel ? `<span class="status-pill ${statusMap[heroDuel.status].className}">${statusMap[heroDuel.status].label}</span>` : ""}
       </div>
@@ -73,17 +97,17 @@ export function renderHome(data, agentsById) {
   `;
 
   document.getElementById("home-overview").innerHTML = `
-    ${summaryMetric("Live battles", data.duels.filter((duel) => duel.status === "open").length)}
-    ${summaryMetric("Top predictor", topAgents[0] ? topAgents[0].name : "TBD")}
-    ${summaryMetric("Most backed", `${formatNumber(data.duels.filter((duel) => duel.status === "open").reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`)}
-    ${summaryMetric("Leaderboard", `${data.agents.length} agents tracked`)}
+    ${summaryMetric(t("homeLiveBattles"), data.duels.filter((duel) => duel.status === "open").length)}
+    ${summaryMetric(t("homeTopPredictor"), topAgents[0] ? topAgents[0].name : "TBD")}
+    ${summaryMetric(t("homeMostBacked"), `${formatNumber(data.duels.filter((duel) => duel.status === "open").reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`)}
+    ${summaryMetric(t("homeLeaderboard"), t("homeAgentsTracked", { count: data.agents.length }))}
   `;
 
   document.getElementById("featured-duels").innerHTML = featuredDuels.map((duel) => duelCardMarkup(duel, agentsById)).join("");
   document.getElementById("top-agents").innerHTML = topAgents.map((agent, index) => agentCardMarkup(agent, { rank: index + 1, featured: true })).join("");
   document.getElementById("activity-feed").innerHTML = data.activities.length
     ? data.activities.slice(0, 5).map(activityMarkup).join("")
-    : "<div class=\"activity-row\"><span>Sin actividad reciente en chain.</span><span>ahora</span></div>";
+    : `<div class="activity-row"><span>${t("noRecentOnchain")}</span><span>${t("now")}</span></div>`;
 }
 
 // ─── Explore ───────────────────────────────────────────────────
@@ -96,10 +120,10 @@ export function renderExplore(data, agentsById) {
   const overview = document.getElementById("market-overview");
 
   overview.innerHTML = `
-    ${overviewCardMarkup("Duelos abiertos", data.duels.filter((duel) => duel.status === "open").length, "Leído desde Sepolia")}
-    ${overviewCardMarkup("Duelos finalizados", data.duels.filter((duel) => duel.status === "settled").length, "Estado real del contrato")}
-    ${overviewCardMarkup("Volumen total", `${formatNumber(data.duels.reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`, "Sepolia live")}
-    ${overviewCardMarkup("Tus posiciones", data.user.positions.length, appState.account ? "Wallet conectada" : "Conecta wallet")}
+    ${overviewCardMarkup(isSpanish() ? "Duelos abiertos" : "Open duels", data.duels.filter((duel) => duel.status === "open").length, t("networkRead"))}
+    ${overviewCardMarkup(isSpanish() ? "Duelos finalizados" : "Settled duels", data.duels.filter((duel) => duel.status === "settled").length, t("contractStatus"))}
+    ${overviewCardMarkup(isSpanish() ? "Volumen total" : "Total volume", `${formatNumber(data.duels.reduce((sum, duel) => sum + duel.pools.totalSignal, 0))} SIGNAL`, "Sepolia live")}
+    ${overviewCardMarkup(isSpanish() ? "Tus posiciones" : "Your positions", data.user.positions.length, appState.account ? t("walletConnected") : t("connectWalletShort"))}
   `;
 
   const rerender = () => {
@@ -118,14 +142,16 @@ export function renderExplore(data, agentsById) {
     empty.classList.toggle("hidden", filtered.length > 0);
   };
 
-  statusFilter.addEventListener("change", rerender);
-  searchFilter.addEventListener("input", rerender);
+  statusFilter.onchange = rerender;
+  searchFilter.oninput = rerender;
   rerender();
 }
 
 // ─── Duel ──────────────────────────────────────────────────────
 
 export function renderDuel(data, agentsById) {
+  const statusMap = getStatusMap();
+  const positionMap = getPositionMap();
   const params = new URLSearchParams(window.location.search);
   const duel = data.duels.find((item) => item.id === (params.get("id") || data.duels[0]?.id)) || data.duels[0];
   const agentA = agentsById[duel.agentAId];
@@ -156,8 +182,8 @@ export function renderDuel(data, agentsById) {
             <h1>${duel.prompt}</h1>
             <div class="duel-hero-meta">
               <span class="status-pill ${status.className}">${status.label}</span>
-              <span>${formatNumber(duel.pools.totalSignal)} SIGNAL en pool</span>
-              <span>Cierre apuestas ${formatIso(duel.timing.betDeadlineIso)}</span>
+              <span>${formatNumber(duel.pools.totalSignal)} SIGNAL ${isSpanish() ? "en pool" : "in pool"}</span>
+              <span>${isSpanish() ? "Cierre apuestas" : "Bet close"} ${formatIso(duel.timing.betDeadlineIso)}</span>
             </div>
           </div>
           <div class="duel-countdown">
@@ -169,8 +195,8 @@ export function renderDuel(data, agentsById) {
       <article class="panel duel-board-panel">
         <div class="duel-board-head">
           <div>
-            <h2>Prediction Battle</h2>
-            <p>Two forecasting agents, one public question. Review the calls, confidence, and recent form before backing a side.</p>
+            <h2>${t("predictionBattle")}</h2>
+            <p>${t("predictionBattleBody")}</p>
           </div>
           <div class="duel-board-meta">
             <span>Duel #${duel.id}</span>
@@ -183,7 +209,7 @@ export function renderDuel(data, agentsById) {
       </article>
 
       <article class="panel detail-section duel-info-card">
-        <h2>Official submissions</h2>
+        <h2>${t("officialSubmissions")}</h2>
         <div class="submission-grid">
           <article class="submission-card">
             <div class="submission-head">
@@ -194,17 +220,17 @@ export function renderDuel(data, agentsById) {
                   <div class="metric-label">${predictionA.provider} / ${predictionA.model}</div>
                 </div>
               </div>
-              <span class="badge subtle-badge">${predictionAPublished ? (agentA.heatTag || "Live confidence") : "Awaiting submission"}</span>
+              <span class="badge subtle-badge">${predictionAPublished ? translateArenaTag(agentA.heatTag || t("liveConfidence")) : (isSpanish() ? "Esperando submission" : "Awaiting submission")}</span>
             </div>
             <div class="submission-call">
-              <span class="metric-label">${predictionAPublished ? "Prediction locked" : "Submission status"}</span>
+              <span class="metric-label">${predictionAPublished ? t("predictionLocked") : t("submissionStatus")}</span>
               <strong>${predictionA.predictionValue} · ${predictionA.confidence}%</strong>
             </div>
             <div class="submission-meta">
-              <span>${agentA.record.winRate}% win rate</span>
-              <span>${agentA.stats.streak}</span>
+              <span>${agentA.record.winRate}% ${t("winRate").toLowerCase()}</span>
+              <span>${translateArenaTag(agentA.stats.streak)}</span>
             </div>
-            <p class="metric-label">${predictionAPublished ? predictionA.predictionLabel : "Official prediction pending."}</p>
+            <p class="metric-label">${predictionAPublished ? predictionA.predictionLabel : t("officialPredictionPending")}</p>
             <p>${predictionA.shortReasoning}</p>
           </article>
           <article class="submission-card">
@@ -216,17 +242,17 @@ export function renderDuel(data, agentsById) {
                   <div class="metric-label">${predictionB.provider} / ${predictionB.model}</div>
                 </div>
               </div>
-              <span class="badge subtle-badge">${predictionBPublished ? (agentB.heatTag || "Prediction live") : "Awaiting submission"}</span>
+              <span class="badge subtle-badge">${predictionBPublished ? translateArenaTag(agentB.heatTag || (isSpanish() ? "Predicción en vivo" : "Prediction live")) : (isSpanish() ? "Esperando submission" : "Awaiting submission")}</span>
             </div>
             <div class="submission-call">
-              <span class="metric-label">${predictionBPublished ? "Prediction locked" : "Submission status"}</span>
+              <span class="metric-label">${predictionBPublished ? t("predictionLocked") : t("submissionStatus")}</span>
               <strong>${predictionB.predictionValue} · ${predictionB.confidence}%</strong>
             </div>
             <div class="submission-meta">
-              <span>${agentB.record.winRate}% win rate</span>
-              <span>${agentB.stats.streak}</span>
+              <span>${agentB.record.winRate}% ${t("winRate").toLowerCase()}</span>
+              <span>${translateArenaTag(agentB.stats.streak)}</span>
             </div>
-            <p class="metric-label">${predictionBPublished ? predictionB.predictionLabel : "Official prediction pending."}</p>
+            <p class="metric-label">${predictionBPublished ? predictionB.predictionLabel : t("officialPredictionPending")}</p>
             <p>${predictionB.shortReasoning}</p>
           </article>
         </div>
@@ -234,38 +260,38 @@ export function renderDuel(data, agentsById) {
 
       <section class="duel-info-grid">
         <article class="panel detail-section duel-info-card">
-          <h2>Timing y reglas</h2>
+          <h2>${t("timingRules")}</h2>
           <div class="duel-rule-list">
-            <div class="duel-rule-row"><span>Ventana de apuesta</span><strong>Hasta ${formatIso(duel.timing.betDeadlineIso)}</strong></div>
-            <div class="duel-rule-row"><span>Ventana de settlement</span><strong>Hasta ${formatIso(duel.timing.settleDeadlineIso)}</strong></div>
-            <div class="duel-rule-row"><span>Refunds</span><strong>Permissionless si expira sin veredicto</strong></div>
-            <div class="duel-rule-row"><span>Restricción</span><strong>Una wallet, un lado por duelo</strong></div>
+            <div class="duel-rule-row"><span>${t("bettingWindow")}</span><strong>${isSpanish() ? "Hasta" : "Until"} ${formatIso(duel.timing.betDeadlineIso)}</strong></div>
+            <div class="duel-rule-row"><span>${t("settlementWindow")}</span><strong>${isSpanish() ? "Hasta" : "Until"} ${formatIso(duel.timing.settleDeadlineIso)}</strong></div>
+            <div class="duel-rule-row"><span>${t("refunds")}</span><strong>${t("refundsRule")}</strong></div>
+            <div class="duel-rule-row"><span>${t("restriction")}</span><strong>${t("restrictionRule")}</strong></div>
           </div>
         </article>
 
         <article class="panel detail-section duel-info-card">
-          <h2>Actividad del duelo</h2>
+          <h2>${t("duelActivity")}</h2>
           <div class="activity-list">
-            ${data.activities.filter((activity) => activity.duelId === duel.id).slice(0, 4).map(activityMarkup).join("") || "<div class=\"activity-row\"><span>Sin actividad visible todavía.</span><span>ahora</span></div>"}
+            ${data.activities.filter((activity) => activity.duelId === duel.id).slice(0, 4).map(activityMarkup).join("") || `<div class="activity-row"><span>${t("noRecentVisible")}</span><span>${t("now")}</span></div>`}
           </div>
         </article>
       </section>
     </section>
     <aside class="panel action-panel duel-trade-panel">
-      <p class="eyebrow">Back this prediction</p>
+      <p class="eyebrow">${isSpanish() ? "Respalda esta predicción" : "Back this prediction"}</p>
       <h3>${actionHeading(duel, position, agentA, agentB)}</h3>
       <p>${actionDescription(duel, position)}</p>
       <div class="action-state">
         <div class="trade-market-header">
-          <span>Backing panel</span>
-          <strong>${duel.status === "open" ? "Abierto" : status.label}</strong>
+          <span>${isSpanish() ? "Panel de respaldo" : "Backing panel"}</span>
+          <strong>${duel.status === "open" ? statusMap.open.label : status.label}</strong>
         </div>
         <div class="choice-grid duel-choice-grid">
           ${choiceMarkup(agentA, duel.pools.agentAPercent, position, !position)}
           ${choiceMarkup(agentB, duel.pools.agentBPercent, position, false)}
         </div>
         <label class="trade-field">
-          <span>Monto en SIGNAL</span>
+          <span>${t("amountSignal")}</span>
           <input id="bet-amount-input" type="number" min="1" step="1" value="${position?.amountSignal || 250}" ${inputDisabled ? "disabled" : ""} />
         </label>
         <div class="quick-amounts">
@@ -275,28 +301,28 @@ export function renderDuel(data, agentsById) {
           <button type="button" class="quick-amount-button" data-amount="500" ${inputDisabled ? "disabled" : ""}>+500</button>
         </div>
         <div class="action-summary">
-          ${summaryLine("Balance", `${formatNumber(data.user.signalBalance)} SIGNAL`)}
-          ${summaryLine("Estado", position ? positionMap[position.status].label : status.label)}
-          ${summaryLine("Pool total", `${formatNumber(duel.pools.totalSignal)} SIGNAL`)}
-          ${position?.claimableSignal ? summaryLine("Ganancia", `${formatNumber(position.claimableSignal)} SIGNAL`) : ""}
-          ${position?.refundSignal ? summaryLine("Reembolso", `${formatNumber(position.refundSignal)} SIGNAL`) : ""}
+          ${summaryLine(t("balance"), `${formatNumber(data.user.signalBalance)} SIGNAL`)}
+          ${summaryLine(t("state"), position ? positionMap[position.status].label : status.label)}
+          ${summaryLine(t("totalPool"), `${formatNumber(duel.pools.totalSignal)} SIGNAL`)}
+          ${position?.claimableSignal ? summaryLine(t("winnings"), `${formatNumber(position.claimableSignal)} SIGNAL`) : ""}
+          ${position?.refundSignal ? summaryLine(t("refund"), `${formatNumber(position.refundSignal)} SIGNAL`) : ""}
         </div>
         <button id="duel-action-button" class="button primary">${actionButton(duel, position)}</button>
       </div>
       <div class="duel-side-stack">
         <div class="duel-side-section">
-          <h4>Tu lectura rápida</h4>
+          <h4>${t("yourQuickRead")}</h4>
           <div class="duel-side-copy">
             <span>${agentA.name}</span>
-            <strong>${duel.pools.agentAPercent}% del pool</strong>
+            <strong>${isSpanish() ? `${duel.pools.agentAPercent}% del pool` : `${duel.pools.agentAPercent}% of pool`}</strong>
           </div>
           <div class="duel-side-copy">
             <span>${agentB.name}</span>
-            <strong>${duel.pools.agentBPercent}% del pool</strong>
+            <strong>${isSpanish() ? `${duel.pools.agentBPercent}% del pool` : `${duel.pools.agentBPercent}% of pool`}</strong>
           </div>
         </div>
         <div class="duel-side-section">
-          <h4>Otros duelos</h4>
+          <h4>${t("otherDuels")}</h4>
           <div class="duel-related-list">
             ${relatedDuels.map((item) => relatedDuelMarkup(item, agentsById)).join("")}
           </div>
@@ -326,50 +352,50 @@ export function renderAgent(data, agentsById) {
           <h1>${agent.name}</h1>
           <div class="card-matchup">
             <span class="badge">${translateCategory(agent.category)}</span>
-            ${agent.verified ? '<span class="badge">Verificado</span>' : '<span class="badge">No verificado</span>'}
+            ${agent.verified ? `<span class="badge">${t("agentVerified")}</span>` : `<span class="badge">${t("agentUnverified")}</span>`}
             <span class="badge">${agent.provider} / ${agent.model}</span>
-            <span class="badge">${agent.statusTag}</span>
+            <span class="badge">${translateArenaTag(agent.statusTag)}</span>
           </div>
           <p>${agent.tagline}</p>
         </div>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="./explore.html">Ver duelos</a>
-        <a class="button secondary" href="./duel.html?id=${duels[0]?.id || ""}">Abrir duelo</a>
+        <a class="button primary" href="./explore.html">${t("viewDuels")}</a>
+        <a class="button secondary" href="./duel.html?id=${duels[0]?.id || ""}">${t("openDuel")}</a>
       </div>
     </section>
 
     <section class="summary-grid">
-      ${summaryMetric("Wins", agent.record.wins)}
-      ${summaryMetric("Losses", agent.record.losses)}
-      ${summaryMetric("Win rate", `${agent.record.winRate}%`)}
-      ${summaryMetric("Recent form", agent.stats.recentForm)}
+      ${summaryMetric(t("wins"), agent.record.wins)}
+      ${summaryMetric(t("losses"), agent.record.losses)}
+      ${summaryMetric(t("winRate"), `${agent.record.winRate}%`)}
+      ${summaryMetric(t("recentForm"), agent.stats.recentForm)}
     </section>
 
     <section class="panel detail-section">
-      <h2>Sobre este agente</h2>
-      <p><strong>Especialidad:</strong> ${agent.specialty}</p>
-      <p><strong>Provider / model:</strong> ${agent.provider} / ${agent.model}</p>
-      <p><strong>Origen:</strong> ${translateOrigin(agent.origin)}</p>
-      <p><strong>Recent form:</strong> ${agent.stats.recentForm}</p>
-      <p><strong>Current streak:</strong> ${agent.stats.streak}</p>
-      <p><strong>Predictions tracked:</strong> ${agent.stats.totalPredictions}</p>
-      <p><strong>Duelos abiertos:</strong> ${agent.stats.activeDuels}</p>
-      <p><strong>Total backed:</strong> ${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</p>
+      <h2>${t("aboutAgent")}</h2>
+      <p><strong>${t("specialty")}:</strong> ${agent.specialty}</p>
+      <p><strong>${t("providerModel")}:</strong> ${agent.provider} / ${agent.model}</p>
+      <p><strong>${t("origin")}:</strong> ${translateOrigin(agent.origin)}</p>
+      <p><strong>${t("recentForm")}:</strong> ${agent.stats.recentForm}</p>
+      <p><strong>${t("currentStreak")}:</strong> ${translateArenaTag(agent.stats.streak)}</p>
+      <p><strong>${t("predictionsTracked")}:</strong> ${agent.stats.totalPredictions}</p>
+      <p><strong>${t("openDuelsCount")}:</strong> ${agent.stats.activeDuels}</p>
+      <p><strong>${t("totalBackedLabel")}:</strong> ${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</p>
     </section>
 
     <section class="section">
       <div class="section-head">
-        <h2>Duelos recientes</h2>
+        <h2>${t("recentDuels")}</h2>
       </div>
       <div class="card-grid">${duels.map((duel) => duelCardMarkup(duel, agentsById)).join("")}</div>
     </section>
 
     <section class="section">
       <div class="section-head">
-        <h2>Actividad reciente</h2>
+        <h2>${t("recentActivity")}</h2>
       </div>
-      <div class="activity-list panel">${activities.length ? activities.map(activityMarkup).join("") : "<div class=\"activity-row\"><span>Sin actividad visible todavía.</span><span>ahora</span></div>"}</div>
+      <div class="activity-list panel">${activities.length ? activities.map(activityMarkup).join("") : `<div class="activity-row"><span>${t("noRecentVisible")}</span><span>${t("now")}</span></div>`}</div>
     </section>
   `;
 }
@@ -388,24 +414,24 @@ export function renderPortfolio(data) {
   view.innerHTML = `
     <section class="portfolio-header">
       <article class="panel page-intro">
-        <p class="eyebrow">Historial de arena</p>
-        <h1>Gestiona tus posiciones y cobros.</h1>
+        <p class="eyebrow">${t("arenaHistory")}</p>
+        <h1>${t("managePositions")}</h1>
         <p>${data.user.walletAddress}</p>
       </article>
       <div class="summary-grid">
-        ${summaryMetric("Balance SIGNAL", `${formatNumber(data.user.signalBalance)} SIGNAL`)}
-        ${summaryMetric("Total respaldado", `${formatNumber(data.user.summary.totalBackedSignal)} SIGNAL`)}
-        ${summaryMetric("Ganancia disponible", `${formatNumber(data.user.summary.claimableSignal)} SIGNAL`)}
-        ${summaryMetric("Reembolso disponible", `${formatNumber(data.user.summary.refundableSignal)} SIGNAL`)}
+        ${summaryMetric(t("signalBalance"), `${formatNumber(data.user.signalBalance)} SIGNAL`)}
+        ${summaryMetric(t("totalBacked"), `${formatNumber(data.user.summary.totalBackedSignal)} SIGNAL`)}
+        ${summaryMetric(t("claimableWinnings"), `${formatNumber(data.user.summary.claimableSignal)} SIGNAL`)}
+        ${summaryMetric(t("claimableRefunds"), `${formatNumber(data.user.summary.refundableSignal)} SIGNAL`)}
       </div>
     </section>
 
     <section class="panel portfolio-card">
       <div class="tabs">
-        <button class="tab active" data-tab="open">Posiciones abiertas</button>
-        <button class="tab" data-tab="winnings">Cobrar ganancias</button>
-        <button class="tab" data-tab="refunds">Cobrar reembolsos</button>
-        <button class="tab" data-tab="history">Historial</button>
+        <button class="tab active" data-tab="open">${t("openPositions")}</button>
+        <button class="tab" data-tab="winnings">${t("claimWinningsTab")}</button>
+        <button class="tab" data-tab="refunds">${t("claimRefundsTab")}</button>
+        <button class="tab" data-tab="history">${t("historyTab")}</button>
       </div>
       <div id="tab-content"></div>
     </section>
@@ -418,7 +444,7 @@ export function renderPortfolio(data) {
     const rows = grouped[key];
     tabContent.innerHTML = rows.length
       ? `<div class="positions-grid">${rows.map(positionMarkup).join("")}</div>`
-      : `<div class="empty-state"><h3>No hay movimientos en esta sección.</h3><p>${appState.account ? "Todavía no tienes posiciones para mostrar aquí." : "Conecta tu wallet para ver tus posiciones reales."}</p></div>`;
+      : `<div class="empty-state"><h3>${t("noSectionMoves")}</h3><p>${appState.account ? t("noSectionWithWallet") : t("noSectionWithoutWallet")}</p></div>`;
   };
 
   tabs.forEach((tab) => tab.addEventListener("click", () => renderTab(tab.dataset.tab)));

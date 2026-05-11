@@ -1,11 +1,49 @@
 // utils.js — pure helper functions (formatting, math, markup generation)
 import { ethers } from "https://esm.sh/ethers@6.13.5";
-import { statusMap, positionMap, CHAIN } from "./state.js";
+import { getPositionMap, getStatusMap } from "./state.js";
+import {
+  t,
+  getLanguage,
+  formatNumberForLanguage,
+  formatIsoForLanguage,
+  formatPredictionTimestampForLanguage,
+  relativeTimestampForLanguage,
+  translateTimeLeft
+} from "./i18n.js";
+
+const isSpanish = () => getLanguage() === "es";
+
+function translateArenaTag(value) {
+  if (!isSpanish()) return value;
+  return {
+    "Top predictor": "Mejor predictor",
+    Contrarian: "Contrarian",
+    "Hot agent": "Agente caliente",
+    "Guest pick": "Invitado destacado",
+    "Most backed": "Más respaldado",
+    "Community watch": "Radar comunidad",
+    "Tracked agent": "Agente seguido",
+    Live: "En vivo",
+    Trending: "En tendencia",
+    "Confidence locked": "Confianza bloqueada",
+    "Pool shifted": "Pool movido",
+    "3-win streak": "Racha de 3 victorias",
+    "New prediction submitted": "Nueva predicción enviada",
+    "Hot streak": "Racha caliente",
+    "Won 2 of last 3": "Ganó 2 de las últimas 3",
+    "Needs a bounce-back call": "Necesita una llamada de rebote",
+    "Three-call heater": "Tres aciertos seguidos",
+    "Volatile but dangerous": "Volátil pero peligroso",
+    "Strong recent form": "Buena forma reciente",
+    "No verified streak yet": "Todavía sin racha verificada",
+    "New entrant": "Nuevo participante"
+  }[value] || value;
+}
 
 // ─── Formatting ────────────────────────────────────────────────
 
 export function formatNumber(value) {
-  return new Intl.NumberFormat("en-US").format(Math.round(value * 100) / 100);
+  return formatNumberForLanguage(value);
 }
 
 export function formatTokenNumber(value) {
@@ -13,28 +51,19 @@ export function formatTokenNumber(value) {
 }
 
 export function formatIso(value) {
-  return new Intl.DateTimeFormat("es-EC", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
+  return formatIsoForLanguage(value);
 }
 
 export function formatPredictionTimestamp(value) {
-  if (!value) return "Pending";
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(value));
+  return formatPredictionTimestampForLanguage(value);
 }
 
 export function relativeTimestamp(value) {
-  const diffMinutes = Math.max(1, Math.round((Date.now() - new Date(value).getTime()) / 60000));
-  if (diffMinutes < 60) return `hace ${diffMinutes} min`;
-  const diffHours = Math.round(diffMinutes / 60);
-  if (diffHours < 24) return `hace ${diffHours} h`;
-  return `hace ${Math.round(diffHours / 24)} d`;
+  return relativeTimestampForLanguage(value);
 }
 
 export function formatTimeLeft(value) {
-  if (value === "Settled") return "Finalizado";
-  if (value === "Winner declared") return "Ganador declarado";
-  if (value === "Refund available") return "Reembolso disponible";
-  if (value.includes("left")) return value.replace(" left", " restantes");
-  return value;
+  return translateTimeLeft(value);
 }
 
 export function shortAddress(address) {
@@ -67,7 +96,6 @@ export function hasOfficialPrediction(prediction) {
 
 export function calculatePayout(duel, selectedAgentId, amountSignal) {
   const winnerPool = selectedAgentId === duel.agentAId ? duel.pools.agentASignal : duel.pools.agentBSignal;
-  // Use integer math matching Solidity: prizePool = totalPot - (totalPot * ARENA_CUT / 10000)
   const totalPot = duel.pools.totalSignal;
   const arenaFee = Math.floor((totalPot * 200) / 10000);
   const prizePool = totalPot - arenaFee;
@@ -89,16 +117,17 @@ export function deriveTimeLabel(rawDuel, state) {
     if (hours >= 1) return `${hours}h left`;
     return `${Math.max(1, Math.floor(remaining / 60))}m left`;
   }
-  if (now <= settleDeadline) return "Esperando veredicto";
+  if (now <= settleDeadline) return "Awaiting verdict";
   return "Refund available";
 }
 
 export function duelCountdownParts(duel) {
+  const labels = isSpanish() ? ["hrs", "mins", "segs"] : ["hrs", "mins", "secs"];
   if (duel.status !== "open") {
     return [
-      { value: "--", label: "hrs" },
-      { value: "--", label: "mins" },
-      { value: "--", label: "secs" }
+      { value: "--", label: labels[0] },
+      { value: "--", label: labels[1] },
+      { value: "--", label: labels[2] }
     ];
   }
   const diff = Math.max(0, new Date(duel.timing.betDeadlineIso).getTime() - Date.now());
@@ -107,9 +136,9 @@ export function duelCountdownParts(duel) {
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
   return [
-    { value: String(hours).padStart(2, "0"), label: "hrs" },
-    { value: String(minutes).padStart(2, "0"), label: "mins" },
-    { value: String(seconds).padStart(2, "0"), label: "secs" }
+    { value: String(hours).padStart(2, "0"), label: labels[0] },
+    { value: String(minutes).padStart(2, "0"), label: labels[1] },
+    { value: String(seconds).padStart(2, "0"), label: labels[2] }
   ];
 }
 
@@ -125,6 +154,7 @@ export function countdownMarkup(parts) {
 // ─── Translations ──────────────────────────────────────────────
 
 export function translateCategory(value) {
+  if (!isSpanish()) return value;
   return {
     "Guest Agent": "Agente invitado",
     "Partner Agent": "Agente partner",
@@ -134,6 +164,7 @@ export function translateCategory(value) {
 }
 
 export function translateOrigin(value) {
+  if (!isSpanish()) return value;
   return {
     External: "Invitado",
     Partner: "Partner",
@@ -145,32 +176,32 @@ export function translateOrigin(value) {
 // ─── Action labels ─────────────────────────────────────────────
 
 export function actionHeading(duel, position, agentA, agentB) {
-  if (!duel._account) return "Conecta tu wallet";
-  if (duel.status === "open" && !position) return "Back the agent you trust";
-  if (position?.status === "won_claim_available") return `Cobrar victoria de ${agentName(position.selectedAgentId, agentA, agentB)}`;
-  if (position?.status === "refund_available") return "Cobrar reembolso";
-  if (duel.status === "refund_available" && !position) return "Abrir refunds";
-  return "Duelo cerrado";
+  if (!duel._account) return isSpanish() ? "Conecta tu wallet" : "Connect your wallet";
+  if (duel.status === "open" && !position) return isSpanish() ? "Respalda al agente en quien confías" : "Back the agent you trust";
+  if (position?.status === "won_claim_available") return isSpanish() ? `Cobrar victoria de ${agentName(position.selectedAgentId, agentA, agentB)}` : `Claim ${agentName(position.selectedAgentId, agentA, agentB)} winnings`;
+  if (position?.status === "refund_available") return isSpanish() ? "Cobrar reembolso" : "Claim refund";
+  if (duel.status === "refund_available" && !position) return isSpanish() ? "Abrir refunds" : "Open refunds";
+  return isSpanish() ? "Duelo cerrado" : "Duel closed";
 }
 
 export function actionDescription(duel, position) {
-  if (!duel._account) return "Conecta MetaMask en Sepolia para ver tus posiciones reales y operar con SIGNAL.";
-  if (duel.status === "open" && !position) return "Review each submission, compare confidence and track record, then back the forecast you trust.";
-  if (position?.status === "won_claim_available") return "Esta posición ganó. Tu payout ya está listo para cobrar.";
-  if (position?.status === "refund_available") return "Este duelo expiró sin veredicto. Tu apuesta original puede volver a tu wallet.";
-  if (duel.status === "refund_available" && !position) return "El duelo venció sin settlement. Cualquier wallet puede desbloquear refunds.";
-  if (duel.status === "settled") return "El ganador ya fue declarado. Los backers ganadores pueden cobrar y los demás revisar el resultado.";
-  return "Este duelo quedó cerrado para reembolsos individuales.";
+  if (!duel._account) return isSpanish() ? "Conecta MetaMask en Sepolia para ver tus posiciones reales y operar con SIGNAL." : "Connect MetaMask on Sepolia to see your real positions and use SIGNAL.";
+  if (duel.status === "open" && !position) return isSpanish() ? "Revisa cada submission, compara confianza e historial, y luego respalda el pronóstico que más te convenza." : "Review each submission, compare confidence and track record, then back the forecast you trust.";
+  if (position?.status === "won_claim_available") return isSpanish() ? "Esta posición ganó. Tu payout ya está listo para cobrar." : "This position won. Your payout is ready to claim.";
+  if (position?.status === "refund_available") return isSpanish() ? "Este duelo expiró sin veredicto. Tu apuesta original puede volver a tu wallet." : "This duel expired without a verdict. Your original stake can return to your wallet.";
+  if (duel.status === "refund_available" && !position) return isSpanish() ? "El duelo venció sin settlement. Cualquier wallet puede desbloquear refunds." : "This duel expired without settlement. Any wallet can unlock refunds.";
+  if (duel.status === "settled") return isSpanish() ? "El ganador ya fue declarado. Los backers ganadores pueden cobrar y los demás revisar el resultado." : "The winner has already been declared. Winning backers can claim and everyone else can review the result.";
+  return isSpanish() ? "Este duelo quedó cerrado para reembolsos individuales." : "This duel is closed for individual refunds.";
 }
 
 export function actionButton(duel, position) {
-  if (!duel._account) return "Conectar billetera";
-  if (duel.status === "open" && !position) return "Back this prediction";
-  if (position?.status === "won_claim_available") return "Cobrar ganancia";
-  if (position?.status === "refund_available") return "Cobrar reembolso";
-  if (duel.status === "refund_available" && !position) return "Abrir refunds";
-  if (duel.status === "open" && position) return "Ya participas";
-  return "Ver portfolio";
+  if (!duel._account) return t("walletConnect");
+  if (duel.status === "open" && !position) return isSpanish() ? "Respaldar esta predicción" : "Back this prediction";
+  if (position?.status === "won_claim_available") return isSpanish() ? "Cobrar ganancia" : "Claim winnings";
+  if (position?.status === "refund_available") return isSpanish() ? "Cobrar reembolso" : "Claim refund";
+  if (duel.status === "refund_available" && !position) return isSpanish() ? "Abrir refunds" : "Open refunds";
+  if (duel.status === "open" && position) return isSpanish() ? "Ya participas" : "Already entered";
+  return isSpanish() ? "Ver portfolio" : "View portfolio";
 }
 
 export function agentName(agentId, agentA, agentB) {
@@ -197,11 +228,14 @@ export function summaryLine(label, value) {
 }
 
 export function overviewCardMarkup(label, value, detail) {
+  const withSignalIcon = typeof value === "string" && value.includes("SIGNAL")
+    ? value.replace(/^\s*([\d.,]+\s*SIGNAL)\b/, '<span class="signal-inline-value"><img class="signal-inline-icon" src="./tobybots-img/signalcoin_image.png" alt="" aria-hidden="true" /><span>$1</span></span>')
+    : value;
   return `
     <article class="overview-card panel">
       <div class="overview-card-body">
         <span class="metric-label">${label}</span>
-        <strong>${value}</strong>
+        <strong>${withSignalIcon}</strong>
         <p>${detail}</p>
       </div>
     </article>
@@ -233,8 +267,12 @@ export function recentFormMarkup(form) {
 }
 
 export function positionMarkup(position) {
-  const state = positionMap[position.status];
-  const action = position.status === "won_claim_available" ? "Cobrar ganancia" : position.status === "refund_available" ? "Cobrar reembolso" : "Ver duelo";
+  const state = getPositionMap()[position.status];
+  const action = position.status === "won_claim_available"
+    ? (isSpanish() ? "Cobrar ganancia" : "Claim winnings")
+    : position.status === "refund_available"
+      ? (isSpanish() ? "Cobrar reembolso" : "Claim refund")
+      : (isSpanish() ? "Ver duelo" : "View duel");
   return `
     <div class="position-row">
       <div>
@@ -252,13 +290,17 @@ export function positionMarkup(position) {
 export function agentCardMarkup(agent, options = {}) {
   const { rank = null, featured = false } = options;
   const prestigeClass = rank && rank <= 3 ? ` podium podium-${rank}` : "";
-  const cueLabel = agent.heatTag || agent.statusTag;
-  const liveLabel = agent.stats.activeDuels ? `${agent.stats.activeDuels} live duel${agent.stats.activeDuels === 1 ? "" : "s"}` : agent.stats.aliveSignal;
+  const cueLabel = translateArenaTag(agent.heatTag || agent.statusTag);
+  const liveLabel = agent.stats.activeDuels
+    ? isSpanish()
+      ? `${agent.stats.activeDuels} duelo${agent.stats.activeDuels === 1 ? "" : "s"} en vivo`
+      : `${agent.stats.activeDuels} live duel${agent.stats.activeDuels === 1 ? "" : "s"}`
+    : translateArenaTag(agent.stats.aliveSignal);
   return `
     <article class="agent-card${featured ? " featured-leaderboard-card" : ""}${prestigeClass}">
       <div class="card-meta">
         <div class="leaderboard-meta">
-          ${rank ? `<span class="leaderboard-rank">#${rank}</span>` : `<span class="status-pill status-open">${agent.statusTag}</span>`}
+          ${rank ? `<span class="leaderboard-rank">#${rank}</span>` : `<span class="status-pill status-open">${translateArenaTag(agent.statusTag)}</span>`}
           <span class="status-pill status-open">${cueLabel}</span>
         </div>
         <span class="metric-label">${liveLabel}</span>
@@ -275,22 +317,22 @@ export function agentCardMarkup(agent, options = {}) {
         <span class="badge">${agent.provider} / ${agent.model}</span>
       </div>
       <div class="agent-card-stats">
-        <div><span class="metric-label">Win rate</span><strong>${agent.record.winRate}%</strong></div>
-        <div><span class="metric-label">Record</span><strong>${agent.record.wins}-${agent.record.losses}</strong></div>
-        <div><span class="metric-label">Most backed</span><strong>${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</strong></div>
+        <div><span class="metric-label">${t("winRate")}</span><strong>${agent.record.winRate}%</strong></div>
+        <div><span class="metric-label">${t("record")}</span><strong>${agent.record.wins}-${agent.record.losses}</strong></div>
+        <div><span class="metric-label">${t("homeMostBacked")}</span><strong>${formatNumber(agent.stats.totalBackedSignal)} SIGNAL</strong></div>
       </div>
       <div class="agent-form-row">
         <div>
-          <span class="metric-label">Recent form</span>
+          <span class="metric-label">${t("recentForm")}</span>
           ${recentFormMarkup(agent.stats.recentForm)}
         </div>
-        <div class="metric-copy">${agent.stats.streak}</div>
+        <div class="metric-copy">${translateArenaTag(agent.stats.streak)}</div>
       </div>
       <div class="card-footer">
-        <div class="metric-label">Trending predictor</div>
-        <div class="metric-label">${agent.statusTag}</div>
+        <div class="metric-label">${t("trendingPredictor")}</div>
+        <div class="metric-label">${translateArenaTag(agent.statusTag)}</div>
       </div>
-      <a class="button secondary" href="./agent.html?id=${agent.id}">Ver perfil</a>
+      <a class="button secondary" href="./agent.html?id=${agent.id}">${t("viewProfile")}</a>
     </article>
   `;
 }
@@ -302,7 +344,7 @@ export function miniDuelRowMarkup(duel, agentsById) {
     <a class="mini-row" href="./duel.html?id=${duel.id}">
       <div>
         <strong>${duel.title}</strong>
-        <span>${duel.liveSignal} · ${agentA.name} ${duel.predictions.byAgentId[agentA.id].confidence}% · ${agentB.name} ${duel.predictions.byAgentId[agentB.id].confidence}%</span>
+        <span>${translateArenaTag(duel.liveSignal)} · ${agentA.name} ${duel.predictions.byAgentId[agentA.id].confidence}% · ${agentB.name} ${duel.predictions.byAgentId[agentB.id].confidence}%</span>
       </div>
       <span>${formatTimeLeft(duel.timing.timeLeftLabel)}</span>
     </a>
@@ -312,7 +354,7 @@ export function miniDuelRowMarkup(duel, agentsById) {
 export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex = 0) {
   const agentA = agentsById[duel.agentAId];
   const agentB = agentsById[duel.agentBId];
-  const status = statusMap[duel.status];
+  const status = getStatusMap()[duel.status];
   const predictionA = duel.predictions.byAgentId[agentA.id];
   const predictionB = duel.predictions.byAgentId[agentB.id];
   const hasPredictionA = hasOfficialPrediction(predictionA);
@@ -323,14 +365,22 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
   const trailingPrediction = leadPrediction.agent.id === agentA.id
     ? { agent: agentB, prediction: predictionB }
     : { agent: agentA, prediction: predictionA };
+  const percentOfPoolText = isSpanish() ? `${leadPrediction.percent}% del pool` : `${leadPrediction.percent}% of pool`;
+  const backedText = isSpanish() ? `${formatNumber(duel.pools.totalSignal)} SIGNAL respaldado` : `${formatNumber(duel.pools.totalSignal)} SIGNAL backed`;
+  const leadText = hasPredictionA || hasPredictionB
+    ? isSpanish()
+      ? `${leadPrediction.agent.name} lidera ${leadPrediction.prediction.confidence}% contra ${trailingPrediction.prediction.confidence}% de confianza`
+      : `${leadPrediction.agent.name} leads ${leadPrediction.prediction.confidence}% to ${trailingPrediction.prediction.confidence}% confidence`
+    : t("officialPredictionPending");
+
   return `
     <a class="duel-card duel-card-link" href="./duel.html?id=${duel.id}" data-instance="${instanceIndex}">
       <div class="card-meta">
         <div class="leaderboard-meta">
           <span class="status-pill ${status.className}">${status.label}</span>
-          <span class="badge subtle-badge">${hasPredictionA || hasPredictionB ? "Prediction locked" : "Awaiting submissions"}</span>
+          <span class="badge subtle-badge">${hasPredictionA || hasPredictionB ? t("predictionLocked") : t("awaitingSubmissions")}</span>
         </div>
-        <span class="metric-label">${duel.liveSignal}</span>
+        <span class="metric-label">${translateArenaTag(duel.liveSignal)}</span>
       </div>
       <h3>${duel.title}</h3>
       <div class="duel-bots">
@@ -352,12 +402,12 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
       <p>${truncateText(duel.prompt, 96)}</p>
       <div class="duel-card-signal">
         <div>
-          <span class="metric-label">${hasPredictionA || hasPredictionB ? "Live confidence" : "Submission status"}</span>
-          <strong>${hasPredictionA || hasPredictionB ? `${leadPrediction.agent.name} ${leadPrediction.prediction.confidence}%` : "No official call yet"}</strong>
+          <span class="metric-label">${hasPredictionA || hasPredictionB ? t("liveConfidence") : t("submissionStatus")}</span>
+          <strong>${hasPredictionA || hasPredictionB ? `${leadPrediction.agent.name} ${leadPrediction.prediction.confidence}%` : t("noOfficialCallYet")}</strong>
         </div>
         <div>
-          <span class="metric-label">Most backed</span>
-          <strong>${leadPrediction.percent}% of pool</strong>
+          <span class="metric-label">${t("homeMostBacked")}</span>
+          <strong>${percentOfPoolText}</strong>
         </div>
       </div>
       <div class="outcome-book">
@@ -375,8 +425,8 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
       </div>
       <div class="split-bar"><div class="split-fill" style="width: ${duel.pools.agentAPercent}%"></div></div>
       <div class="card-footer">
-        <div class="metric-copy">${hasPredictionA || hasPredictionB ? `${leadPrediction.agent.name} leads ${leadPrediction.prediction.confidence}% to ${trailingPrediction.prediction.confidence}% confidence` : "Official submissions pending"}</div>
-        <div class="metric-label">${formatNumber(duel.pools.totalSignal)} SIGNAL backed</div>
+        <div class="metric-copy">${leadText}</div>
+        <div class="metric-label">${backedText}</div>
       </div>
     </a>
   `;
@@ -385,9 +435,14 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
 export function duelMarketRowMarkup(agent, duel, position, selected, slotLabel) {
   const percent = agent.id === duel.agentAId ? duel.pools.agentAPercent : duel.pools.agentBPercent;
   const signal = agent.id === duel.agentAId ? duel.pools.agentASignal : duel.pools.agentBSignal;
-  const selectedLabel = position?.selectedAgentId === agent.id ? "Tu lado" : selected ? "Lado sugerido" : "En juego";
+  const selectedLabel = position?.selectedAgentId === agent.id
+    ? (isSpanish() ? "Tu lado" : "Your side")
+    : selected
+      ? (isSpanish() ? "Lado sugerido" : "Suggested side")
+      : (isSpanish() ? "En juego" : "In play");
   const prediction = duel.predictions.byAgentId[agent.id];
   const published = hasOfficialPrediction(prediction);
+  const backingText = isSpanish() ? `${percent}% del respaldo` : `${percent}% of backing`;
 
   return `
     <div class="duel-market-row ${selected ? "is-selected" : ""}">
@@ -396,12 +451,12 @@ export function duelMarketRowMarkup(agent, duel, position, selected, slotLabel) 
         <div>
           <div class="duel-market-label">${slotLabel}</div>
           <strong>${agent.name}</strong>
-          <div class="metric-label">${agent.provider} / ${agent.model} · ${agent.statusTag}</div>
+          <div class="metric-label">${agent.provider} / ${agent.model} · ${translateArenaTag(agent.statusTag)}</div>
         </div>
       </div>
       <div class="duel-market-stats">
         <div>
-          <span>Prediction</span>
+          <span>${isSpanish() ? "Predicción" : "Prediction"}</span>
           <strong>${prediction.predictionValue} · ${prediction.confidence}%</strong>
         </div>
         <div>
@@ -409,16 +464,16 @@ export function duelMarketRowMarkup(agent, duel, position, selected, slotLabel) 
           <strong>${prediction.provider} / ${prediction.model}</strong>
         </div>
         <div>
-          <span>Track record</span>
+          <span>${isSpanish() ? "Historial" : "Track record"}</span>
           <strong>${agent.record.wins}W - ${agent.record.losses}L</strong>
         </div>
       </div>
-      <div class="metric-label">${published ? prediction.predictionLabel : "Official prediction pending."}</div>
+      <div class="metric-label">${published ? prediction.predictionLabel : t("officialPredictionPending")}</div>
       <div class="metric-label">${truncateText(prediction.shortReasoning, 120)}</div>
       <div class="duel-market-stats">
         <div>
           <span>${selectedLabel}</span>
-          <strong>${percent}% of backing</strong>
+          <strong>${backingText}</strong>
         </div>
         <div>
           <span>Pool</span>
@@ -458,14 +513,13 @@ export function detailBotMarkup(agent, percent) {
           <div class="metric-label">${translateCategory(agent.category)}</div>
         </div>
       </div>
-      <h3>${percent}% del pool</h3>
+      <h3>${isSpanish() ? `${percent}% del pool` : `${percent}% of pool`}</h3>
       <p>${agent.tagline}</p>
-      <div class="stats-row"><span class="metric-label">Récord</span><strong>${agent.record.wins}W - ${agent.record.losses}L</strong></div>
+      <div class="stats-row"><span class="metric-label">${t("record")}</span><strong>${agent.record.wins}W - ${agent.record.losses}L</strong></div>
     </div>
   `;
 }
 
 export function buildExploreDisplayDuels(duels, targetCount) {
-  // Show real duels only — never duplicate. If fewer than targetCount, show what we have.
   return duels.slice(0, targetCount);
 }

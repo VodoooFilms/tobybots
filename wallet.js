@@ -1,7 +1,10 @@
 // wallet.js — wallet connection, transactions, duel interactions
 import { ethers } from "https://esm.sh/ethers@6.13.5";
 import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState } from "./state.js";
+import { getLanguage } from "./i18n.js";
 import { refreshApp } from "./app.js";
+
+const isSpanish = () => getLanguage() === "es";
 
 // ─── Wallet hydration ──────────────────────────────────────────
 
@@ -39,7 +42,7 @@ export async function connectWallet() {
     await refreshApp();
   } catch (error) {
     console.error(error);
-    alert(error.message || "No pude conectar la wallet.");
+    alert(error.message || (isSpanish() ? "No pude conectar la wallet." : "I could not connect the wallet."));
   }
 }
 
@@ -48,14 +51,14 @@ export async function connectWallet() {
 export async function submitArenaAction(button, callback) {
   const label = button.textContent;
   button.disabled = true;
-  button.textContent = "Enviando...";
+  button.textContent = isSpanish() ? "Enviando..." : "Sending...";
   try {
     const tx = await callback();
     await tx.wait();
     await refreshApp();
   } catch (error) {
     console.error(error);
-    alert(error.shortMessage || error.message || "No pude completar la transacción.");
+    alert(error.shortMessage || error.message || (isSpanish() ? "No pude completar la transacción." : "I could not complete the transaction."));
     button.disabled = false;
     button.textContent = label;
   }
@@ -95,7 +98,7 @@ export function bindDuelInteractions(duel, position, defaultAgent) {
     button.onclick = async () => {
       const amount = amountInput.value;
       if (!amount || Number(amount) <= 0) {
-        alert("Ingresa un monto válido.");
+        alert(isSpanish() ? "Ingresa un monto válido." : "Enter a valid amount.");
         return;
       }
 

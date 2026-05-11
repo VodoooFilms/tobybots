@@ -1,5 +1,6 @@
 // state.js — constants, ABIs, appState, config loading
 import { ethers } from "https://esm.sh/ethers@6.13.5";
+import { getLanguage } from "./i18n.js";
 
 export const CHAIN_DEFAULTS = {
   id: 11155111,
@@ -151,20 +152,26 @@ try {
   console.warn("Usando metadata de predicciones vacia (predictions.json no encontrado)");
 }
 
-export const statusMap = {
-  open: { label: "Abierto", className: "status-open" },
-  settled: { label: "Finalizado", className: "status-settled" },
-  refund_available: { label: "Reembolso", className: "status-refund" }
-};
+export function getStatusMap() {
+  const es = getLanguage() === "es";
+  return {
+    open: { label: es ? "Abierto" : "Open", className: "status-open" },
+    settled: { label: es ? "Finalizado" : "Settled", className: "status-settled" },
+    refund_available: { label: es ? "Reembolso" : "Refund", className: "status-refund" }
+  };
+}
 
-export const positionMap = {
-  active: { label: "Activa", className: "position-active" },
-  won_claim_available: { label: "Cobrar ganancia", className: "position-won" },
-  lost: { label: "Perdida", className: "position-lost" },
-  refund_available: { label: "Cobrar reembolso", className: "position-refund" },
-  claimed: { label: "Cobrada", className: "position-claimed" },
-  refunded: { label: "Reembolsada", className: "position-refund" }
-};
+export function getPositionMap() {
+  const es = getLanguage() === "es";
+  return {
+    active: { label: es ? "Activa" : "Active", className: "position-active" },
+    won_claim_available: { label: es ? "Cobrar ganancia" : "Claim winnings", className: "position-won" },
+    lost: { label: es ? "Perdida" : "Lost", className: "position-lost" },
+    refund_available: { label: es ? "Cobrar reembolso" : "Claim refund", className: "position-refund" },
+    claimed: { label: es ? "Cobrada" : "Claimed", className: "position-claimed" },
+    refunded: { label: es ? "Reembolsada" : "Refunded", className: "position-refund" }
+  };
+}
 
 export const page = document.body.dataset.page;
 

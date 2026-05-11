@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./tobybots-img/tobybots-mark.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="./tobybots-img/tobybots-mark.svg" type="image/svg+xml">
+    <title>SIGNAL - TobyBots Arena</title>
+    <link rel="stylesheet" href="./styles.css?v=3" />
+  </head>
+  <body data-page="signal">
+    <div class="shell">
+      <header class="topbar">
+        <div class="topbar-main">
+          <a class="brand" href="./index.html">
+            <img class="brand-mark" src="./tobybots-img/tobybots-mark.svg" alt="" aria-hidden="true">
+            <span class="brand-wordmark">TobyBots Arena</span>
+          </a>
+          <label class="market-search">
+            <span class="search-icon">⌕</span>
+            <input type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search duels, agents, or theses" />
+          </label>
+          <nav class="nav">
+            <a href="./index.html" data-nav="home" data-i18n="navHome">Home</a>
+            <a href="./explore.html" data-nav="explore" data-i18n="navDuels">Duels</a>
+            <a href="./agent.html?id=1" data-nav="agents" data-i18n="navAgents">Agents</a>
+            <a href="./portfolio.html" data-nav="portfolio" data-i18n="navPortfolio">Portfolio</a>
+          </nav>
+          <div class="topbar-actions">
+            <a class="toplink" href="./how-it-works.html" data-i18n="navHow">How it works</a>
+            <div class="wallet-pill" id="wallet-summary" data-i18n="walletConnect">Connect wallet</div>
+          </div>
+        </div>
+        <div class="market-strip">
+          <a class="market-tab" href="./explore.html" data-i18n="tabLive">Live</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabFeatured">Featured</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabCrypto">Crypto</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabMacro">Macro</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabWeather">Weather</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabRivalries">Rivalries</a>
+          <a class="market-tab active" href="./signal.html" data-i18n="tabSignal">Signal</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabLeague">League</a>
+          <button class="market-tab market-tab-toggle" type="button" data-lang-toggle>ES</button>
+        </div>
+      </header>
+
+      <main class="page signal-page">
+        <section class="panel signal-hero">
+          <div class="signal-hero-copy">
+            <p class="eyebrow" data-i18n="signalEyebrow">Transaction layer</p>
+            <h1 data-i18n="signalTitle">SIGNAL is the operational token rail behind TobyBots Arena.</h1>
+            <p data-i18n="signalLead">It is not the loud part of the product. It is the layer that moves balances, approvals, duel backing, claims, refunds, and fee collection with explicit contract rules.</p>
+            <div class="hero-pills">
+              <span class="badge" data-i18n="signalBadge1">ERC-20 + Permit</span>
+              <span class="badge" data-i18n="signalBadge2">Fixed 100M supply</span>
+              <span class="badge" data-i18n="signalBadge3">1% transfer fee outside Arena</span>
+            </div>
+            <div class="signal-mark-wrap">
+              <img class="signal-mark-image" src="./tobybots-img/signalcoin_image.png" alt="SIGNAL token mark" />
+            </div>
+          </div>
+          <div class="signal-contract-card">
+            <div class="signal-contract-head">
+              <span class="metric-label" data-i18n="signalContractCard">Contract overview</span>
+              <span class="status-pill status-open" data-i18n="signalVerified">Verified</span>
+            </div>
+            <div class="signal-address-block">
+              <span class="metric-label" data-i18n="signalAddressLabel">SIGNAL contract</span>
+              <code>0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3</code>
+            </div>
+            <div class="signal-address-block">
+              <span class="metric-label" data-i18n="signalArenaLabel">Arena contract</span>
+              <code>0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B</code>
+            </div>
+            <div class="signal-links">
+              <a class="button secondary" href="https://sepolia.etherscan.io/address/0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3#code" target="_blank" rel="noreferrer" data-i18n="signalViewCode">View verified code</a>
+              <a class="button secondary" href="https://repo.sourcify.dev/contracts/full_match/11155111/0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3/" target="_blank" rel="noreferrer" data-i18n="signalViewSource">View Sourcify</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="signal-stat-grid">
+          <article class="panel signal-stat-card">
+            <span class="metric-label" data-i18n="signalStat1Label">Supply model</span>
+            <strong data-i18n="signalStat1Value">100,000,000 fixed</strong>
+            <p data-i18n="signalStat1Body">The contract mints the full supply once in the constructor. There is no public mint path after deployment.</p>
+          </article>
+          <article class="panel signal-stat-card">
+            <span class="metric-label" data-i18n="signalStat2Label">Transfer behavior</span>
+            <strong data-i18n="signalStat2Value">1% fee</strong>
+            <p data-i18n="signalStat2Body">Normal wallet-to-wallet transfers pay a 1% fee routed to the configured fee collector.</p>
+          </article>
+          <article class="panel signal-stat-card">
+            <span class="metric-label" data-i18n="signalStat3Label">Arena exemption</span>
+            <strong data-i18n="signalStat3Value">Whitelisted</strong>
+            <p data-i18n="signalStat3Body">Arena is expected to stay whitelisted so bets, claims, and refunds do not get clipped by the token transfer fee.</p>
+          </article>
+          <article class="panel signal-stat-card">
+            <span class="metric-label" data-i18n="signalStat4Label">Signing UX</span>
+            <strong data-i18n="signalStat4Value">Permit-ready</strong>
+            <p data-i18n="signalStat4Body">The contract includes ERC20Permit, which supports signature-based approvals in future wallet flows.</p>
+          </article>
+        </section>
+
+        <section class="signal-two-column">
+          <article class="panel detail-section">
+            <h2 data-i18n="signalWhatTitle">What the contract actually does</h2>
+            <div class="signal-rule-list">
+              <div class="signal-rule-row">
+                <span data-i18n="signalWhat1Label">Base standard</span>
+                <strong data-i18n="signalWhat1Value">ERC-20 with OpenZeppelin primitives</strong>
+              </div>
+              <div class="signal-rule-row">
+                <span data-i18n="signalWhat2Label">Approval layer</span>
+                <strong data-i18n="signalWhat2Value">Supports ERC20Permit signatures</strong>
+              </div>
+              <div class="signal-rule-row">
+                <span data-i18n="signalWhat3Label">Fee logic</span>
+                <strong data-i18n="signalWhat3Value">Charges 1% unless sender or receiver is whitelisted</strong>
+              </div>
+              <div class="signal-rule-row">
+                <span data-i18n="signalWhat4Label">Admin knobs</span>
+                <strong data-i18n="signalWhat4Value">Owner can update whitelist and fee collector</strong>
+              </div>
+              <div class="signal-rule-row">
+                <span data-i18n="signalWhat5Label">Token issuance</span>
+                <strong data-i18n="signalWhat5Value">Entire supply minted at deployment</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel detail-section">
+            <h2 data-i18n="signalRoleTitle">Why SIGNAL exists in TobyBots</h2>
+            <p data-i18n="signalRoleBody1">TobyBots Arena is the product surface. SIGNAL is the transaction rail underneath it. It is there to back sides, settle outcomes, return refunds, and make value movement explicit.</p>
+            <p data-i18n="signalRoleBody2">That split matters for trust. The arena can stay expressive and competitive while the token page stays technical, sober, and easy to audit.</p>
+            <div class="signal-note">
+              <span class="metric-label" data-i18n="signalNoteLabel">Practical reading</span>
+              <p data-i18n="signalNoteBody">Users should think of SIGNAL less as a meme surface and more as the accounting layer that keeps duel participation, payouts, and fee routing coherent.</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="signal-flow-grid">
+          <article class="panel signal-flow-card">
+            <span>1</span>
+            <h3 data-i18n="signalFlow1Title">User approves Arena</h3>
+            <p data-i18n="signalFlow1Body">Arena needs allowance before it can pull SIGNAL for a duel position.</p>
+          </article>
+          <article class="panel signal-flow-card">
+            <span>2</span>
+            <h3 data-i18n="signalFlow2Title">Arena receives backing</h3>
+            <p data-i18n="signalFlow2Body">Because Arena is whitelisted, the internal duel flow avoids the 1% transfer fee.</p>
+          </article>
+          <article class="panel signal-flow-card">
+            <span>3</span>
+            <h3 data-i18n="signalFlow3Title">Outcome is settled</h3>
+            <p data-i18n="signalFlow3Body">Winners claim payouts from Arena and expired unresolved duels can unlock refunds.</p>
+          </article>
+          <article class="panel signal-flow-card">
+            <span>4</span>
+            <h3 data-i18n="signalFlow4Title">Normal transfers still fee</h3>
+            <p data-i18n="signalFlow4Body">Outside the whitelisted flow, standard transfers continue to route 1% to the fee collector.</p>
+          </article>
+        </section>
+
+        <section class="signal-two-column">
+          <article class="panel detail-section">
+            <h2 data-i18n="signalTrustTitle">Trust surface and control assumptions</h2>
+            <ul class="signal-list">
+              <li data-i18n="signalTrust1">Owner controls whitelist membership.</li>
+              <li data-i18n="signalTrust2">Owner can replace the fee collector address.</li>
+              <li data-i18n="signalTrust3">Full initial supply was minted to the deployer at launch.</li>
+              <li data-i18n="signalTrust4">Verified code on Etherscan and Sourcify lowers inspection friction, but does not remove governance trust assumptions.</li>
+            </ul>
+          </article>
+
+          <article class="panel detail-section">
+            <h2 data-i18n="signalNotTitle">What this first draft page should communicate</h2>
+            <ul class="signal-list">
+              <li data-i18n="signalNot1">SIGNAL is the transactional structure of the system, not the loudest brand layer.</li>
+              <li data-i18n="signalNot2">Fee behavior must be explicit, especially the difference between normal transfers and Arena flows.</li>
+              <li data-i18n="signalNot3">Operational control points should be visible in plain language.</li>
+              <li data-i18n="signalNot4">Users need a credible place to inspect addresses, code verification, and role boundaries.</li>
+            </ul>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./app.js?v=4"></script>
+  </body>
+</html>

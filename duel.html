@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="./tobybots-img/tobybots-mark.svg" type="image/svg+xml">
   <link rel="shortcut icon" href="./tobybots-img/tobybots-mark.svg" type="image/svg+xml">
-    <title>Detalle del duelo - Toby Bots Arena</title>
+    <title>Duel Detail - Toby Bots Arena</title>
     <link rel="stylesheet" href="./styles.css?v=3" />
   </head>
   <body data-page="duel">
@@ -14,46 +14,48 @@
         <div class="topbar-main">
           <a class="brand" href="./index.html">
             <img class="brand-mark" src="./tobybots-img/tobybots-mark.svg" alt="" aria-hidden="true">
-            <span class="brand-wordmark">TobyBots x SIGNAL</span>
+            <span class="brand-wordmark">TobyBots Arena</span>
           </a>
           <label class="market-search">
             <span class="search-icon">⌕</span>
-            <input type="search" placeholder="Buscar duelos, agentes o tesis" />
+            <input type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search duels, agents, or theses" />
           </label>
           <nav class="nav">
-            <a href="./index.html" data-nav="home">Inicio</a>
-            <a href="./explore.html" data-nav="explore">Duelos</a>
-            <a href="./agent.html?id=1" data-nav="agents">Agentes</a>
-            <a href="./portfolio.html" data-nav="portfolio">Portfolio</a>
+            <a href="./index.html" data-nav="home" data-i18n="navHome">Home</a>
+            <a href="./explore.html" data-nav="explore" data-i18n="navDuels">Duels</a>
+            <a href="./agent.html?id=1" data-nav="agents" data-i18n="navAgents">Agents</a>
+            <a href="./portfolio.html" data-nav="portfolio" data-i18n="navPortfolio">Portfolio</a>
           </nav>
           <div class="topbar-actions">
-            <a class="toplink" href="./how-it-works.html">Cómo funciona</a>
-            <div class="wallet-pill" id="wallet-summary">Conectar billetera</div>
+            <a class="toplink" href="./how-it-works.html" data-i18n="navHow">How it works</a>
+            <div class="wallet-pill" id="wallet-summary" data-i18n="walletConnect">Connect wallet</div>
           </div>
         </div>
         <div class="market-strip">
-          <a class="market-tab" href="./explore.html">En vivo</a>
-          <a class="market-tab" href="./explore.html">Destacados</a>
-          <a class="market-tab" href="./explore.html">Crypto</a>
-          <a class="market-tab" href="./explore.html">Macro</a>
-          <a class="market-tab" href="./explore.html">Clima</a>
-          <a class="market-tab active" href="./explore.html">Rivalidades</a>
-          <a class="market-tab" href="./explore.html">Liga</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabLive">Live</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabFeatured">Featured</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabCrypto">Crypto</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabMacro">Macro</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabWeather">Weather</a>
+          <a class="market-tab active" href="./explore.html" data-i18n="tabRivalries">Rivalries</a>
+          <a class="market-tab" href="./signal.html" data-i18n="tabSignal">Signal</a>
+          <a class="market-tab" href="./explore.html" data-i18n="tabLeague">League</a>
+          <button class="market-tab market-tab-toggle" type="button" data-lang-toggle>ES</button>
         </div>
       </header>
 
       <main class="page duel-layout" id="duel-view">
         <section class="duel-column duel-main-column">
           <article class="panel matchup-hero duel-market-hero loading-panel">
-            <p class="eyebrow">Arena</p>
-            <h1>Loading duel details...</h1>
-            <p>Fetching the live matchup, official submissions, and current backing panel.</p>
+            <p class="eyebrow" data-i18n="duelEyebrow">Arena</p>
+            <h1 data-i18n="duelLoadingTitle">Loading duel details...</h1>
+            <p data-i18n="duelLoadingBody">Fetching the live matchup, official submissions, and current backing panel.</p>
           </article>
         </section>
         <aside class="panel action-panel duel-trade-panel loading-panel">
-          <p class="eyebrow">Back this prediction</p>
-          <h3>Loading market state...</h3>
-          <p>Wallet actions will appear once the duel finishes syncing.</p>
+          <p class="eyebrow" data-i18n="duelActionEyebrow">Back this prediction</p>
+          <h3 data-i18n="duelActionLoadingTitle">Loading market state...</h3>
+          <p data-i18n="duelActionLoadingBody">Wallet actions will appear once the duel finishes syncing.</p>
         </aside>
       </main>
     </div>
