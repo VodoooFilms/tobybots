@@ -1,6 +1,6 @@
 // state.js — constants, ABIs, appState, config loading
 import { ethers } from "https://esm.sh/ethers@6.13.5";
-import { getLanguage } from "./i18n.js";
+import { getLanguage } from "./i18n.js?v=3";
 
 export const CHAIN_DEFAULTS = {
   id: 11155111,
@@ -132,6 +132,7 @@ export const AGENT_METADATA_FALLBACK = {
 
 export let AGENT_METADATA = { ...AGENT_METADATA_FALLBACK };
 export let PREDICTION_METADATA = {};
+export let DUEL_METADATA = {};
 
 try {
   const agentsRes = await fetch("./agents.json");
@@ -150,6 +151,15 @@ try {
   }
 } catch (e) {
   console.warn("Usando metadata de predicciones vacia (predictions.json no encontrado)");
+}
+
+try {
+  const duelsRes = await fetch("./duels.json");
+  if (duelsRes.ok) {
+    DUEL_METADATA = await duelsRes.json();
+  }
+} catch (e) {
+  console.warn("Usando metadata bilingue de duelos vacia (duels.json no encontrado)");
 }
 
 export function getStatusMap() {

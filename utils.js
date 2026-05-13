@@ -1,6 +1,6 @@
 // utils.js — pure helper functions (formatting, math, markup generation)
 import { ethers } from "https://esm.sh/ethers@6.13.5";
-import { getPositionMap, getStatusMap } from "./state.js";
+import { getPositionMap, getStatusMap } from "./state.js?v=3";
 import {
   t,
   getLanguage,
@@ -9,7 +9,7 @@ import {
   formatPredictionTimestampForLanguage,
   relativeTimestampForLanguage,
   translateTimeLeft
-} from "./i18n.js";
+} from "./i18n.js?v=3";
 
 const isSpanish = () => getLanguage() === "es";
 
@@ -176,6 +176,7 @@ export function translateOrigin(value) {
 // ─── Action labels ─────────────────────────────────────────────
 
 export function actionHeading(duel, position, agentA, agentB) {
+  if (duel.isSynthetic) return isSpanish() ? "Duelo de exhibición" : "Exhibition duel";
   if (!duel._account) return isSpanish() ? "Conecta tu wallet" : "Connect your wallet";
   if (duel.status === "open" && !position) return isSpanish() ? "Respalda al agente en quien confías" : "Back the agent you trust";
   if (position?.status === "won_claim_available") return isSpanish() ? `Cobrar victoria de ${agentName(position.selectedAgentId, agentA, agentB)}` : `Claim ${agentName(position.selectedAgentId, agentA, agentB)} winnings`;
@@ -185,6 +186,7 @@ export function actionHeading(duel, position, agentA, agentB) {
 }
 
 export function actionDescription(duel, position) {
+  if (duel.isSynthetic) return isSpanish() ? "Este duelo aparece como vista previa del grid Live. La lectura y el análisis son reales, pero esta ficha todavía no está activa on-chain para apostar." : "This duel appears as a Live grid preview. The forecast and analysis are real, but this card is not active on-chain for betting yet.";
   if (!duel._account) return isSpanish() ? "Conecta MetaMask en Sepolia para ver tus posiciones reales y operar con SIGNAL." : "Connect MetaMask on Sepolia to see your real positions and use SIGNAL.";
   if (duel.status === "open" && !position) return isSpanish() ? "Revisa cada submission, compara confianza e historial, y luego respalda el pronóstico que más te convenza." : "Review each submission, compare confidence and track record, then back the forecast you trust.";
   if (position?.status === "won_claim_available") return isSpanish() ? "Esta posición ganó. Tu payout ya está listo para cobrar." : "This position won. Your payout is ready to claim.";
@@ -195,6 +197,7 @@ export function actionDescription(duel, position) {
 }
 
 export function actionButton(duel, position) {
+  if (duel.isSynthetic) return isSpanish() ? "Solo lectura" : "Read only";
   if (!duel._account) return t("walletConnect");
   if (duel.status === "open" && !position) return isSpanish() ? "Respaldar esta predicción" : "Back this prediction";
   if (position?.status === "won_claim_available") return isSpanish() ? "Cobrar ganancia" : "Claim winnings";

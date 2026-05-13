@@ -1,8 +1,8 @@
 // wallet.js — wallet connection, transactions, duel interactions
 import { ethers } from "https://esm.sh/ethers@6.13.5";
-import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState } from "./state.js";
-import { getLanguage } from "./i18n.js";
-import { refreshApp } from "./app.js";
+import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState } from "./state.js?v=3";
+import { getLanguage } from "./i18n.js?v=3";
+import { refreshApp } from "./app.js?v=6";
 
 const isSpanish = () => getLanguage() === "es";
 
@@ -69,6 +69,12 @@ export async function submitArenaAction(button, callback) {
 export function bindDuelInteractions(duel, position, defaultAgent) {
   const button = document.getElementById("duel-action-button");
   if (!button) return;
+
+  if (duel.isSynthetic) {
+    button.disabled = true;
+    button.onclick = null;
+    return;
+  }
 
   if (!appState.account) {
     button.onclick = connectWallet;

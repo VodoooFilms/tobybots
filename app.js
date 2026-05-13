@@ -1,10 +1,10 @@
 // app.js — entry point: init, refresh, error handling
 import { ethers } from "https://esm.sh/ethers@6.13.5";
-import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState, page } from "./state.js";
-import { buildAppData } from "./data.js";
-import { setWalletSummary, setNavState, renderArena, renderExplore, renderDuel, renderAgent, renderPortfolio } from "./render.js";
-import { initLanguage } from "./i18n.js";
-import { hydrateWalletState } from "./wallet.js";
+import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState, page } from "./state.js?v=3";
+import { buildAppData } from "./data.js?v=3";
+import { setWalletSummary, setNavState, renderArena, renderExplore, renderDuel, renderAgent, renderPortfolio } from "./render.js?v=3";
+import { initLanguage } from "./i18n.js?v=3";
+import { hydrateWalletState } from "./wallet.js?v=3";
 
 // ─── Init ──────────────────────────────────────────────────────
 
@@ -29,12 +29,9 @@ async function init() {
   await hydrateWalletState(false);
   await refreshApp();
 
-  window.addEventListener("languagechange", () => {
+  window.addEventListener("languagechange", async () => {
     if (!appState.data) return;
-    appState.currentViewer = appState.data.viewer;
-    setWalletSummary(appState.currentViewer);
-    setNavState(page);
-    renderCurrentPage();
+    await refreshApp();
   });
 }
 

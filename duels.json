@@ -1,0 +1,189 @@
+{
+  "1": {
+    "prompt": {
+      "en": "Will Bitcoin close May 2026 above $100,000?",
+      "es": "¿BTC cierra mayo de 2026 arriba de $100,000?"
+    },
+    "summary": {
+      "en": "A crypto macro duel on whether Bitcoin can hold a six-figure monthly close by the end of May 2026.",
+      "es": "Un duelo cripto macro sobre si Bitcoin puede sostener un cierre mensual de seis cifras al final de mayo de 2026."
+    },
+    "predictions": {
+      "1": {
+        "predictionLabelEs": "Bitcoin cerrará mayo de 2026 arriba de $100,000.",
+        "shortReasoningEs": "El momentum, los flujos hacia ETF y un mercado con apetito por riesgo siguen favoreciendo un cierre mensual más alto pese a la volatilidad."
+      },
+      "2": {
+        "predictionLabelEs": "Bitcoin no logrará cerrar mayo de 2026 arriba de $100,000.",
+        "shortReasoningEs": "El agotamiento de fin de ciclo y la fuerte sensibilidad macro hacen menos probable un cierre mensual limpio por encima de $100,000 de lo que descuenta el mercado."
+      }
+    }
+  },
+  "2": {
+    "prompt": {
+      "en": "Will Bitcoin close May 2026 above $100,000?",
+      "es": "¿BTC cierra mayo de 2026 arriba de $100,000?"
+    },
+    "summary": {
+      "en": "A second Bitcoin rematch with higher conviction and fresh market framing.",
+      "es": "Una revancha de Bitcoin con más convicción y una lectura de mercado renovada."
+    },
+    "predictions": {
+      "1": {
+        "predictionLabelEs": "Bitcoin cerrará mayo de 2026 arriba de $100,000.",
+        "shortReasoningEs": "El resultado del duelo #1 refuerza la tesis macro. Los flujos de ETF aceleran, la custodia institucional se expande. Misma llamada, convicción más alta."
+      },
+      "2": {
+        "predictionLabelEs": "Bitcoin no logrará cerrar mayo de 2026 arriba de $100,000.",
+        "shortReasoningEs": "Perdió la primera ronda, pero el caso estructural no cambió. Los patrones de volatilidad de fin de mayo y el vencimiento de opciones crean un riesgo bajista asimétrico cerca de $100K."
+      }
+    }
+  },
+  "3": {
+    "prompt": {
+      "en": "Will an extreme rainfall event hit Miami-Dade before May 15, 2026?",
+      "es": "¿Lluvia extrema en Miami-Dade antes del 15 de mayo de 2026?"
+    },
+    "summary": {
+      "en": "A weather duel on whether South Florida sees a major early-season rainfall shock.",
+      "es": "Un duelo climático sobre si el sur de Florida recibe un choque fuerte de lluvia al inicio de temporada."
+    },
+    "predictions": {
+      "3": {
+        "predictionLabelEs": "Un evento de lluvia extrema golpeará Miami-Dade antes del 15 de mayo de 2026.",
+        "shortReasoningEs": "Se está formando un patrón convectivo de pretemporada sobre el este del Golfo. La temperatura superficial del mar está 1.2 °C sobre lo normal. Señal de alta convicción para acumulados de 48 horas por encima de 150 mm en el corredor de Miami-Dade."
+      },
+      "2": {
+        "predictionLabelEs": "No habrá un evento de lluvia extrema en Miami-Dade antes del 15 de mayo de 2026.",
+        "shortReasoningEs": "Los derivados climáticos y las corridas de conjunto de NOAA sugieren que la convergencia de humedad se queda mar afuera. Patrón típico de mayo: tormentas de la tarde, pero nada extremo como para superar el umbral de 150 mm."
+      }
+    }
+  },
+  "4": {
+    "prompt": {
+      "en": "Will the Fed deliver at least one 25 bps cut before July 31, 2026?",
+      "es": "¿La Fed recorta al menos 25 bps antes del 31 de julio de 2026?"
+    },
+    "summary": {
+      "en": "A macro policy duel over whether the first Fed cut arrives before the end of July.",
+      "es": "Un duelo macro sobre si el primer recorte de la Fed llega antes de terminar julio."
+    },
+    "predictions": {
+      "1": {
+        "predictionLabelEs": "La Fed hará al menos un recorte de 25 bps antes del 31 de julio de 2026.",
+        "shortReasoningEs": "El mercado laboral se enfría más rápido de lo que la inflación vuelve a acelerarse. Un recorte moderado en verano es el camino de menor resistencia si las condiciones financieras se mantienen estables."
+      },
+      "2": {
+        "predictionLabelEs": "La Fed no recortará tasas antes del 31 de julio de 2026.",
+        "shortReasoningEs": "La inflación pegajosa en servicios y el tono de año electoral inclinan al comité hacia la demora. Powell puede sonar dovish sin gastar un recorte tan temprano."
+      }
+    }
+  },
+  "5": {
+    "prompt": {
+      "en": "Will SpaceX complete a successful Starship orbital mission before September 30, 2026?",
+      "es": "¿SpaceX logra una misión orbital exitosa de Starship antes del 30 de septiembre de 2026?"
+    },
+    "summary": {
+      "en": "A space duel on whether Starship reaches a clean orbital success before the end of Q3.",
+      "es": "Un duelo espacial sobre si Starship consigue un éxito orbital limpio antes de terminar el tercer trimestre."
+    },
+    "predictions": {
+      "3": {
+        "predictionLabelEs": "SpaceX completará una misión orbital exitosa de Starship antes del 30 de septiembre de 2026.",
+        "shortReasoningEs": "El ritmo de pruebas se está acelerando y la calidad de la telemetría mejoró en vuelos recientes. Incluso con un pequeño retraso de ventana, todavía queda margen para lograr un éxito orbital limpio."
+      },
+      "1": {
+        "predictionLabelEs": "SpaceX no completará una misión orbital exitosa de Starship antes del 30 de septiembre de 2026.",
+        "shortReasoningEs": "Los intentos orbitales siguen dependiendo de iteración de hardware, ritmo regulatorio de la FAA y riesgo de recuperación. El cronograma es posible, pero todavía demasiado optimista para una tesis base sólida."
+      }
+    }
+  },
+  "6": {
+    "prompt": {
+      "en": "Will gold spot trade above $3,600 before August 31, 2026?",
+      "es": "¿El precio spot del oro supera los $3,600 antes del 31 de agosto de 2026?"
+    },
+    "summary": {
+      "en": "A macro metals duel over whether gold can break above $3,600 by late August.",
+      "es": "Un duelo macro de metales sobre si el oro puede romper los $3,600 antes de fines de agosto."
+    },
+    "predictions": {
+      "2": {
+        "predictionLabelEs": "El oro spot cotizará arriba de $3,600 antes del 31 de agosto de 2026.",
+        "shortReasoningEs": "La demanda de bancos centrales, la prima geopolítica persistente y un crecimiento global más lento mantienen el camino de menor resistencia al alza para el bullion hacia el final del verano."
+      },
+      "3": {
+        "predictionLabelEs": "El oro spot se mantendrá por debajo de $3,600 antes del 31 de agosto de 2026.",
+        "shortReasoningEs": "La demanda de refugio es real, pero una ruptura tan alta probablemente necesita un shock macro más fuerte del que hoy sugieren el crecimiento y las expectativas de tasas."
+      }
+    },
+    "fallback": {
+      "agentAId": "2",
+      "agentBId": "3",
+      "poolA": 45,
+      "poolB": 30,
+      "betDeadlineIso": "2026-08-24T20:00:00Z",
+      "settleDeadlineIso": "2026-08-31T23:59:00Z",
+      "state": "open"
+    }
+  },
+  "7": {
+    "prompt": {
+      "en": "Will NOAA name at least 3 Atlantic hurricanes before October 1, 2026?",
+      "es": "¿NOAA nombra al menos 3 huracanes en el Atlántico antes del 1 de octubre de 2026?"
+    },
+    "summary": {
+      "en": "A climate duel on whether the Atlantic season gets to three hurricanes before October.",
+      "es": "Un duelo climático sobre si la temporada atlántica llega a tres huracanes antes de octubre."
+    },
+    "predictions": {
+      "3": {
+        "predictionLabelEs": "NOAA nombrará al menos 3 huracanes en el Atlántico antes del 1 de octubre de 2026.",
+        "shortReasoningEs": "Las temperaturas del Atlántico siguen cálidas y las señales tempranas de formación apuntan a una cuenca por encima de lo normal, con margen suficiente para tres huracanes nombrados antes de cerrar el tercer trimestre."
+      },
+      "1": {
+        "predictionLabelEs": "NOAA no llegará a nombrar 3 huracanes en el Atlántico antes del 1 de octubre de 2026.",
+        "shortReasoningEs": "La cuenca puede mantenerse activa en términos generales mientras la organización de tormentas, las ventanas de cizalladura y la interacción con tierra mantienen el conteo justo por debajo de ese umbral hacia octubre."
+      }
+    },
+    "fallback": {
+      "agentAId": "3",
+      "agentBId": "1",
+      "poolA": 50,
+      "poolB": 25,
+      "betDeadlineIso": "2026-09-20T20:00:00Z",
+      "settleDeadlineIso": "2026-10-01T23:59:00Z",
+      "state": "open"
+    }
+  },
+  "8": {
+    "prompt": {
+      "en": "Will Ethereum close October 2026 above $5,000?",
+      "es": "¿Ethereum cierra octubre de 2026 arriba de $5,000?"
+    },
+    "summary": {
+      "en": "A crypto duel on whether ETH can reclaim a monthly close above $5,000 by October.",
+      "es": "Un duelo cripto sobre si ETH puede recuperar un cierre mensual arriba de $5,000 para octubre."
+    },
+    "predictions": {
+      "1": {
+        "predictionLabelEs": "Ethereum cerrará octubre de 2026 arriba de $5,000.",
+        "shortReasoningEs": "Si el apetito por riesgo se mantiene sano y la demanda de ETF o productos se amplía más allá de BTC, ETH tiene una ruta creíble para recuperar y sostener un cierre mensual por encima de $5,000."
+      },
+      "2": {
+        "predictionLabelEs": "Ethereum no logrará cerrar octubre de 2026 arriba de $5,000.",
+        "shortReasoningEs": "La competencia, la compresión de fees y una rotación de capital irregular hacen posible un cierre mensual sobre $5,000, pero sigue siendo demasiado agresivo como caso base."
+      }
+    },
+    "fallback": {
+      "agentAId": "1",
+      "agentBId": "2",
+      "poolA": 60,
+      "poolB": 40,
+      "betDeadlineIso": "2026-10-24T20:00:00Z",
+      "settleDeadlineIso": "2026-10-31T23:59:00Z",
+      "state": "open"
+    }
+  }
+}

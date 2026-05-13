@@ -1,7 +1,7 @@
 // data.js — on-chain data fetching and wallet-first view model building
-import { CHAIN, AGENT_METADATA, PREDICTION_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js";
-import { formatTokenNumber, deriveTimeLabel, calculatePayout, shortAddress } from "./utils.js";
-import { getLanguage } from "./i18n.js";
+import { CHAIN, AGENT_METADATA, PREDICTION_METADATA, DUEL_METADATA, ACTIVITY_LOOKBACK_BLOCKS, appState } from "./state.js?v=3";
+import { formatTokenNumber, deriveTimeLabel, calculatePayout, shortAddress } from "./utils.js?v=3";
+import { getLanguage } from "./i18n.js?v=3";
 
 const isSpanish = () => getLanguage() === "es";
 
@@ -27,6 +27,7 @@ export async function buildAppData(account) {
     Array.from({ length: Number(duelCountRaw) }, (_, index) => appState.arenaRead.duels(index + 1))
   );
   const duels = await Promise.all(rawDuels.map((duel) => buildDuel(duel, agentsById, account)));
+  duels.push(...buildFallbackDuels(duels, agentsById));
   const activities = await buildActivities(agentsById);
 
   return {
@@ -106,6 +107,7 @@ async function buildDuel(rawDuel, agentsById, account) {
   const duelId = String(rawDuel.id);
   const agentAId = String(rawDuel.agentA);
   const agentBId = String(rawDuel.agentB);
+  const localizedCopy = getLocalizedDuelCopy(duelId, rawDuel.eventDescription);
   const totalPoolA = formatTokenNumber(rawDuel.totalPoolA);
   const totalPoolB = formatTokenNumber(rawDuel.totalPoolB);
   const totalSignal = totalPoolA + totalPoolB;
@@ -120,8 +122,8 @@ async function buildDuel(rawDuel, agentsById, account) {
     featured: false,
     agentAId,
     agentBId,
-    prompt: rawDuel.eventDescription,
-    summary: rawDuel.eventDescription,
+    prompt: localizedCopy.prompt,
+    summary: localizedCopy.summary,
     pools: {
       agentASignal: totalPoolA,
       agentBSignal: totalPoolB,
@@ -141,6 +143,7 @@ async function buildDuel(rawDuel, agentsById, account) {
     },
     predictions: buildPredictions(duelId, [agentAId, agentBId], agentsById),
     liveSignal: deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal),
+    isSynthetic: false,
     userPosition: null,
     _account: account
   };
@@ -210,27 +213,116 @@ function buildPredictions(duelId, agentIds, agentsById) {
       ...raw,
       duelId: String(raw.duelId),
       agentId: String(raw.agentId),
+      predictionLabel: getLocalizedPredictionLabel(duelId, agentId, raw.predictionLabel),
       provider: raw.provider || agent?.provider || "Unknown",
       model: raw.model || agent?.model || "Unknown",
       category: raw.category || agent?.specialty || "general",
-      confidence: Number(raw.confidence || 0)
+      confidence: Number(raw.confidence || 0),
+      shortReasoning: getLocalizedPredictionReasoning(duelId, agentId, raw.shortReasoning)
     } : {
       id: `duel-${duelId}-agent-${agentId}-placeholder`,
       duelId: String(duelId),
       agentId: String(agentId),
       predictionValue: "TBD",
-      predictionLabel: "Official prediction pending.",
+      predictionLabel: isSpanish() ? "Predicción oficial pendiente." : "Official prediction pending.",
       confidence: 0,
       provider: agent?.provider || "Unknown",
       model: agent?.model || "Unknown",
       category: agent?.specialty || "general",
-      shortReasoning: "No official submission has been published for this side yet.",
+      shortReasoning: isSpanish() ? "Todavía no se publicó una submission oficial para este lado." : "No official submission has been published for this side yet.",
       submittedAt: null,
       sourceType: "official"
     };
   }
 
   return { byAgentId };
+}
+
+function getLocalizedDuelCopy(duelId, fallbackPrompt = "") {
+  const meta = DUEL_METADATA[duelId];
+  return {
+    prompt: isSpanish() ? (meta?.prompt?.es || fallbackPrompt) : (meta?.prompt?.en || fallbackPrompt),
+    summary: isSpanish()
+      ? (meta?.summary?.es || meta?.prompt?.es || fallbackPrompt)
+      : (meta?.summary?.en || meta?.prompt?.en || fallbackPrompt)
+  };
+}
+
+function getLocalizedPredictionLabel(duelId, agentId, fallbackLabel) {
+  if (!isSpanish()) return fallbackLabel;
+  return DUEL_METADATA[duelId]?.predictions?.[agentId]?.predictionLabelEs || fallbackLabel;
+}
+
+function getLocalizedPredictionReasoning(duelId, agentId, fallbackReasoning) {
+  if (!isSpanish()) return fallbackReasoning;
+  return DUEL_METADATA[duelId]?.predictions?.[agentId]?.shortReasoningEs || fallbackReasoning;
+}
+
+function buildFallbackDuels(existingDuels, agentsById) {
+  const existingIds = new Set(existingDuels.map((duel) => duel.id));
+  const fallbackIds = Object.keys(DUEL_METADATA)
+    .filter((duelId) => DUEL_METADATA[duelId]?.fallback && !existingIds.has(String(duelId)))
+    .sort((a, b) => Number(a) - Number(b));
+
+  return fallbackIds.map((duelId) => {
+    const meta = DUEL_METADATA[duelId];
+    const fallback = meta.fallback;
+    const agentAId = String(fallback.agentAId);
+    const agentBId = String(fallback.agentBId);
+    const totalPoolA = Number(fallback.poolA || 0);
+    const totalPoolB = Number(fallback.poolB || 0);
+    const totalSignal = totalPoolA + totalPoolB;
+    const percentA = totalSignal ? Math.round((totalPoolA / totalSignal) * 100) : 50;
+    const state = fallback.state === "settled" ? 2 : fallback.state === "refund_available" ? 1 : 0;
+    const rawLike = {
+      id: duelId,
+      betDeadline: Math.floor(new Date(fallback.betDeadlineIso).getTime() / 1000),
+      settleDeadline: Math.floor(new Date(fallback.settleDeadlineIso).getTime() / 1000),
+      state
+    };
+    const duel = {
+      id: String(duelId),
+      slug: `${agentAId}-${agentBId}-${duelId}`,
+      title: `${agentsById[agentAId].name} vs ${agentsById[agentBId].name}`,
+      status: state === 2 ? "settled" : state === 1 ? "refund_available" : "open",
+      featured: false,
+      agentAId,
+      agentBId,
+      prompt: getLocalizedDuelCopy(String(duelId), "").prompt,
+      summary: getLocalizedDuelCopy(String(duelId), "").summary,
+      pools: {
+        agentASignal: totalPoolA,
+        agentBSignal: totalPoolB,
+        totalSignal,
+        agentAPercent: percentA,
+        agentBPercent: 100 - percentA,
+        totalBackers: 0
+      },
+      timing: {
+        timeLeftLabel: deriveTimeLabel(rawLike, state),
+        betDeadlineIso: fallback.betDeadlineIso,
+        settleDeadlineIso: fallback.settleDeadlineIso
+      },
+      result: {
+        winnerAgentId: null,
+        winnerDeclaredLabel: null
+      },
+      predictions: buildPredictions(String(duelId), [agentAId, agentBId], agentsById),
+      liveSignal: "New prediction submitted",
+      isSynthetic: true,
+      userPosition: null,
+      _account: null
+    };
+
+    if (duel.status === "open") {
+      agentsById[agentAId].stats.activeDuels += 1;
+      agentsById[agentBId].stats.activeDuels += 1;
+      agentsById[agentAId].stats.totalPredictions += 1;
+      agentsById[agentBId].stats.totalPredictions += 1;
+    }
+
+    return duel;
+  });
 }
 
 function deriveDuelSignal(rawDuel, agentAId, agentBId, agentsById, totalSignal) {

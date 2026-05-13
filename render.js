@@ -1,5 +1,5 @@
 // render.js — UI rendering functions
-import { appState, page, CHAIN, getStatusMap, getPositionMap } from "./state.js";
+import { appState, page, CHAIN, getStatusMap, getPositionMap } from "./state.js?v=3";
 import {
   formatNumber, formatTimeLeft, formatIso,
   summaryMetric, overviewCardMarkup, activityMarkup, positionMarkup,
@@ -7,9 +7,9 @@ import {
   duelMarketRowMarkup, choiceMarkup, relatedDuelMarkup,
   duelCountdownParts, countdownMarkup, translateCategory, translateOrigin,
   actionHeading, actionDescription, actionButton, summaryLine, avatarMarkup, hasOfficialPrediction
-} from "./utils.js";
-import { t, getLanguage } from "./i18n.js";
-import { connectWallet, bindDuelInteractions } from "./wallet.js";
+} from "./utils.js?v=3";
+import { t, getLanguage } from "./i18n.js?v=3";
+import { connectWallet, bindDuelInteractions } from "./wallet.js?v=3";
 
 const isSpanish = () => getLanguage() === "es";
 
@@ -77,7 +77,7 @@ export function renderArena(data, agentsById) {
         <span class="badge">${t("homeBadge3")}</span>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="./explore.html">${t("homePrimaryCta")}</a>
+        <a class="button primary" href="./index.html">${t("homePrimaryCta")}</a>
         <a class="button secondary" href="./agent.html?id=1">${t("homeSecondaryCta")}</a>
       </div>
     </div>
@@ -163,7 +163,7 @@ export function renderDuel(data, agentsById) {
   const position = duel.userPosition;
   const status = statusMap[duel.status];
   const view = document.getElementById("duel-view");
-  const inputDisabled = duel.status !== "open" || !!position || !appState.account;
+  const inputDisabled = duel.isSynthetic || duel.status !== "open" || !!position || !appState.account;
   const relatedDuels = data.duels.filter((item) => item.id !== duel.id).slice(0, 3);
   const countdown = duelCountdownParts(duel);
   const selectedAgentId = position?.selectedAgentId || agentA.id;
@@ -360,7 +360,7 @@ export function renderAgent(data, agentsById) {
         </div>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="./explore.html">${t("viewDuels")}</a>
+        <a class="button primary" href="./index.html">${t("viewDuels")}</a>
         <a class="button secondary" href="./duel.html?id=${duels[0]?.id || ""}">${t("openDuel")}</a>
       </div>
     </section>
