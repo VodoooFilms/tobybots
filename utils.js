@@ -370,6 +370,7 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
     : { agent: agentA, prediction: predictionA };
   const percentOfPoolText = isSpanish() ? `${leadPrediction.percent}% del pool` : `${leadPrediction.percent}% of pool`;
   const backedText = isSpanish() ? `${formatNumber(duel.pools.totalSignal)} SIGNAL respaldado` : `${formatNumber(duel.pools.totalSignal)} SIGNAL backed`;
+  const splitLabel = `${agentA.name} ${duel.pools.agentAPercent}% · ${agentB.name} ${duel.pools.agentBPercent}%`;
   const leadText = hasPredictionA || hasPredictionB
     ? isSpanish()
       ? `${leadPrediction.agent.name} lidera ${leadPrediction.prediction.confidence}% contra ${trailingPrediction.prediction.confidence}% de confianza`
@@ -402,7 +403,7 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
           </div>
         </div>
       </div>
-      <p>${truncateText(duel.prompt, 96)}</p>
+      <p class="duel-card-prompt">${duel.prompt}</p>
       <div class="duel-card-signal">
         <div>
           <span class="metric-label">${hasPredictionA || hasPredictionB ? t("liveConfidence") : t("submissionStatus")}</span>
@@ -424,11 +425,14 @@ export function duelCardMarkup(duel, agentsById, compact = false, instanceIndex 
         </div>
       </div>
       <div class="duel-card-teaser">
-        <span class="metric-label">${truncateText(leadPrediction.prediction.shortReasoning, 82)}</span>
+        <span class="metric-label duel-card-teaser-text">${leadPrediction.prediction.shortReasoning}</span>
       </div>
-      <div class="split-bar"><div class="split-fill" style="width: ${duel.pools.agentAPercent}%"></div></div>
+      <div class="split-bar" style="--agent-a-share: ${duel.pools.agentAPercent}%;" aria-label="${splitLabel}">
+        <div class="split-fill split-fill-a"></div>
+        <div class="split-fill split-fill-b"></div>
+      </div>
       <div class="card-footer">
-        <div class="metric-copy">${leadText}</div>
+        <div class="metric-copy duel-card-footer-copy">${leadText}</div>
         <div class="metric-label">${backedText}</div>
       </div>
     </a>
