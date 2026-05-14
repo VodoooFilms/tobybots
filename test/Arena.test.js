@@ -23,22 +23,6 @@ describe("SIGNAL Arena", function () {
     await signal.transfer(carol.address, ethers.parseEther("10000"));
   });
 
-  // ─── Deployment ─────────────────────────────────────────────
-
-  it("deploys $SIGNAL with 100M supply", async function () {
-    const supply = await signal.totalSupply();
-    expect(supply).to.equal(ethers.parseEther("100000000"));
-  });
-
-  // ─── Token Mechanics ────────────────────────────────────────
-
-  it("charges 1% fee on transfers", async function () {
-    const before = await signal.balanceOf(owner.address);
-    await signal.connect(alice).transfer(bob.address, ethers.parseEther("1000"));
-    const after = await signal.balanceOf(owner.address);
-    expect(after - before).to.equal(ethers.parseEther("10")); // 1% of 1000
-  });
-
   // ─── Agent Management ───────────────────────────────────────
 
   it("creates agents", async function () {

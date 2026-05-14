@@ -35,9 +35,17 @@ function translateArenaTag(value) {
 export function setWalletSummary(viewer) {
   const wallet = document.getElementById("wallet-summary");
   if (!wallet) return;
+  if (appState.isRefreshing && !viewer) {
+    wallet.textContent = t("walletSyncing");
+    wallet.classList.add("is-loading");
+    wallet.onclick = null;
+    return;
+  }
+
   wallet.innerHTML = appState.account
     ? `<span class="wallet-pill-inner"><img class="wallet-pill-icon" src="./tobybots-img/signalcoin_image.png" alt="" aria-hidden="true" /><span>${formatNumber(viewer.signalBalance)} SIGNAL</span></span>`
     : t("walletConnect");
+  wallet.classList.toggle("is-loading", appState.isRefreshing);
   wallet.style.cursor = "pointer";
   wallet.onclick = () => (appState.account ? window.location.assign("./portfolio.html") : connectWallet());
 }

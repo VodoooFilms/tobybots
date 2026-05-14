@@ -39,7 +39,7 @@ Firestore queda reservado para contenido offchain:
 
 ```text
 Browser
-  -> index.html / explore.html / duel.html / agent.html / portfolio.html
+  -> index.html / league.html / explore.html / duel.html / agent.html / portfolio.html
   -> app.js
   -> ethers BrowserProvider / JsonRpcProvider
   -> Sepolia RPC
@@ -54,6 +54,7 @@ Browser
 Archivos principales:
 
 - [index.html](/Users/antoin/Documents/tobybots/index.html)
+- [league.html](/Users/antoin/Documents/tobybots/league.html)
 - [explore.html](/Users/antoin/Documents/tobybots/explore.html)
 - [duel.html](/Users/antoin/Documents/tobybots/duel.html)
 - [agent.html](/Users/antoin/Documents/tobybots/agent.html)
@@ -66,6 +67,7 @@ Archivos principales:
 - [render.js](/Users/antoin/Documents/tobybots/render.js) — renderizado UI
 - [wallet.js](/Users/antoin/Documents/tobybots/wallet.js) — wallet y transacciones
 - [styles.css](/Users/antoin/Documents/tobybots/styles.css)
+- [duels.json](/Users/antoin/Documents/tobybots/duels.json) — copy bilingüe y fallback editorial de duelos
 - [firestore.js](/Users/antoin/Documents/tobybots/firestore.js)
 - [firebase.client-config.example.js](/Users/antoin/Documents/tobybots/firebase.client-config.example.js)
 - [firestore.rules](/Users/antoin/Documents/tobybots/firestore.rules)
@@ -78,8 +80,18 @@ Responsabilidad:
 - conectar MetaMask
 - ejecutar acciones onchain del usuario
 - construir un `viewer` wallet-first a partir de la wallet conectada
+- traducir toda la experiencia entre inglés y español con el toggle actual
+- completar la grilla de `Live` con fallback editorial cuando faltan duelos onchain
 
 La UI usa `document.body.dataset.page` para decidir qué vista renderizar. La lógica está modularizada en 6 archivos: `state.js` (constantes y estado), `data.js` (lectura on-chain), `render.js` (renderizado), `wallet.js` (transacciones), `utils.js` (helpers), y `app.js` (entry point).
+
+Mapa actual de páginas:
+
+- `index.html`: home pública `Live`
+- `league.html`: home editorial interna antes conocida como `Arena`
+- `duel.html`: detalle de un duelo
+- `agent.html`: perfil de agente
+- `portfolio.html`: posiciones y claims
 
 ### 2. Token `SIGNAL`
 
@@ -228,6 +240,7 @@ No existe API intermedia. Todo sale de contratos más metadatos front hardcodead
 `app.js` mezcla datos onchain con datos editoriales locales:
 
 - `AGENT_METADATA`
+- `DUEL_METADATA`
 - `statusMap`
 - `positionMap`
 
@@ -235,8 +248,11 @@ Eso significa:
 
 - el récord, pools y estado viven onchain
 - la narrativa, tagline, categoría y labels de UI viven en frontend
+- el copy bilingüe de preguntas y razonamientos vive en [duels.json](/Users/antoin/Documents/tobybots/duels.json)
 
 Si se agrega un agente onchain que no exista en `AGENT_METADATA`, la app igual funciona, pero cae en defaults de `Community Agent`.
+
+Si hay menos duelos onchain que los necesarios para llenar la grilla de `Live`, la app puede completar tarjetas editoriales de solo lectura usando `DUEL_METADATA`. Hoy `Live` muestra 8 cards: 5 duelos onchain y 3 cards de exhibición.
 
 ## Estructura de carpetas
 
@@ -249,6 +265,7 @@ tobybots/
 ├── render.js            ← Renderizado de UI
 ├── wallet.js            ← Wallet y transacciones
 ├── index.html
+├── league.html
 ├── explore.html
 ├── duel.html
 ├── agent.html
@@ -257,6 +274,7 @@ tobybots/
 ├── styles.css
 ├── config.json           ← Direcciones de contratos
 ├── agents.json           ← Metadata de agentes
+├── duels.json            ← Copy bilingüe de duelos y fallbacks editoriales
 ├── tobybots-img/
 ├── contracts/
 ├── scripts/
@@ -380,7 +398,7 @@ npm run hosting:prepare
 Deploy de Hosting:
 
 ```bash
-firebase deploy --only hosting
+npx firebase-tools deploy --only hosting
 ```
 
 ## Variables de entorno
@@ -465,9 +483,17 @@ Este repo ya es el proyecto único de TobyBots en `Documents`.
 
 Además:
 
-- la Arena publicada vive en la raíz
+- `Live` publicado vive en [index.html](/Users/antoin/Documents/tobybots/index.html)
+- `League` vive en [league.html](/Users/antoin/Documents/tobybots/league.html)
 - la landing anterior quedó archivada en `archive/legacy-landing/`
 - no queda otra carpeta `Signal` separada
+
+Estado actual del frontend:
+
+- home pública: `Live`
+- toggle de idioma: bilingüe funcional para UI fija y contenido de duelos
+- grilla `Live`: 8 cards totales
+- composición actual: 5 duelos onchain + 3 duelos editoriales de solo lectura
 
 ## Mejoras aplicadas (auditoría Mayo 2026)
 
@@ -475,11 +501,11 @@ Auditoría completa del 10 de mayo. 5 de 5 issues corregidos, frontend modulariz
 
 ### Fixes cerrados
 
-1. ✅ **Redeploy Arena** — `emergencyRefund` ahora es permissionless (antes `onlyOwner`). Nuevo Arena: `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`. Bytecode verificado: match exacto con local.
-2. ✅ **LAUNCH_CHECKLIST corregido** — "19 tests" → "23 tests".
+1. ✅ **Redeploy Arena** — `emergencyRefund` ahora es permissionless (antes `onlyOwner`). Arena activo: `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`.
+2. ✅ **LAUNCH_CHECKLIST corregido** — "19 tests" → suite real actualizada.
 3. ✅ **calculatePayout sin floating point** — `utils.js` usa math entera como Solidity.
 4. ✅ **buildExploreDisplayDuels sin duplicados** — eliminado relleno cíclico de cards.
-5. ✅ **Modularización de app.js** — De 1,203 líneas monolíticas a 6 archivos (1,281 líneas total):
+5. ✅ **Modularización de app.js** — De monolito a 6 archivos:
 
 | Archivo | Líneas | Responsabilidad |
 |---------|--------|-----------------|
@@ -492,45 +518,164 @@ Auditoría completa del 10 de mayo. 5 de 5 issues corregidos, frontend modulariz
 
 ### Extras
 
-- Wallet en red incorrecta ya no crashea (modo solo lectura)
-- RPC cambiado de 1rpc.io → publicnode.com (sin rate limits)
-- Seed de demo ligero (1 duelo, 50 SIGNAL, costo mínimo)
-- Scripts nuevos: `scripts/seed-light.js`, `scripts/seed-settle.js`, `scripts/seed-claim.js`, `scripts/claim-winnings.js`, `scripts/check-duel.js`
+- Wallet en red incorrecta ya no crashea y cae a modo solo lectura.
+- RPC cambiado de `1rpc.io` a `publicnode.com`.
+- Seed de demo ligero ejecutado.
+- Flow de demo extendido con `scripts/demo-setup.js` ahora idempotente y más seguro.
+- Scripts auxiliares: `scripts/seed-light.js`, `scripts/seed-settle.js`, `scripts/seed-claim.js`, `scripts/claim-winnings.js`, `scripts/check-duel.js`, `scripts/check-all-duels.js`, `scripts/verify-deploy.js`
 
-### Estado live en Sepolia (Mayo 10, 2026)
+## Handoff operativo (14 de mayo de 2026)
 
-| Campo | Valor |
-|-------|-------|
-| Owner ETH | 0.099 ETH |
-| Owner SIGNAL | 99,969,974 |
-| `duelCount` | 1 |
-| `agentCount` | 3 (doomgpt, bulltard, weatherwiz) |
-| Arena SIGNAL balance | 1.0 (fee 2% de duelo #1) |
-| Bettor demo SIGNAL | 25 |
-| Tests | 23/23 passing |
+Esta sección busca dejar contexto suficiente para retomar en una sesión nueva sin releer todo el repo.
 
-### Duelo #1 — Completado
+### Estado local confirmado
 
-| Campo | Valor |
-|-------|-------|
-| Tema | BTC cierra mayo 2026 arriba de $100K |
-| Agentes | doomgpt (A) vs bulltard (B) |
-| Pool | 50 SIGNAL (25 cada lado) |
-| Ganador | doomgpt |
-| Fee Arena (2%) | 1 SIGNAL |
-| Prize pool | 49 SIGNAL |
-| Claim | Owner reclamó 49 SIGNAL ✅ |
-| W/L | doomgpt 1/0, bulltard 0/1 |
+- tests pasando: `28/28`
+- suite nueva separada en [test/SignalToken.test.js](/Users/antoin/Documents/tobybots/test/SignalToken.test.js)
+- [test/Arena.test.js](/Users/antoin/Documents/tobybots/test/Arena.test.js) quedó enfocado en Arena
+- loading states agregados en UI
+- `styles.css` recibió un refactor liviano con variables reutilizables para `hover`, `focus` y `loading`
+- `README.md` ya tenía cambios previos sin commit antes de esta sesión; no se revirtieron
 
-## Próximos pasos
+### Cambios cerrados en esta sesión
+
+1. ✅ **Ejecutar demo-setup completo con 2-3 wallets**
+   Resultado:
+   - `scripts/demo-setup.js` reescrito para:
+     - crear o reusar duelos por `eventDescription`
+     - evitar duplicar apuestas si la wallet ya apostó
+     - usar wallets efímeras por corrida en vez de claves públicas conocidas
+     - saltarse duelos ya sembrados con liquidez
+   Nota importante:
+   - la primera versión falló en Sepolia porque wallets demo con claves `0x111.../0x222.../0x333...` fueron drenadas de ETH casi de inmediato por ser públicas
+   - la versión actual usa `Wallet.createRandom()` y sí completó el flujo
+
+2. ✅ **Verificar contrato nuevo en Sourcify**
+   - Arena verificado exitosamente en Sourcify:
+     [Sourcify Arena](https://repo.sourcify.dev/contracts/full_match/11155111/0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B/)
+
+3. ✅ **Agregar tests para SignalToken standalone**
+   Cobertura nueva:
+   - supply fija e inicialización
+   - fee del 1% en `transfer`
+   - fee del 1% en `transferFrom`
+   - bypass por whitelist
+   - actualización de `feeCollector`
+   - permisos `onlyOwner`
+   - rechazo de `address(0)` para `feeCollector`
+
+4. ✅ **Agregar loading states en UI**
+   - overlay global de sincronización en [app.js](/Users/antoin/Documents/tobybots/app.js)
+   - estado de wallet sincronizando en [render.js](/Users/antoin/Documents/tobybots/render.js)
+   - estado visual de botones transaccionales en [wallet.js](/Users/antoin/Documents/tobybots/wallet.js)
+   - copies bilingües nuevos en [i18n.js](/Users/antoin/Documents/tobybots/i18n.js)
+
+5. ✅ **Refactor styles.css**
+   - nuevas variables: `--focus-ring`, `--interactive-hover-bg`, `--interactive-hover-border`, `--loading-sheen`
+   - shimmer visual para `loading-panel`, botones y wallet-pill
+   - overlay global reutilizable
+
+### Estado live en Sepolia (14 de mayo de 2026)
+
+Contratos activos:
+
+- `SIGNAL`: `0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3`
+- `Arena`: `0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B`
+- `owner`: `0xC242829F7A7Fd6fe910738fe165ce5D19c1448FA`
+
+Checks verificados:
+
+- `Arena.whitelisted` en `SIGNAL`: `true`
+- `signal()` en Arena apunta al contrato `SIGNAL` correcto
+- `agentCount = 3`
+- `duelCount = 7`
+
+### Snapshot actual de duelos
+
+1. `#1` Settled
+   - `BTC cierra mayo 2026 arriba de $100K`
+   - Pool: `25 / 25`
+   - ganador: agente `#1`
+
+2. `#2` Open
+   - `BTC cierra mayo 2026 arriba de $100K`
+   - Pool: `25 / 25`
+
+3. `#3` Open
+   - `¿Lluvia extrema en Miami antes del 15 de mayo de 2026?`
+   - Pool: `25 / 25`
+
+4. `#4` Open
+   - `¿La Fed recorta al menos 25 bps antes del 31 de julio de 2026?`
+   - Pool: `40 / 30`
+
+5. `#5` Open
+   - `¿SpaceX logra una misión orbital exitosa de Starship antes del 30 de septiembre de 2026?`
+   - Pool: `35 / 35`
+
+6. `#6` Open
+   - `¿Bitcoin cierra junio de 2026 arriba de $115K?`
+   - Pool: `400 / 200`
+   - creado/reusado por el nuevo `demo-setup`
+
+7. `#7` Open
+   - `¿La temporada atlántica 2026 nombra al menos 5 huracanes antes del 1 de octubre de 2026?`
+   - Pool: `225 / 150`
+   - creado por el nuevo `demo-setup`
+
+### Estado de verificación
+
+- [x] **Verificar en Sourcify**
+- [x] **Verificar en Etherscan**
+
+Estado exacto:
+
+- Sourcify listo:
+  [Sourcify Arena](https://repo.sourcify.dev/contracts/full_match/11155111/0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B/)
+- Etherscan listo:
+  [Etherscan Arena](https://sepolia.etherscan.io/address/0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B#code)
+
+Comando usado:
+
+```bash
+npx hardhat verify --network sepolia 0xB10FaBc2DFa536E4F0d853057e83663e91Bdd74B 0x7cfBB6a8b34F4E247bb4d82ec15463EB7c9A83A3
+```
+
+### Comandos útiles para retomar
+
+Ver tests:
+
+```bash
+npm test
+```
+
+Ver estado actual de duelos:
+
+```bash
+npx hardhat run scripts/check-all-duels.js --network sepolia
+```
+
+Ver despliegue y config:
+
+```bash
+npx hardhat run scripts/verify-deploy.js --network sepolia
+```
+
+Reintentar demo setup seguro:
+
+```bash
+npx hardhat run scripts/demo-setup.js --network sepolia
+```
+
+### Próximos pasos actualizados
 
 - [x] Redeploy Arena con emergencyRefund permissionless
 - [x] Seed de demo ligero (1 duelo, 50 SIGNAL)
 - [x] Modularizar app.js (6 archivos)
 - [x] Settlear duelo #1
 - [x] Claim winnings duelo #1
-- [ ] Ejecutar demo-setup completo con 2-3 wallets
-- [ ] Verificar contrato nuevo en Etherscan/Sourcify
-- [ ] Agregar tests para SignalToken standalone
-- [ ] Agregar loading states en UI
-- [ ] Refactor styles.css
+- [x] Ejecutar demo-setup completo con 2-3 wallets
+- [x] Verificar contrato nuevo en Etherscan/Sourcify
+- [x] Agregar tests para SignalToken standalone
+- [x] Agregar loading states en UI
+- [x] Refactor styles.css

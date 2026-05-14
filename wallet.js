@@ -1,7 +1,7 @@
 // wallet.js — wallet connection, transactions, duel interactions
 import { ethers } from "https://esm.sh/ethers@6.13.5";
 import { CHAIN, SIGNAL_ABI, ARENA_ABI, appState } from "./state.js?v=3";
-import { getLanguage } from "./i18n.js?v=3";
+import { getLanguage, t } from "./i18n.js?v=3";
 import { refreshApp } from "./app.js?v=6";
 
 const isSpanish = () => getLanguage() === "es";
@@ -51,7 +51,9 @@ export async function connectWallet() {
 export async function submitArenaAction(button, callback) {
   const label = button.textContent;
   button.disabled = true;
-  button.textContent = isSpanish() ? "Enviando..." : "Sending...";
+  button.classList.add("is-loading");
+  button.setAttribute("aria-busy", "true");
+  button.textContent = t("sendingTransaction");
   try {
     const tx = await callback();
     await tx.wait();
@@ -60,6 +62,8 @@ export async function submitArenaAction(button, callback) {
     console.error(error);
     alert(error.shortMessage || error.message || (isSpanish() ? "No pude completar la transacción." : "I could not complete the transaction."));
     button.disabled = false;
+    button.classList.remove("is-loading");
+    button.removeAttribute("aria-busy");
     button.textContent = label;
   }
 }

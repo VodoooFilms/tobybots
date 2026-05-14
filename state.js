@@ -189,6 +189,7 @@ export const appState = {
   account: null,
   // Wallet-first runtime identity. This is a view model, not an app auth session.
   currentViewer: null,
+  isRefreshing: false,
   readProvider: null,
   walletProvider: null,
   signer: null,
